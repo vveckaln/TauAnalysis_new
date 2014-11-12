@@ -1,0 +1,9 @@
+<use name="FWCore/FWLite"/>
+<use name="FWCore/PythonParameterSet"/>
+<use name="FWCore/ParameterSet"/>
+<use name="LIP/TauAnalysis"/>
+<environment>
+<bin name="Analysis" file="Analysis.cc"></bin>
+<bin name="test_test" file="test_test.cc"></bin>
+</environment>
+<Flags CXXFLAGS="-g"/>
