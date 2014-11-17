@@ -1,0 +1,37 @@
+#include "LIP/TauAnalysis/interface/CPHistogramPoolRegister.hh"
+
+namespace cpHistogramPoolRegister{
+  bool          isData                                     = false;
+  HistogramPool *histogram_pool                            = NULL;
+  MapOfObjectPools<TH1D> *mapOfHistogramPools              = NULL; 
+  HistogramPool *data_histo_pool                           = NULL;
+  MapOfObjectPools<TH1D> *mapOfSelectorHistoPools          = NULL; 
+  HistogramPool *Selector_data_report_pool                 = NULL;
+  THStackPool   *THStack_pool                              = NULL;
+  TCanvasPool   *TCanvas_pool                              = NULL;
+  TGraphPool    *TGraph_pool                               = NULL;
+  vector<HistogramDescriptor> * object_descriptors         = NULL;
+  vector<HistogramDescriptor> * selector_h_descriptors     = NULL;
+  vector<HistogramDescriptor> * selector_data_h_descriptors= NULL;
+
+  vector<DataSampleDescriptor> * MCdatasample_descriptors  = NULL;
+  vector<DataSampleDescriptor> * datasample_descriptors    = NULL;
+
+  JetResolution *stdEtaResol                               = NULL;
+  JetResolution *stdPhiResol                               = NULL; 
+  JetResolution *stdPtResol                                = NULL; 
+  JetCorrectionUncertainty *jetCorrectionUncertainty       = NULL;
+
+  TApplication  application("myapp", 0, 0);
+  //********************** PROGRAMMED UNCERTAINTIES **********************
+  extern const uint number_uncertainties = 2;
+  extern const uint number_subuncertainties = 2;
+  extern const char* uncertainty_name[] = {"JES", "JER", "BTAG", "UNBTAG"};
+  extern const char* uncertainty_subname[2] = {"PLUS", "MINUS"};
+  extern bool signal_uncertainties_transition = false;
+  extern bool uncertainties_activated = false;
+  extern int uncertainty_signal = 0;
+  extern int uncertainty_subsignal = 0;
+  //********************** SIGNALS TO FORK *******************************
+  extern bool fork_activated = false;
+}

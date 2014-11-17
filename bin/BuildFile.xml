@@ -1,6 +1,9 @@
+<use name="root"/>
 <use name="FWCore/FWLite"/>
 <use name="FWCore/PythonParameterSet"/>
 <use name="FWCore/ParameterSet"/>
+<use name="DataFormats/FWLite"/>
+<use name="boost"/>
 <use name="LIP/TauAnalysis"/>
 <environment>
 <bin name="Analysis" file="Analysis.cc"></bin>

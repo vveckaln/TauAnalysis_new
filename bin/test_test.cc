@@ -4,15 +4,12 @@
 #include "FWCore/PythonParameterSet/interface/MakeParameterSets.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 
-#include "TSystem.h"
+#include "LIP/TauAnalysis/interface/gConfiguration.hh"
 
 int main(int argc, char* argv[])
 {
 
-gSystem->Load( "libFWCoreFWLite" );
-AutoLibraryLoader::enable();
-// configure the process
-const edm::ParameterSet &runProcess = edm::readPSetsFrom(argv[1])->getParameter<edm::ParameterSet>("runProcess");
-double xsec = runProcess.getParameter<double>("xsec");
- printf("%f\n", xsec);
+  gConfiguration -> SetConfiguration(argv[1]);
+
+ printf("finish\n");
 }
