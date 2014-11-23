@@ -2,7 +2,7 @@ import FWCore.ParameterSet.Config as cms
 
 PhysicsAnalysisParSet = cms.PSet(
     input_file_name       = cms.string("/lustre/ncg.ingrid.pt/cmst3/store/user/cbeiraod/14_08_06_2l2nu_EDMtuples_merged/MC8TeV_TTJetsFullLeptMGDecays_0.root"),
-    noUncertainties     = cms.bool(False),
+    noUncertainties     = cms.bool(True),
     eChONmuChOFF        = cms.bool(False),
     spyObjectSpecifiers = cms.string("/exper-sw/cmst3/cmssw/users/vveckaln/CMSSW_5_3_11/src/LIP/TopTaus/histogram_specifiers/spec_output_histograms.xml"),
     spyMCDataSampleSpecifiers = cms.string("/exper-sw/cmst3/cmssw/users/vveckaln/CMSSW_5_3_11/src/LIP/TopTaus/histogram_specifiers/spec_MCsamples.xml"),

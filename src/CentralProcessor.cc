@@ -2,16 +2,17 @@
 //#include "LIP/TauAnalysis/interface/HistogramPlotter.hh"
 #include "LIP/TauAnalysis/interface/ReadEvent.hh"
 #include "LIP/TauAnalysis/interface/FileReader.hh"
-/*#include "LIP/TauAnalysis/interface/EventDigester.hh"
+#include "LIP/TauAnalysis/interface/EventConverter.hh"
+#include "LIP/TauAnalysis/interface/ReadEvent_llvv.hh"
 #include "LIP/TauAnalysis/interface/BTagger.hh"
 #include "LIP/TauAnalysis/interface/Selector.hh"
-#include "LIP/TauAnalysis/interface/KINbHandler.hh"
+/*#include "LIP/TauAnalysis/interface/KINbHandler.hh"
 #include "LIP/TauAnalysis/interface/Fork.hh"
 #include "LIP/TauAnalysis/interface/Purge.hh"*/
 
-/*#include "LIP/TopTaus/include/HistogramFiller.hh"
-#include "LIP/TopTaus/include/UncertaintiesNode.hh"
-#include "LIP/TopTaus/include/UncertaintiesApplicator.hh"*/
+/*#include "LIP/TauAnalysis/interface/HistogramFiller.hh"
+  #include "LIP/TauAnalysis/interface/UncertaintiesNode.hh"*/
+#include "LIP/TauAnalysis/interface/UncertaintiesApplicator.hh"
 #include "LIP/TauAnalysis/interface/CPFileRegister.hh"
 #include "LIP/TauAnalysis/interface/CPHistogramPoolRegister.hh"
 #include "LIP/TauAnalysis/interface/Parser.hh"
@@ -38,21 +39,21 @@ void CentralProcessor::Process(const char* option)
   }
   output_file = new TFile(output_file_name, "recreate");*/
   FileReader * reader = new FileReader(
-				       /*	new EventDigester(
-					  //new Purge(
-			new UncertaintiesNode(	
-			new BTagger(
-			new Fork(
+			new EventConverter<ReadEvent_llvv>(
+							  /* //new Purge(
+							     new UncertaintiesNode(*/	
+							   new BTagger(
+								       /*	new Fork(*/
 			new UncertaintiesApplicator(
-			new Selector(
+							   new Selector(
 				     
-			new HistogramFiller(	*/     
+				     /*new HistogramFiller(	*/     
 			NULL
-			/*)
-    	)
+			)
+					)
                         )
 			)
-			)
+			/*)
 			)
 			)*/
 			);
@@ -128,9 +129,9 @@ void CentralProcessor::LoadMCDataSampleDescriptors(){
   delete parser;*/
 }
 void CentralProcessor::LoadSelectorHistDescriptors(const char* specifier){
-  /* Parser *parser = new Parser();
+  Parser *parser = new Parser();
   selector_h_descriptors = parser -> ParseHistogramSpecifier(specifier);
-  delete parser;*/
+  delete parser;
 }
 void CentralProcessor::LoadDataSampleDescriptors(){
   /* Parser *parser = new Parser();

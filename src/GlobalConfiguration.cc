@@ -19,6 +19,7 @@ void GlobalConfiguration::SetConfiguration(const char* configuration_file)
 -> getParameter<edm::ParameterSet>("PhysicsAnalysisParSet");
   input_file_name          = runProcess.getParameter<string>                  ("input_file_name");
   input_file_names.push_back(input_file_name.Data());
+  gnoUncertainties         = runProcess.getParameter<bool>                    ("noUncertainties");
   /*gdebug                   = runProcess.getParameter<bool>                  ("Debug");
   gIsMC                    = runProcess.getParameter<bool>                  ("IsMC");
   gXSection                = runProcess.getParameter<double>                ("XSection");

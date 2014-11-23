@@ -69,11 +69,9 @@ typedef  edm::RefVector<llvvMuonInfoCollection> llvvMuonInfoRefVector;
 
 class llvvElectronInfo {
    public:
-   // constructor
    llvvElectronInfo(){};
    ~llvvElectronInfo(){};
 
-   //member variables
    public:
    bool  isConv;
    float hoe,h2te,dphiin,detain,sihih,sipip,sihip, eopin, eopout,r9,fbrem;
@@ -89,13 +87,11 @@ typedef  edm::RefVector<llvvElectronInfoCollection> llvvElectronInfoRefVector;
 class llvvLepton : public LorentzVectorF
 {
    public:
-   // constructor
    llvvLepton(){};
    ~llvvLepton(){};
 
-   //member variables
    public:
-   int id,          idbits,    genid, Tbits;//, pid;
+   int id,          idbits,    genid, Tbits;
    int isPF;
    LorentzVectorF gen;
    float ecalIso03, hcalIso03, trkIso03;
@@ -106,11 +102,10 @@ class llvvLepton : public LorentzVectorF
    float trkchi2, trkValidPixelHits, trkValidTrackerHits, trkLostInnerHits, trkPtErr;
    LorentzVectorF trk;
 
-   //Specific Lepton Information
    llvvMuonInfoRef     muonInfoRef;
    llvvElectronInfoRef electronInfoRef;
-
-   //functions
+   //-----------
+   llvvElectronInfo el_info;
 
 };
 typedef  std::vector<llvvLepton> llvvLeptonCollection;

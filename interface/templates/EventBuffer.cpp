@@ -1,11 +1,15 @@
 #include <stdlib.h>
 template <class TEvent>
-EventBuffer<TEvent>::EventBuffer(const unsigned long capacity): capacity(capacity){
-  buffer = (TEvent*) malloc(sizeof(TEvent)*capacity);
-  for (unsigned int ind = 0; ind < capacity; ind ++){
+EventBuffer<TEvent>::EventBuffer(const unsigned long capacity): capacity(capacity)
+{
+  //buffer = (TEvent*) malloc(sizeof(TEvent)*capacity);
+  //buffer = static_cast<TEvent*> (::operator new(sizeof(TEvent[capacity])));
+  /*for (unsigned int ind = 0; ind < capacity; ind ++){
       new (buffer + ind) TEvent();
-  }
+      *(buffer + ind) = TEvent();
+  }*/
   
+  buffer = new TEvent[capacity];
   consumed = 0;
 } 
 
@@ -53,21 +57,27 @@ TEvent & EventBuffer<TEvent>::operator[] (const unsigned long index) const{
 
 
 template <class TEvent>
-EventBuffer<TEvent>::~EventBuffer(){
+EventBuffer<TEvent>::~EventBuffer()
+{
   for (unsigned ind = 0; ind < this -> size(); ind ++){
     buffer[ind] . Close();
   }	
-  free((TEvent*)buffer);
+  //free((TEvent*)buffer);
+ delete [] buffer;
 }
 
 template <class TEvent>
-EventBuffer<TEvent*>::EventBuffer(const unsigned long capacity, const char * option): capacity(capacity){
-  buffer = (TEvent**) malloc(sizeof(TEvent)*capacity);
+EventBuffer<TEvent*>::EventBuffer(const unsigned long capacity, const char * option): capacity(capacity)
+{
+  //buffer = (TEvent**) malloc(sizeof(TEvent)*capacity);
+  buffer = new TEvent*[capacity];
   IsIndependent = (TString(option) == "dependent") ? false : true;
-  for (uint ind = 0; ind < capacity; ind ++){
+  for (uint ind = 0; ind < capacity; ind ++)
+  {
     buffer[ind] = (IsIndependent) ? new TEvent() : NULL;
   }
   consumed = 0;
+  //printf("constructed pointer buffer\n");
 } 
 
 template <class TEvent>
@@ -133,15 +143,18 @@ TEvent *& EventBuffer<TEvent*>::operator[] (const unsigned long index) const{
 }
 
 template <class TEvent>
-EventBuffer<TEvent*>::~EventBuffer(){
-  	
-  if (IsIndependent) {
-     for (ushort ind = 0; ind < capacity; ind ++){
+EventBuffer<TEvent*>::~EventBuffer()
+{
+  //printf("%s\n", IsIndependent ? "true": "false");	
+  if (not IsIndependent) 
+  {
+     for (ushort ind = 0; ind < consumed; ind ++){
        buffer[ind] -> Close();
        delete buffer[ind];
      }
   }
-  free((TEvent**)buffer);
-
+  //free((TEvent**)buffer);
+  delete [] buffer;
+ //printf("destructed pointer buffer\n");
 }
 

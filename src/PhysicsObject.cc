@@ -15,9 +15,31 @@ PhysicsObject::PhysicsObject()
 {
 }
 
-PhysicsObject::PhysicsObject(TLorentzVector *lorentz_vector, TVectorD *info) :
+PhysicsObject::PhysicsObject(const TLorentzVector * const lorentz_vector, const TVectorD * const info) :
   TLorentzVector(*lorentz_vector)
 {
+}
+
+PhysicsObject::PhysicsObject(const LorentzVector math_lorentz_vector)
+{
+  TLorentzVector t_lorentz_vector(
+				  math_lorentz_vector . Px(),
+				  math_lorentz_vector . Py(),
+				  math_lorentz_vector . Pz(),
+				  math_lorentz_vector . E()
+				  );
+  *(TLorentzVector*)(this) = t_lorentz_vector;
+}
+
+PhysicsObject::PhysicsObject(const LorentzVectorF math_lorentz_vector_f)
+{
+  TLorentzVector t_lorentz_vector(
+				  math_lorentz_vector_f . Px(),
+				  math_lorentz_vector_f . Py(),
+				  math_lorentz_vector_f . Pz(),
+				  math_lorentz_vector_f . E()
+				  );
+  *(TLorentzVector*)(this) = t_lorentz_vector;
 }
 
 void PhysicsObject::ListLorentzVector() const
@@ -52,8 +74,16 @@ Lepton::Lepton() :
 {
 }
 
-Lepton::Lepton(TLorentzVector *lorentz_vector, TVectorD *info) :
+Lepton::Lepton(const TLorentzVector * const lorentz_vector, const TVectorD *const info) :
   PhysicsObject(lorentz_vector, info)
+{
+}
+
+Lepton::Lepton(const LorentzVector math_lorentz_vector) : PhysicsObject(math_lorentz_vector)
+{
+}
+
+Lepton::Lepton(const LorentzVectorF math_lorentz_vector_f) : PhysicsObject(math_lorentz_vector_f)
 {
 }
 
@@ -71,13 +101,24 @@ const char* Electron::title = "electron";
 Electron::Electron() :
   Lepton::Lepton()
 {
+  ((Lepton*)(this)) -> title = TString(title);
 }
 
-Electron::Electron(TLorentzVector *lorentz_vector, TVectorD *info) :
+Electron::Electron(const TLorentzVector * const lorentz_vector, const TVectorD * const info) :
   Lepton(lorentz_vector, info)
 {
   charge = (*info)[(char)ElectronInfo::ID] > 0 ? 1 : -1;
   relative_isolation = (*info)[(char)ElectronInfo::REL_ISOLATION];
+  ((Lepton*)(this)) -> title = TString(title);
+
+}
+
+Electron::Electron(const llvvLepton llvvLepton_obj) :
+  Lepton(llvvLepton_obj)
+{
+  charge = (llvvLepton_obj.id > 0) ? 1 : -1;
+  ((Lepton*)(this)) -> title = TString(title);
+
 }
 
 void Electron::ls() const 
@@ -95,13 +136,25 @@ const char* Muon::title = "muon";
 Muon::Muon() :
   Lepton::Lepton()
 {
+  ((Lepton*)(this)) -> title = TString(title);
+
 }
 
-Muon::Muon(TLorentzVector *lorentz_vector, TVectorD *info) :
+Muon::Muon(const TLorentzVector * const lorentz_vector, const TVectorD * const info) :
   Lepton(lorentz_vector, info)
 {
   charge = (*info)[(char)MuonInfo::ID] > 0 ? 1 : -1;
   relative_isolation = (*info)[(char)MuonInfo::REL_ISOLATION];
+  ((Lepton*)(this)) -> title = TString(title);
+
+}
+
+Muon::Muon(const llvvLepton llvvLepton_obj) :
+  Lepton(llvvLepton_obj)
+{
+  charge = (llvvLepton_obj.id > 0) ? 1 : -1;
+  ((Lepton*)(this)) -> title = TString(title);
+
 }
 
 void Muon::ls() const 
@@ -120,12 +173,24 @@ const char* Tau::title = "tau";
 Tau::Tau() : 
   Lepton()
 {
+  ((Lepton*)(this)) -> title = TString(title);
+
 }
 
-Tau::Tau(TLorentzVector *lorentz_vector, TVectorD *info) :
+Tau::Tau(const TLorentzVector * const lorentz_vector, const TVectorD * const info) :
     Lepton(lorentz_vector, info)
 {
   charge = (*info)[(char)TauInfo::ID] > 0 ? 1 : -1;
+  ((Lepton*)(this)) -> title = TString(title);
+
+}
+
+Tau::Tau(const llvvTau llvvTau_obj) :
+  Lepton(llvvTau_obj)
+{
+  charge = (llvvTau_obj.id > 0) ? 1 : -1;
+  ((Lepton*)(this)) -> title = TString(title);
+
 }
 
 void Tau::ls() const 
@@ -143,12 +208,17 @@ Jet::Jet() :
 {
 }
 
-Jet::Jet(TLorentzVector *lorentz_vector, TVectorD *info) :
+Jet::Jet(const TLorentzVector * const lorentz_vector, const TVectorD * const info) :
   PhysicsObject(lorentz_vector, info)
 {
   CSV_discriminator = (*info)[(char)JetInfo::BTAG] > 0 ? 1 : -1;
   genJetPt = (*info)[(char)JetInfo::GENJETPT];
   jetpgid = (*info)[(char)JetInfo::JETPGID];
+}
+
+Jet::Jet(const llvvJetExt llvvJetExt_obj) :
+  PhysicsObject(llvvJetExt_obj)
+{
 }
 
 double Jet::GetPt() const
@@ -177,10 +247,16 @@ MET::MET() :
 {
 }
 
-MET::MET(TLorentzVector *lorentz_vector, TVectorD *info) :
+MET::MET(const TLorentzVector * const lorentz_vector, const TVectorD * const info) :
     PhysicsObject(lorentz_vector, info)
 {
 }
+
+MET::MET(const llvvMet llvvMet_obj) :
+  PhysicsObject(llvvMet_obj)        
+{
+}
+
 
 void MET::ls() const 
 {

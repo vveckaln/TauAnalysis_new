@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<samples>
+
+    <histogram Xaxis_title="#DeltaR (l, jet)" Yaxis_title="Events" nbinsx="60" xlow="0" xup="6" >Delta_R_lepton_1st_leading_jet</histogram>
+
+    <histogram Xaxis_title="|#Delta#phi^{lep - MET}|" Yaxis_title="Events / 5 GeV" nbinsx="100" xlow="0" xup="4" >Abs_Delta_phi_lepton_MET</histogram>
+
+    <histogram Xaxis_title="#eta^{#tau}" Yaxis_title="Events" nbinsx="60" xlow="-3.05" xup="3.05" >eta_tau</histogram>
+    
+</samples>
+ 

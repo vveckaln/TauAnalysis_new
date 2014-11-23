@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<samples>
+
+   <process isstack="1" isdata="0" name="t#bar{t} #rightarrow #mu#tau_{h}" color="614" width="1" fill="1001" fillcolor="614" markercolor="614" line="1"  linecolor="614" marker="1" >
+     <histogram weight="0.949"></histogram>
+   </process>
+
+   <process isstack="1" isdata="0" name="other t#bar{t}" color="8" width="1" fill="1001" fillcolor="8" markercolor="8" line="1"  linecolor="8" marker="1" >
+     <histogram weight="1">b</histogram>
+   </process>
+
+   <process isstack="1" isdata="0" name="Single t" color="824" width="1" fill="1001" fillcolor="824" markercolor="824" linecolor="824" line="1" marker="1" >
+     <histogram weight="1">jer</histogram>
+   </process>
+
+   <process isstack="1" isdata="0" name="Diboson" color="592" width="1" fill="1001" fillcolor="592" markercolor="592" linecolor="592" line="1" marker="1" >
+     <histogram weight="1">tes</histogram>
+   </process>
+
+   <process isstack="1" isdata="0" name="Diboson" color="592" width="1" fill="1001" fillcolor="592" markercolor="592" linecolor="592" line="1" marker="1" >
+     <histogram weight="1">topptunc</histogram>
+   </process>
+   
+   <process isstack="1" isdata="0" name="Diboson" color="592" width="1" fill="1001" fillcolor="592" markercolor="592" linecolor="592" line="1" marker="1" >
+     <histogram weight="1">unb</histogram>
+   </process>
+
+   <process isstack="1" isdata="0" name="Diboson" color="592" width="1" fill="1001" fillcolor="592" markercolor="592" linecolor="592" line="1" marker="1" >
+     <histogram weight="1">unc</histogram>
+   </process>
+
+ </samples>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<samples>
+
+    <data_samples HistogramFillHue="kRed" HistogramFillHueAdjustment="0" LegendEntry="t#bar{t} #rightarrow #mu#tau_{h}"  >spy_ttbar_mutau</data_samples>
+
+    <data_samples HistogramFillHue="kOrange" HistogramFillHueAdjustment="-8" LegendEntry="missid. #tau_{h}"  >spy_MisidentifiedTau</data_samples>
+    
+    <data_samples HistogramFillHue="kViolet" HistogramFillHueAdjustment="-8" LegendEntry="dibosons"  >spy_dibosons</data_samples>
+    
+    <data_samples HistogramFillHue="kGreen" HistogramFillHueAdjustment="-2" LegendEntry="single t"  >spy_singletop</data_samples>
+
+    <data_samples HistogramFillHue="kSpring" HistogramFillHueAdjustment="-2" LegendEntry="other t#bar{t}"  >spy_ttbar_mcbkg</data_samples>
+
+</samples>

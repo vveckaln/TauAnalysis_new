@@ -2,6 +2,8 @@
 
 namespace gVariables
 {
+  bool           gnoUncertainties;
+  bool           geChONmuChOFF;
   bool           gdebug; 
   bool           gIsMC;
   double         gXSection;

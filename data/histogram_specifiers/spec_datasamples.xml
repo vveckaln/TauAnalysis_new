@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<samples>
+
+    <data_samples HistogramFillHue="kRed" HistogramFillHueAdjustment="0" MarkerStyle="21" LegendEntry="data"  >spy_data</data_samples>
+
+</samples>

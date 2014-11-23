@@ -1,6 +1,7 @@
 #ifndef _EventBuffer_hh
 #define _EventBuffer_hh
 #include "stdlib.h"
+#include "TString.h"
 template <class TEvent>
 class EventBuffer 
 {
@@ -41,5 +42,5 @@ public:
   TEvent *& operator[] (const unsigned long index) const;
 
 };
-#include "LIP/TauAnalysis/interface/templates/EventBuffer.tpp"
+#include "LIP/TauAnalysis/interface/templates/EventBuffer.cpp"
 #endif
