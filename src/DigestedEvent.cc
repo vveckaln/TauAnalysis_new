@@ -5,16 +5,11 @@ using namespace cpHistogramPoolRegister;
 
 DigestedEvent::DigestedEvent()
 {
+  non_const_object = NULL;
 }
 
 DigestedEvent::~DigestedEvent()
 {
-  /* Electrons.~vector<Electron>();//clear();
-  Muons.~vector<Muon>();//clear();
-  Taus.~vector<Tau>();//clear();
-  Vertices.~vector<Vertex>(); //clear();
-  Jets.~vector<Jet>();//clear();
-  met.~vector<MET>();//clear();*/
 }
 
 void DigestedEvent::Open()
@@ -71,22 +66,73 @@ double DigestedEvent::GetJetPt(const uint index) const
 {
   return Jets[index].GetPt();
 }
-Object * DigestedEvent::GetObject(const char * type, const uint ind) const
+Object * DigestedEvent::GetObject(const char * type, const uint ind) 
 {
-  if (TString(type) == "electron") return const_cast<Electron*>(&Electrons.at(ind));
-  if (TString(type) == "muon") return const_cast<Muon*>(&Muons.at(ind));
-  if (TString(type) == "tau") return const_cast<Tau*>(&Taus.at(ind));
-  if (TString(type) == "jet") return const_cast<Jet*>(&Jets.at(ind));
-  if (TString(type) == "met") return const_cast<MET*>(&met.at(ind));
-  if (TString(type) == "vertex") return const_cast<Vertex*>(&Vertices.at(ind));
+  if (TString(type) != "vertex")
+    {
+      if (non_const_object)
+	{
+	  TLorentzVector difference = *non_const_object - previous_state;
+	  met[0] -= difference;
+	}
+    }  
+  if (TString(type) == "electron")
+    {
+      previous_state = Electrons.at(ind);
+      non_const_object = &Electrons.at(ind);
+      return &Electrons.at(ind);
+    }
+  if (TString(type) == "muon")
+    {
+      previous_state = Muons.at(ind);
+      non_const_object = &Muons.at(ind);
+      return &Muons.at(ind);
+    }
+  if (TString(type) == "tau")
+    {
+      previous_state = Taus.at(ind);
+      non_const_object = &Taus.at(ind);
+      return &Taus.at(ind);
+    }
+  if (TString(type) == "jet")
+    {
+      previous_state = Jets.at(ind);
+      non_const_object = &Jets.at(ind);
+      return &Jets.at(ind);
+    }
+  if (TString(type) == "MET")
+    {
+      previous_state = met.at(ind);
+      non_const_object = &met.at(ind);
+      return &met.at(ind);
+    }
+  if (TString(type) == "vertex")   return &Vertices.at(ind);
   return NULL;
 }
 
-PhysicsObject * DigestedEvent::GetPhysicsObject(const char * type, const uint ind) const
+PhysicsObject * DigestedEvent::GetPhysicsObject(const char * type, const uint ind) 
 {
   if (TString(type) == "vertex") return NULL;
   return (PhysicsObject*) GetObject(type, ind);
 }
+
+const Object * DigestedEvent::GetConstObject(const char * type, const uint ind) const
+{
+  if (TString(type) == "electron") return &Electrons.at(ind);
+  if (TString(type) == "muon")     return &Muons.at(ind);
+  if (TString(type) == "tau")      return &Taus.at(ind);
+  if (TString(type) == "jet")      return &Jets.at(ind);
+  if (TString(type) == "MET")      return &met.at(ind);
+  if (TString(type) == "vertex")   return &Vertices.at(ind);
+  return NULL;
+}
+
+const PhysicsObject * DigestedEvent::GetConstPhysicsObject(const char * type, const uint ind) const
+{
+  if (TString(type) == "vertex") return NULL;
+  return (PhysicsObject*) GetConstObject(type, ind);
+}
+
 unsigned char DigestedEvent::GetObjectCount(const char * type) const
 {
   if (TString(type) == "electron") return Electrons.size();
@@ -106,9 +152,9 @@ Lepton * DigestedEvent::GetLeadingLepton(const char * option) const
       const Lepton * lepton = NULL; 
       for (unsigned char ind = 0; ind < GetObjectCount(option); ind ++)
 	{
-	  if (GetPhysicsObject(option, ind) -> Pt() > Pt)
+	  if (GetConstPhysicsObject(option, ind) -> Pt() > Pt)
 	    {
-	      lepton = (Lepton*)GetObject(option, ind);
+	      lepton = (Lepton*)GetConstObject(option, ind);
 	      Pt = lepton -> Pt();
 	    }
 	}
@@ -196,7 +242,7 @@ void DigestedEvent::ls(const char* field) const
       for (unsigned char ind = 0; ind < GetObjectCount(fields[field_ind]); ind ++)
       {
         printf("   Object %2u : ", ind);
-        GetObject(fields[field_ind], ind) -> ls();
+        GetConstObject(fields[field_ind], ind) -> ls();
       }
     }
     return;
@@ -205,7 +251,7 @@ void DigestedEvent::ls(const char* field) const
   for (unsigned char ind = 0; ind < GetObjectCount(field); ind ++)
   {
       printf("   Object %2u : ", ind);
-      GetObject(field, ind) -> ls();
+      GetConstObject(field, ind) -> ls();
   }
   
 }
@@ -283,11 +329,18 @@ void DigestedEvent::SmearJets(){
 
 }
 
-void DigestedEvent::CorrectMET() {
-  met[0] -= jet_difference;
+void DigestedEvent::CorrectMET() 
+{
+  if (non_const_object)
+    {
+      TLorentzVector jet_difference = *non_const_object - previous_state;
+      met[0] -= jet_difference;
+      non_const_object = NULL;
+    }
 }
 
-void DigestedEvent::Print4VectorSum() const{
+void DigestedEvent::Print4VectorSum() const
+{
   TLorentzVector sum4vector; 
   for (ushort muon_ind = 0; muon_ind < Muons.size(); muon_ind ++){
     sum4vector += (TLorentzVector) Muons[muon_ind];

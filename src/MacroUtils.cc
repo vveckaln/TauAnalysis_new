@@ -7,7 +7,7 @@ namespace utils
   namespace cmssw
   {
     //
-    FactorizedJetCorrector *getJetCorrector(TString baseDir, bool isMC)
+    FactorizedJetCorrector *getJetCorrector(const TString baseDir, const bool isMC)
     {
       gSystem->ExpandPathName(baseDir);
       TString pf(isMC ? "MC" : "Data");

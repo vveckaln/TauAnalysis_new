@@ -95,11 +95,16 @@ DigestedEvent* EventConverter<ReadEvent_llvv>::ConvertEvent(const ReadEvent_llvv
       Jet jet( read_event -> jets[jet_ind]);
       jet . CSV_discriminator = read_event -> jets[jet_ind].csv;
       jet. genflav = read_event -> jets[jet_ind] . genflav;
+      jet. torawsf = read_event -> jets[jet_ind]. torawsf;
+      jet. area = read_event -> jets[jet_ind]. area;
+
       brokenDownEvent -> Jets.push_back( jet );
     }  
     
   brokenDownEvent -> met . push_back( MET(read_event -> met) );
   brokenDownEvent -> triggerBits = read_event -> triggerBits;
+  brokenDownEvent -> rho = read_event -> rho;
+  brokenDownEvent -> ngenITpu = read_event -> genEv.ngenITpu;
   return brokenDownEvent;
 }
 

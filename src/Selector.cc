@@ -1,8 +1,26 @@
 #include "LIP/TauAnalysis/interface/Selector.hh"
 #include "LIP/TauAnalysis/interface/GlobalVariables.hh"
 #include "LIP/TauAnalysis/interface/Parser.hh"
-
+#include "LIP/TauAnalysis/interface/CPFileRegister.hh"
 #include <math.h>
+#include "TCanvas.h"
+using namespace cpFileRegister;
+
+const short Selector::report_size = 11;
+const char *Selector::Selector_report_Xaxis_labels[report_size] = 
+    {
+      "received in total",
+      "passed cleaning", 
+      "leading lepton selection",
+      "trigger fired (received in channel)",
+      "1 lept",
+      "passed loose lepton veto",
+      "#geq 3 jets", 
+      "E^{miss}_{T}", 
+      "#geq 1btag", 
+      "1#tau", 
+      "OS"
+    };
 
 Selector::Selector(EventSink<PureEvent *> *next_processor_stage):EventProcessor<DigestedEvent*, PureEvent *>(next_processor_stage)
 {
@@ -29,6 +47,7 @@ Selector::Selector(EventSink<PureEvent *> *next_processor_stage):EventProcessor<
       }	
     }
   }
+
 }
 
 void Selector::Run()
@@ -37,16 +56,20 @@ void Selector::Run()
   for (unsigned char ind = 0; ind < input_buffer -> size(); ind ++)
     { 
       processed_event = (*input_buffer)[ind];
-      
-      ChannelGate();
-     
-      if (not CheckTrigger()) continue;
+      processed_event -> CorrectMET();
+      GetStatisticsHistogram() -> Fill(Selector_report_Xaxis_labels[0], 1);
       if (IsLowQualityEvent()) continue;
+      GetStatisticsHistogram() -> Fill(Selector_report_Xaxis_labels[1], 1);
+      ChannelGate();
+      if (not geChONmuChOFF)
+	GetStatisticsHistogram() -> Fill(Selector_report_Xaxis_labels[2], 1);
+      if (not TriggerFired()) continue;
+      GetStatisticsHistogram() -> Fill(Selector_report_Xaxis_labels[3], 1);
       lepton = NULL;
       if (ValidateEvent()) 
 	{
-	  //DeleteHadronisedTauJet();
-	  //FinishPureEvent();
+	  DeleteHadronisedTauJet();
+	  FinishPureEvent();
 	  *output_buffer -> GetWriteSlot() = pure_event;
       
 	  output_buffer -> PushWriteSlot();
@@ -73,7 +96,7 @@ void Selector::ChannelGate() const
   if (lepton -> title == "electron") geChONmuChOFF = true;
 }
 
-bool Selector::CheckTrigger() const
+bool Selector::TriggerFired() const
 {
   if (not geChONmuChOFF)
     {
@@ -89,49 +112,46 @@ bool Selector::IsLowQualityEvent() const
   return false;
 }
 
-void Selector::SelectorStatistics(){
-  const short size = 6;
-  static const char *Selector_report_Xaxis_labels[size] = {
-                             "received", 
-                             "1 lept + #geq jets", 
-                             "E^{miss}_{T}", 
-			     "#geq 1btag", 
-			     "1#tau", 
-			     "OS"
-                             };
-  
+TH1D * const Selector::GetStatisticsHistogram()
+{
   const TString title = (uncertainties_activated) ? 
     "SELECTOR_" + TString(uncertainty_name[uncertainty_signal]) + "_" + 
     TString(uncertainty_subname[uncertainty_subsignal]) : "SELECTOR_BASE";
-  TH1D *h = mapOfSelectorHistoPools -> GetObjectPool(title) 
+  return mapOfSelectorHistoPools -> GetObjectPool(title) 
     -> at("numb_events_selection_stages");
-  h -> Fill(Selector_report_Xaxis_labels[0], 1);
-  if (LeptonValid && LooseLeptonValid && JetValid) 
-    h -> Fill(Selector_report_Xaxis_labels[1], 1);
-  else return;
+}
+
+void Selector::SelectorStatistics()
+{
+  
+  TH1D * const h = GetStatisticsHistogram();
+  if (LeptonValid)
+    h -> Fill(Selector_report_Xaxis_labels[4], 1); else return;
+  if (LooseLeptonValid)
+    h -> Fill(Selector_report_Xaxis_labels[5], 1); else return;
+  if (JetValid) 
+    h -> Fill(Selector_report_Xaxis_labels[6], 1); else return; 
   if (METValid) 
-    h -> Fill(Selector_report_Xaxis_labels[2], 1);
-  else return;
+    h -> Fill(Selector_report_Xaxis_labels[7], 1); else return;
   if (BtagValid)
-    h -> Fill(Selector_report_Xaxis_labels[3], 1);
+    h -> Fill(Selector_report_Xaxis_labels[8], 1); else return;
   if (TausValid)
-    h -> Fill(Selector_report_Xaxis_labels[4], 1);
-  else return;
+    h -> Fill(Selector_report_Xaxis_labels[9], 1); else return;
   if (TauOS)
-    h -> Fill(Selector_report_Xaxis_labels[5], 1);
-  else return; 
+    h -> Fill(Selector_report_Xaxis_labels[10], 1); else return; 
 }
 
 void Selector::Report()
 {
   printf("Selector report SELECTOR_BASE\n");
-  TH1D *h = mapOfSelectorHistoPools -> GetObjectPool("SELECTOR_BASE") 
-    -> at("numb_events_selection_stages");
+  TH1D * const h = GetStatisticsHistogram();
   h -> LabelsDeflate();
   for (ushort bin_ind = 1; bin_ind <= h -> GetNbinsX(); bin_ind++)
-  {
-    printf("%u, %u\n", bin_ind, (int)h -> GetBinContent(bin_ind));
-  }
+    {
+      printf("%u, %s %u\n", bin_ind, 
+	   h -> GetXaxis() -> GetBinLabel(bin_ind), 
+	   (int)h -> GetBinContent(bin_ind));
+    }
   if (not gnoUncertainties){
     for (ushort ind = 0; ind < number_uncertainties; ind ++){
       for (ushort subind = 0; subind < number_subuncertainties; subind ++){
@@ -149,6 +169,12 @@ void Selector::Report()
       }	
     }
   }
+
+  TCanvas * c = new TCanvas();
+  c -> cd();
+  h -> Draw();
+  
+  //output_file -> Close();
   ContinueReportToNextStage();
 
 }

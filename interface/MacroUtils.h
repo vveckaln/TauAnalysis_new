@@ -121,7 +121,7 @@ namespace utils
     void getSingleMuTrigEff(const double&, const double&, double& );
 
     //cf. https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookJetEnergyCorrections#JetEnCorFWLite
-    FactorizedJetCorrector *getJetCorrector(TString baseDir, bool isMC);
+    FactorizedJetCorrector *getJetCorrector(const TString baseDir, const bool isMC);
   }
 
 

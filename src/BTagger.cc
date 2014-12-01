@@ -27,7 +27,8 @@ BTagger::BTagger(EventSink<DigestedEvent*> *next_processor_stage):EventProcessor
 	( (TGraphErrors *) btag_file -> Get(iDir + "/udsgeff"), 
 	  (TGraphErrors *) btag_file -> Get(iDir + "/sfudsg") );
     }
-
+  events_received = 0;
+  events_btag_changed = 0;
 }
 
 void BTagger::Run()
@@ -38,14 +39,16 @@ void BTagger::Run()
   
   for (unsigned long entry_ind = 0; entry_ind < input_buffer -> size(); entry_ind ++)
   {
+    events_received ++;
     DigestedEvent *const processed_event = (*input_buffer)[entry_ind];
     for (uint jet_ind = 0; jet_ind < processed_event -> Jets . size(); jet_ind ++)
       {
 	Jet * const jet = &processed_event -> Jets . at(jet_ind);
 	const double btagvalue = jet -> CSV_discriminator;
+	jet -> BTagSFUtil_isBtagged = btagvalue > CSV_CUT;
+
 	if (not activated)
 	  {
-	    jet -> BTagSFUtil_isBtagged = btagvalue > CSV_CUT;
 	    continue;
 	  }
 	const double jetpt = jet -> Pt();
@@ -69,7 +72,11 @@ void BTagger::Run()
 	    const float sf = sfGr -> Eval(jetpt);
 	    bool hasBtagCorr = jet -> BTagSFUtil_isBtagged;
 	    btsfutil.modifyBTagsWithSF(hasBtagCorr, sf, eff);
-	    if (jet -> BTagSFUtil_isBtagged != hasBtagCorr) printf("jet -> BTagSFUtil_isBtagged != hasBtagCorr\n");
+	    if (jet -> BTagSFUtil_isBtagged != hasBtagCorr)
+	      {
+		printf("jet -> BTagSFUtil_isBtagged != hasBtagCorr\n");
+		events_btag_changed ++;
+	      }
 	    jet -> BTagSFUtil_isBtagged = hasBtagCorr;
 	  }
       }
@@ -82,7 +89,9 @@ void BTagger::Run()
 void BTagger::Report()
 {
   ContinueReportToNextStage();
-
+  printf("Btagger reports\n");
+  printf("Events received %lu\n", events_received);
+  printf("Btag modified %lu\n", events_btag_changed);
 }
 
 BTagger::~BTagger()

@@ -8,8 +8,11 @@ using namespace std;
 int main(int argc, char* argv[])
 {
   gConfiguration -> SetConfiguration(argv[1]);
-  CentralProcessor * central_processor = new CentralProcessor();
+  /*CentralProcessor * central_processor = new CentralProcessor();
+  central_processor -> LoadSelectorHistDescriptors("/exper-sw/cmst3/cmssw/users/vveckaln/CMSSW_5_3_11/src/LIP/TopTaus/histogram_specifiers/spec_selector_histograms.xml");
   central_processor -> Process("");
+  central_processor -> StartTApplication();
+  central_processor -> TerminateTApplication();*/
   /*gSystem->Load( "libFWCoreFWLite.so" );
   gSystem->Load( "libLIPTauAnalysis.so" );
   AutoLibraryLoader::enable();
@@ -46,5 +49,5 @@ int main(int argc, char* argv[])
       getchar();
     }
   */
-  delete central_processor;
+  //delete central_processor;
 }

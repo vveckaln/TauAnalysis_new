@@ -4,6 +4,7 @@
 #include "LIP/TauAnalysis/interface/PureEvent.hh"
 #include "LIP/TauAnalysis/interface/EventProcessor.hh"
 #include "LIP/TauAnalysis/interface/CPHistogramPoolRegister.hh"
+#include "TH1F.h"
 using namespace cpHistogramPoolRegister;
 
 class Selector : public EventProcessor<DigestedEvent*, PureEvent*> 
@@ -15,11 +16,13 @@ class Selector : public EventProcessor<DigestedEvent*, PureEvent*>
   bool METValid;
   bool TausValid;
   bool TauOS;
+  static const short report_size;
+  static const char *Selector_report_Xaxis_labels[]; 
   DigestedEvent * processed_event;
   mutable PureEvent pure_event;
   mutable Lepton *lepton;
   void ChannelGate() const;
-  bool CheckTrigger() const;
+  bool TriggerFired() const;
   bool IsLowQualityEvent() const;
   void SelectorStatistics();
   bool ValidateElectron() const;
@@ -34,6 +37,7 @@ class Selector : public EventProcessor<DigestedEvent*, PureEvent*>
   bool DeleteHadronisedTauJet() const;
   void RunInTestMode();
   void FinishPureEvent();
+  TH1D * const GetStatisticsHistogram();
 public:
   Selector(EventSink<PureEvent *> *next_processor_stage);
   void Run();

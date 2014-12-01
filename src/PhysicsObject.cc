@@ -20,6 +20,11 @@ PhysicsObject::PhysicsObject(const TLorentzVector * const lorentz_vector, const 
 {
 }
 
+PhysicsObject::PhysicsObject(const TLorentzVector & tlorentz_vector) : TLorentzVector(tlorentz_vector)
+{
+
+}
+
 PhysicsObject::PhysicsObject(const LorentzVector math_lorentz_vector)
 {
   TLorentzVector t_lorentz_vector(
@@ -59,11 +64,11 @@ PhysicsObject & PhysicsObject::operator += (const TLorentzVector other)
   return *this;
 }
 
-PhysicsObject & PhysicsObject::operator -= (const TLorentzVector other)
+/*PhysicsObject & PhysicsObject::operator -= (const TLorentzVector & other)
 {
-  (TLorentzVector)(*this) -= other;
+  *this -= other;
   return *this;
-}
+  }*/
 
 PhysicsObject::~PhysicsObject()
 {
@@ -250,6 +255,11 @@ MET::MET() :
 MET::MET(const TLorentzVector * const lorentz_vector, const TVectorD * const info) :
     PhysicsObject(lorentz_vector, info)
 {
+}
+
+MET::MET(const TLorentzVector &tlorentz_vector) : PhysicsObject(tlorentz_vector)
+{
+
 }
 
 MET::MET(const llvvMet llvvMet_obj) :

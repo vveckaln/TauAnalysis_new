@@ -15,7 +15,7 @@ namespace gVariables
   extern bool           gnoUncertainties;
   extern bool           geChONmuChOFF;
   extern bool           gdebug; 
-  extern bool           gIsMC;
+  extern bool           gIsData;
   extern double         gXSection;
   extern int            gMCTruthmode; 
   extern vector<int>    gjacknifeCfg; 
@@ -23,5 +23,9 @@ namespace gVariables
   extern TString        gOutputFileName;
   extern TString        gBaseDirectoryName; 
   extern TString        gOutputDirectoryName;
+  extern vector<double> dataPileupDistributionDouble;
+  extern vector<double> singleLepDataPileupDistributionDouble; 
+  extern double         XSection;
+
 }
 #endif

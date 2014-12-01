@@ -6,10 +6,26 @@
 
 #include "LIP/TauAnalysis/interface/gConfiguration.hh"
 
-int main(int argc, char* argv[])
+#include <iostream>
+#include <vector>
+#include "TCanvas.h"
+#include "TApplication.h"
+#include "TLorentzVector.h"
+using namespace std;
+class test:public TLorentzVector
 {
+public:
+  test(TLorentzVector lv) : TLorentzVector(lv) {};
+};
 
-  gConfiguration -> SetConfiguration(argv[1]);
-
- printf("finish\n");
+int main() {
+  TApplication myapp("app", 0,0);
+  TLorentzVector jet(5,4, 3,100);
+  test a(jet);
+  TLorentzVector diff(1, 1, 2, 20);
+  jet = jet -diff;
+  a -= diff;
+  printf("%f %f\n", a.Px(), a.Py());
+  myapp.Run(kTRUE);
+  myapp.Terminate();
 }

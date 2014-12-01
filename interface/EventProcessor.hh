@@ -3,7 +3,8 @@
 
 #include "LIP/TauAnalysis/interface/EventSink.hh"
 #include "LIP/TauAnalysis/interface/EventSource.hh"
-
+#include "LIP/TauAnalysis/interface/CPHistogramPoolRegister.hh"
+#include "LIP/TauAnalysis/interface/CPFileRegister.hh"
 template<class TEventInput, class TEventOutput>
 class EventProcessor:
   public EventSink<TEventInput>,

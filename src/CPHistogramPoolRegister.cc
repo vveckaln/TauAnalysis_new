@@ -21,7 +21,8 @@ namespace cpHistogramPoolRegister{
   JetResolution *stdPhiResol                               = NULL; 
   JetResolution *stdPtResol                                = NULL; 
   JetCorrectionUncertainty *jetCorrectionUncertainty       = NULL;
-
+  fwlite::ChainEvent * fwlite_ChainEvent_ptr;
+  edm::LumiReWeighting* gLumiWeights[2];
   TApplication  application("myapp", 0, 0);
   //********************** PROGRAMMED UNCERTAINTIES **********************
   extern const uint number_uncertainties = 2;

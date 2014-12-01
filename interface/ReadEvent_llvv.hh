@@ -7,6 +7,7 @@ using namespace std;
 class ReadEvent_llvv: public Event
 {
 public:
+  llvvGenEvent          genEv;
   llvvLeptonCollection  leptons; 
   llvvTauCollection     taus;
   llvvJetExtCollection  jets;

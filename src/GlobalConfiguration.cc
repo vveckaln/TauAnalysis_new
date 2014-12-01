@@ -17,9 +17,20 @@ void GlobalConfiguration::SetConfiguration(const char* configuration_file)
   AutoLibraryLoader::enable();
   const edm::ParameterSet &runProcess = edm::readPSetsFrom(configuration_file) 
 -> getParameter<edm::ParameterSet>("PhysicsAnalysisParSet");
-  input_file_name          = runProcess.getParameter<string>                  ("input_file_name");
-  input_file_names.push_back(input_file_name.Data());
-  gnoUncertainties         = runProcess.getParameter<bool>                    ("noUncertainties");
+  input_file_names                       = runProcess.getParameter<vector<string>>  ("input");
+  input_file_name                        = input_file_names[0];
+  //gnoUncertainties                      = runProcess.getParameter<bool>            ("noUncertainties");
+  gOutputDirectoryName                   = runProcess.getParameter<string>          ("outdir");
+  gXSection                              = runProcess.getParameter<double>          ("xsec"); 
+  gIsData      
+                                         = runProcess.getParameter<bool>("isData");
+  for (uint ind = 0; ind < input_file_names.size(); ind ++)
+    {
+      printf("input_file_names[ind] = %s\n", input_file_names[ind].c_str());
+    }
+  printf("gOutputDirectoryName = %s\n", gOutputDirectoryName.Data());
+  printf("gXSection = %f\n", gXSection);
+  printf("gIsData = %s\n", gIsData ? "true" : "false");
   /*gdebug                   = runProcess.getParameter<bool>                  ("Debug");
   gIsMC                    = runProcess.getParameter<bool>                  ("IsMC");
   gXSection                = runProcess.getParameter<double>                ("XSection");

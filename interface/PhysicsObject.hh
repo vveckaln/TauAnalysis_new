@@ -19,14 +19,14 @@ class PhysicsObject: public Object, public TLorentzVector
 public:
   PhysicsObject();
   PhysicsObject(const TLorentzVector * const, const TVectorD * const);
+  PhysicsObject(const TLorentzVector &);
   PhysicsObject(const LorentzVector );
   PhysicsObject(const LorentzVectorF );
-
   static const char* title;
   virtual void ls() const = 0;
   virtual void ListLorentzVector() const;
   virtual PhysicsObject &operator += (const TLorentzVector); 
-  virtual PhysicsObject &operator -= (const TLorentzVector); 
+  //PhysicsObject &operator -= (const TLorentzVector &); 
 
   virtual ~PhysicsObject();
 };
@@ -97,6 +97,7 @@ public:
   double CSV_discriminator;
   double jetpgid;
   bool isBtagged;
+  float torawsf, area;
   ~Jet();
 };
 
@@ -105,6 +106,7 @@ class MET: public PhysicsObject
 public:
   MET();
   MET(const TLorentzVector * const, const TVectorD *const);
+  MET(const TLorentzVector &);
   MET(const llvvMet);
   virtual void ls() const;
   ~MET();

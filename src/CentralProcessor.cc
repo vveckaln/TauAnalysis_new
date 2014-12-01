@@ -12,6 +12,8 @@
 
 /*#include "LIP/TauAnalysis/interface/HistogramFiller.hh"
   #include "LIP/TauAnalysis/interface/UncertaintiesNode.hh"*/
+#include "LIP/TauAnalysis/interface/PileUpCorrector.hh"
+
 #include "LIP/TauAnalysis/interface/UncertaintiesApplicator.hh"
 #include "LIP/TauAnalysis/interface/CPFileRegister.hh"
 #include "LIP/TauAnalysis/interface/CPHistogramPoolRegister.hh"
@@ -29,6 +31,7 @@ CentralProcessor::CentralProcessor(){
 
 void CentralProcessor::Process(const char* option)
 {
+  isData = false;
   /*isData = (TString(option) == "spy_data") ? true : false;
   input_file_name = gspyInputArea + gsubArea + TString(option) + ".root";
   output_file_name = gspyOutputArea + gsubArea + "out_" + TString(option)+".root";
@@ -36,27 +39,27 @@ void CentralProcessor::Process(const char* option)
   if (input_file == NULL) {
     printf(" no input file found\n");
     return;
-  }
-  output_file = new TFile(output_file_name, "recreate");*/
-  FileReader * reader = new FileReader(
-			new EventConverter<ReadEvent_llvv>(
-							  /* //new Purge(
-							     new UncertaintiesNode(*/	
-							   new BTagger(
-								       /*	new Fork(*/
-			new UncertaintiesApplicator(
-							   new Selector(
-				     
-				     /*new HistogramFiller(	*/     
-			NULL
-			)
-					)
-                        )
-			)
-			/*)
-			)
-			)*/
-			);
+    }*/
+  output_file = new TFile("/lustre/ncg.ingrid.pt/cmslocal/viesturs/llvv_analysis_output/output.root", "recreate");
+  fwlite_ChainEvent_ptr = new fwlite::ChainEvent(input_file_names);
+  FileReader * reader = 
+                   new FileReader(
+		   new EventConverter<ReadEvent_llvv>(
+		   //new Purge(
+		   //new UncertaintiesNode(*/	
+		   new BTagger(
+		   /*	new Fork(*/
+		   new UncertaintiesApplicator(
+		   new PileUpCorrector(	  
+		   new Selector(
+		  /*new HistogramFiller(	*/     
+		        	NULL
+			            )
+				    )
+                                    )
+			            )
+			            )
+			            );
   reader -> Run();
   reader -> Report();
   /* output_file -> cd();

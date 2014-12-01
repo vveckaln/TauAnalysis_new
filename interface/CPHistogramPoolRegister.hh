@@ -13,6 +13,8 @@
 #include "CondFormats/JetMETObjects/interface/JetResolution.h"
 #include "CondFormats/JetMETObjects/interface/JetCorrectionUncertainty.h"
 #include "CondFormats/JetMETObjects/interface/JetCorrectorParameters.h"
+#include "DataFormats/FWLite/interface/ChainEvent.h"
+#include "PhysicsTools/Utilities/interface/LumiReWeighting.h"
 
 #include <vector>
 using namespace std;
@@ -42,7 +44,8 @@ namespace cpHistogramPoolRegister{
   extern JetResolution *stdPhiResol; 
   extern JetResolution *stdPtResol; 
   extern JetCorrectionUncertainty * jetCorrectionUncertainty;
-
+  extern fwlite::ChainEvent * fwlite_ChainEvent_ptr;
+  extern edm::LumiReWeighting* gLumiWeights[2];
   //********************** PROGRAMMED UNCERTAINTIES **********************
   extern const uint number_uncertainties;
   extern const uint number_subuncertainties;
