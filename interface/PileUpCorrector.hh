@@ -5,6 +5,7 @@
 #include "LIP/TauAnalysis/interface/EventProcessor.hh"
 #include "LIP/TauAnalysis/interface/CPHistogramPoolRegister.hh"
 #include "LIP/TauAnalysis/interface/CPFileRegister.hh"
+#include "LIP/TauAnalysis/interface/LeptonEfficiencySF.h"
 
 #include "DataFormats/FWLite/interface/ChainEvent.h"
 #include "PhysicsTools/Utilities/interface/LumiReWeighting.h"
@@ -35,6 +36,9 @@ class PileUpCorrector : public EventProcessor<DigestedEvent*, DigestedEvent*>
   double XSectionWeight;
   edm::LumiReWeighting* LumiWeights[2];
   double PUNorm[2][3];
+  void ApplyLeptonEfficiencySF() const;
+  void ApplyIntegratedLuminosity() const;
+  LeptonEfficiencySF leptonEfficiencySF;
 
 public:
   PileUpCorrector(EventSink<DigestedEvent *> *next_processor_stage);

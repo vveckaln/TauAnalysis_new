@@ -27,24 +27,25 @@ HistogramPool::HistogramPool(const vector<HistogramDescriptor> * object_descript
   TString append = str;
   temporary = (TString(is_temporary) == "temporary") ? true : false;
 
-  for (unsigned char obj_ind = 0; obj_ind < object_descriptors -> size(); obj_ind ++){
+  for (unsigned char obj_ind = 0; obj_ind < object_descriptors -> size(); obj_ind ++)
+    {
     
-    TString histogram_title = (temporary) ?
-      object_descriptors -> at(obj_ind).histogram_title + append :
-      object_descriptors -> at(obj_ind).histogram_title;
-    TH1D *obj = new TH1D (
-			  histogram_title + this -> title, 
-			  object_descriptors -> at(obj_ind).histogram_title,
-			  object_descriptors -> at(obj_ind).nbinsx,
-			  object_descriptors -> at(obj_ind).xlow,
-			  object_descriptors -> at(obj_ind).xup
-			  );
-    TAxis *xaxis = obj -> GetXaxis();
-    xaxis -> SetTitle(object_descriptors -> at(obj_ind) . Xaxis_title);
-    TAxis *yaxis = obj -> GetYaxis();
-    yaxis -> SetTitle(object_descriptors -> at(obj_ind) . Yaxis_title);
-    object_map[object_descriptors -> at(obj_ind).histogram_title] = obj;
-  } 
+      TString histogram_title = (temporary) ?
+	object_descriptors -> at(obj_ind).histogram_title + append :
+	object_descriptors -> at(obj_ind).histogram_title;
+      TH1D *obj = new TH1D (
+			    histogram_title + this -> title, 
+			    object_descriptors -> at(obj_ind).histogram_title,
+			    object_descriptors -> at(obj_ind).nbinsx,
+			    object_descriptors -> at(obj_ind).xlow,
+			    object_descriptors -> at(obj_ind).xup
+			    );
+      TAxis *xaxis = obj -> GetXaxis();
+      xaxis -> SetTitle(object_descriptors -> at(obj_ind) . Xaxis_title);
+      TAxis *yaxis = obj -> GetYaxis();
+      yaxis -> SetTitle(object_descriptors -> at(obj_ind) . Yaxis_title);
+      object_map[object_descriptors -> at(obj_ind).histogram_title] = obj;
+    } 
   histogram_map = &object_map;
 }
 

@@ -7,13 +7,17 @@ using namespace std;
 class ReadEvent_llvv: public Event
 {
 public:
-  llvvGenEvent          genEv;
-  llvvLeptonCollection  leptons; 
-  llvvTauCollection     taus;
-  llvvJetExtCollection  jets;
-  llvvMet               met;
-  double                rho;
-  vector<bool>          triggerBits;
+  unsigned int              Run;
+  unsigned int              Lumi;
+  unsigned int              Event;
+  llvvGenEvent              genEv;
+  llvvLeptonCollection      leptons; 
+  llvvTauCollection         taus;
+  llvvJetExtCollection      jets;
+  llvvGenParticleCollection gen;
+  llvvMet                   met;
+  double                    rho;
+  vector<bool>              triggerBits;
   virtual void Open();
   virtual void Close();
   ReadEvent_llvv();

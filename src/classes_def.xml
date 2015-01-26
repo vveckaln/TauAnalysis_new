@@ -78,5 +78,6 @@
    <class name="llvvTauRefVector"/>
    <class name="edm::Wrapper<llvvTau>"/>
    <class name="edm::Wrapper<llvvTauCollection>"/>
+   <!--<class name="rootdouble"/>-->
 
 </lcgdict>

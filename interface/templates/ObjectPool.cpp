@@ -37,7 +37,7 @@ ObjectPool<Object>::ObjectPool(const vector<HistogramDescriptor> * object_descri
 
 template<class Object>
 Object *& ObjectPool<Object>::at(const TString key){
-  return object_map[key];
+  return object_map.at(key);
 }
 
 template<class Object>
@@ -54,9 +54,10 @@ template<class Object>
 ObjectPool<Object>* ObjectPool<Object>::Clone(const char * append )const{
   ObjectPool<Object> * new_pool = new ObjectPool();
   // ObjectPool<Object> * new_pool = static_cast<ObjectPool<Object>*>(:: new ObjectPool());
-  for (typename map<TString, Object*>::const_iterator cit = object_map.cbegin(); cit != object_map.cend(); ++cit){
-    new_pool -> object_map[cit -> first] = (Object*)object_map.at(cit->first) -> Clone(cit -> first + append);
-  }
+  for (typename map<TString, Object*>::const_iterator cit = object_map.cbegin(); cit != object_map.cend(); ++cit)
+    {
+      new_pool -> object_map[cit -> first] = (Object*)object_map.at(cit->first) -> Clone(cit -> first + append);
+    }
   return new_pool;
 }
 
@@ -96,11 +97,14 @@ void ObjectPool<Object>::Sumw2() const{
 }
 
 template<class Object>
-void ObjectPool<Object>::GetFromFile(const vector<HistogramDescriptor> * object_descriptors, TFile * input_file){
-    for (unsigned char obj_ind = 0; obj_ind < object_descriptors -> size(); obj_ind ++){
-    object_map[object_descriptors -> at(obj_ind).histogram_title] = (Object*) input_file -> Get(object_descriptors -> at(obj_ind).histogram_title);
-
-  }
+void ObjectPool<Object>::GetFromFile(const vector<HistogramDescriptor> * object_descriptors, TFile * input_file, const char * append)
+{
+    for (unsigned char obj_ind = 0; obj_ind < object_descriptors -> size(); obj_ind ++)
+      {
+	TString const name = object_descriptors -> at(obj_ind).histogram_title + TString(append);
+	object_map[name] = (Object*) input_file -> Get(name);
+    
+      }
 }
 
 template<class Object>
@@ -139,9 +143,10 @@ template<class Object>
 void ObjectPool<Object>::Close()
 {
   for (typename map<TString, Object *>::const_iterator cit = object_map.cbegin(); 
-  cit != object_map.cend(); ++ cit){
+  cit != object_map.cend(); ++ cit)
+    {
     delete cit -> second;
-   }
+    }
 }
 
 template<class Object>
@@ -159,25 +164,30 @@ void ObjectPool<Object>::SetFillColor(Color_t color){
 
 template<class Object>
 void ObjectPool<Object>::SetMarkerStyle(Style_t style){
-  for (it = object_map.begin(); it != object_map.end(); ++it){
-    it -> second -> SetMarkerStyle(style);
-  } 
+  for (it = object_map.begin(); it != object_map.end(); ++it)
+    {
+      it -> second -> SetMarkerStyle(style);
+    } 
 }
 
 template<class Object>
 template<class OtherObject>
-void ObjectPool<Object>::Add(ObjectPool<OtherObject> *other){
-  for (it = object_map.begin(); it != object_map.end(); ++it){
-    it -> second -> Add(other -> object_map . at(it -> first));
-  } 
+void ObjectPool<Object>::Add(ObjectPool<OtherObject> *other)
+{
+  for (it = object_map.begin(); it != object_map.end(); ++it)
+    {
+      it -> second -> Add(other -> object_map . at(it -> first));
+    } 
 }
 
 template<class Object>
 template<class OtherObject>
-void ObjectPool<Object>::Add(ObjectPool<OtherObject> *other, const char * option){
-  for (it = object_map.begin(); it != object_map.end(); ++it){
-    it -> second -> Add(other -> object_map . at(it -> first), option);
-  } 
+void ObjectPool<Object>::Add(ObjectPool<OtherObject> *other, const char * option)
+{
+  for (it = object_map.begin(); it != object_map.end(); ++it)
+    {
+      it -> second -> Add(other -> object_map . at(it -> first), option);
+    } 
 }
 
 

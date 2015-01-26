@@ -4,16 +4,17 @@ namespace gVariables
 {
   bool           gnoUncertainties;
   bool           geChONmuChOFF;
-  bool           gdebug; 
   bool           gIsData;
   double         gXSection;
-  int            gMCTruthmode; 
+  bool           gDebug; 
+  int            gmctruthmode;
   vector<int>    gjacknifeCfg; 
   TString        gInputFileName; 
   TString        gOutputFileName;
   TString        gBaseDirectoryName; 
   TString        gOutputDirectoryName;
+  TString        gspyOutputArea;
+  TString        gsubArea;
   vector<double> dataPileupDistributionDouble; 
   vector<double> singleLepDataPileupDistributionDouble; 
-  double         XSection;
 } 

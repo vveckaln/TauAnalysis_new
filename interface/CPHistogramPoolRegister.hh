@@ -21,10 +21,10 @@ using namespace std;
 
 namespace cpHistogramPoolRegister{
   //********************* CENTRAL PROCESSOR HISTOGRAM POOL REGISTER ******
-  extern bool          isData;
   extern HistogramPool *histogram_pool;
   extern MapOfObjectPools<TH1D> *mapOfHistogramPools; 
   extern MapOfObjectPools<TH1D> *mapOfSelectorHistoPools; 
+  extern MapOfObjectPools<TH1D> *mapOfChannelGateHistoPools; 
 
   extern HistogramPool *data_histo_pool;
   extern HistogramPool *Selector_report_pool;

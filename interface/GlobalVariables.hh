@@ -14,10 +14,10 @@ namespace gVariables
   //******************** CONFIGURATION VARIABLES **********  
   extern bool           gnoUncertainties;
   extern bool           geChONmuChOFF;
-  extern bool           gdebug; 
   extern bool           gIsData;
   extern double         gXSection;
-  extern int            gMCTruthmode; 
+  extern bool           gDebug; 
+  extern int            gmctruthmode;
   extern vector<int>    gjacknifeCfg; 
   extern TString        gInputFileName; 
   extern TString        gOutputFileName;
@@ -25,7 +25,8 @@ namespace gVariables
   extern TString        gOutputDirectoryName;
   extern vector<double> dataPileupDistributionDouble;
   extern vector<double> singleLepDataPileupDistributionDouble; 
-  extern double         XSection;
+  extern TString        gspyOutputArea;
+  extern TString        gsubArea;
 
 }
 #endif

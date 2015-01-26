@@ -21,6 +21,7 @@ public:
   void LoadSelectorHistDescriptors(const char*);
   void StartTApplication() const;
   void TerminateTApplication() const;
+  void SumData() const;
   void CloseRegisters();
   virtual ~CentralProcessor();
 

@@ -2,18 +2,34 @@
 #include "LIP/TauAnalysis/interface/GlobalVariables.hh"
 #include "DataFormats/FWLite/interface/Handle.h"
 #include "DataFormats/Common/interface/MergeableCounter.h"
+#include "LIP/TauAnalysis/interface/rootdouble.h"
+
 #include "TROOT.h"
 #include <math.h>
 
+using namespace gVariables;
 PileUpCorrector::PileUpCorrector(EventSink<DigestedEvent *> *next_processor_stage):EventProcessor<DigestedEvent*, DigestedEvent *>(next_processor_stage)
 {
-  printf("XSection = %f\n", XSection);
-  XSectionWeight = XSection/ 1242580; //getMergeableCounterValue(input_file_names, "startCounter");
+  if (gIsData){
+    printf("isData, returning\n");
+    return;
+  }
+  printf("continuing executing\n");
+  if (gVariables::gDebug)
+    XSectionWeight = gXSection/ 1100000;
+  else
+    {
+      const double MergeableCounterValue = getMergeableCounterValue(input_file_names, "startCounter");
+      XSectionWeight = gXSection/ MergeableCounterValue;
+      rootdouble mcv("MergeableCounterValue", "MergeableCounterValue");
+      mcv.SetInformation(MergeableCounterValue);
+      output_file -> cd();
+      mcv.Write();
+    }
   LumiWeights[0] = NULL; LumiWeights[1] = NULL;
   printf("XSectionWeiht = %f\n", XSectionWeight); 
   fwlite::ChainEvent & fwlite_ChainEvent = *fwlite_ChainEvent_ptr; 
 
-  //fwlite::ChainEvent  fwlite_ChainEvent (input_file_names);
   vector<float> MCPileUp[2]; 
   FILE *pfile[] = 
     {
@@ -33,7 +49,6 @@ PileUpCorrector::PileUpCorrector(EventSink<DigestedEvent *> *next_processor_stag
 	}
       fclose(pfile[ind]);
       getMCPileUpDistribution(fwlite_ChainEvent, DataPileUp[ind].size(), MCPileUp[ind]);
-      printf("completed getMCPileUpDistribution\n");
       while(MCPileUp[ind] . size() < DataPileUp[ind].size()) 
 	MCPileUp[ind] . push_back(0.0);
       while(MCPileUp[ind] . size() > DataPileUp[ind].size())
@@ -45,22 +60,51 @@ PileUpCorrector::PileUpCorrector(EventSink<DigestedEvent *> *next_processor_stag
      
     }
   gLumiWeights[0] = LumiWeights[0]; gLumiWeights[1] = LumiWeights[1];
-  //gROOT -> cd();
 }
 
 void PileUpCorrector ::Run()
 {
   output_buffer = input_buffer;
-  if (isData) ProceedToNextStage();
+ 
   for (unsigned char ind = 0; ind < input_buffer -> size(); ind ++)
     { 
     processed_event = input_buffer -> operator[](ind); 
+    if (gIsData)
+      {
+	processed_event -> pileup_corr_weight = 1;
+	continue;
+      }
     double puWeight = LumiWeights[1] -> weight(processed_event -> ngenITpu) * PUNorm[1][0];
-    processed_event -> pileup_corr_weight = XSectionWeight*puWeight;
     
+    processed_event -> pileup_corr_weight = XSectionWeight*puWeight;
+    ApplyLeptonEfficiencySF();
+    ApplyIntegratedLuminosity();
+    //printf("%f %f %f\n", processed_event -> pileup_corr_weight, XSectionWeight, puWeight);
+    //getchar();
+    //processed_event -> pileup_corr_weight = 1.0;
   }
   ProceedToNextStage();
 }
+
+void PileUpCorrector::ApplyLeptonEfficiencySF() const
+{
+  const Lepton * const lepton = processed_event -> GetLeadingLepton("electronmuon");
+  const uint absid = lepton -> title == "electron" ? 11 : 13;
+  processed_event -> pileup_corr_weight	*= 
+    leptonEfficiencySF . getLeptonEfficiency(
+					     lepton -> Pt(), 
+					     lepton -> Eta(), 
+					     absid, "tight").first;
+
+}
+
+void PileUpCorrector::ApplyIntegratedLuminosity() const
+{
+  const double iLumi = 19700;
+  processed_event -> pileup_corr_weight *= iLumi;
+
+}
+
 
 void PileUpCorrector::Report()
 {

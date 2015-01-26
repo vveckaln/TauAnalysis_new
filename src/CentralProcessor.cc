@@ -1,11 +1,13 @@
 #include "LIP/TauAnalysis/interface/CentralProcessor.hh"
-//#include "LIP/TauAnalysis/interface/HistogramPlotter.hh"
+#include "LIP/TauAnalysis/interface/HistogramPlotter.hh"
 #include "LIP/TauAnalysis/interface/ReadEvent.hh"
 #include "LIP/TauAnalysis/interface/FileReader.hh"
 #include "LIP/TauAnalysis/interface/EventConverter.hh"
 #include "LIP/TauAnalysis/interface/ReadEvent_llvv.hh"
 #include "LIP/TauAnalysis/interface/BTagger.hh"
 #include "LIP/TauAnalysis/interface/Selector.hh"
+#include "LIP/TauAnalysis/interface/ChannelGate.hh"
+
 /*#include "LIP/TauAnalysis/interface/KINbHandler.hh"
 #include "LIP/TauAnalysis/interface/Fork.hh"
 #include "LIP/TauAnalysis/interface/Purge.hh"*/
@@ -16,6 +18,8 @@
 
 #include "LIP/TauAnalysis/interface/UncertaintiesApplicator.hh"
 #include "LIP/TauAnalysis/interface/CPFileRegister.hh"
+#include "LIP/TauAnalysis/interface/CPFilePoolRegister.hh"
+
 #include "LIP/TauAnalysis/interface/CPHistogramPoolRegister.hh"
 #include "LIP/TauAnalysis/interface/Parser.hh"
 #include "TLegend.h"
@@ -31,35 +35,34 @@ CentralProcessor::CentralProcessor(){
 
 void CentralProcessor::Process(const char* option)
 {
-  isData = false;
-  /*isData = (TString(option) == "spy_data") ? true : false;
-  input_file_name = gspyInputArea + gsubArea + TString(option) + ".root";
-  output_file_name = gspyOutputArea + gsubArea + "out_" + TString(option)+".root";
-  input_file = new TFile(input_file_name, "read");
-  if (input_file == NULL) {
-    printf(" no input file found\n");
-    return;
-    }*/
-  output_file = new TFile("/lustre/ncg.ingrid.pt/cmslocal/viesturs/llvv_analysis_output/output.root", "recreate");
   fwlite_ChainEvent_ptr = new fwlite::ChainEvent(input_file_names);
+  
+  output_file_name = gOutputDirectoryName + "/output_files/output_event_analysis/" + TString(gSystem -> BaseName(input_file_name)) . 
+  ReplaceAll(".root", "") + "_out.root";
+  printf("output_file_name %s\n", output_file_name.Data());
+  
+  output_file = new TFile(output_file_name, "recreate");
+
   FileReader * reader = 
-                   new FileReader(
-		   new EventConverter<ReadEvent_llvv>(
+    new FileReader(
+    new EventConverter<ReadEvent_llvv>(
 		   //new Purge(
 		   //new UncertaintiesNode(*/	
-		   new BTagger(
+    new ChannelGate(
+    new BTagger(
 		   /*	new Fork(*/
-		   new UncertaintiesApplicator(
-		   new PileUpCorrector(	  
-		   new Selector(
+    new UncertaintiesApplicator(
+    new PileUpCorrector(	  
+		       new Selector(
 		  /*new HistogramFiller(	*/     
-		        	NULL
-			            )
-				    )
-                                    )
-			            )
-			            )
-			            );
+  NULL
+  )
+  )
+  )
+  )
+  )
+    )
+  );
   reader -> Run();
   reader -> Report();
   /* output_file -> cd();
@@ -78,14 +81,18 @@ void CentralProcessor::Process(const char* option)
   delete reader;
 }
 
-void CentralProcessor::AddHistograms(){
-  /* HistogramPlotter * histogram_plotter = new HistogramPlotter();
-  vector<TString> run_options;
-  run_options . push_back(TString("spy_ww"));
-  run_options . push_back(TString("spy_wz"));
-  run_options . push_back(TString("spy_zz"));
-  histogram_plotter -> AddHistograms(& run_options, "spy_dibosons"); 
-  delete histogram_plotter;*/
+void CentralProcessor::AddHistograms()
+{
+  
+  input_file_pool = new TFilePool(input_file_names);
+  printf("summing histograms for %s\n", (TString(gSystem -> BaseName(input_file_names[0].c_str())).ReplaceAll("_0_out.root", "")).Data());
+  output_file_name = gOutputDirectoryName + "/output_files/output_hadd/" + TString(gSystem -> BaseName(input_file_names[0].c_str())).ReplaceAll("_0_out.root", "") + "_TOTAL_out.root";
+  output_file = new TFile(output_file_name, "recreate");
+  
+  HistogramPlotter * histogram_plotter = new HistogramPlotter();
+  
+  histogram_plotter -> AddHistograms(); 
+  delete histogram_plotter;
 }
 
 void CentralProcessor::StackHistograms(){
@@ -131,28 +138,45 @@ void CentralProcessor::LoadMCDataSampleDescriptors(){
   MCdatasample_descriptors = parser -> ParseDataSampleDescriptor(gspyMCDataSampleSpecifiers);
   delete parser;*/
 }
-void CentralProcessor::LoadSelectorHistDescriptors(const char* specifier){
+void CentralProcessor::LoadSelectorHistDescriptors(const char* specifier)
+{
   Parser *parser = new Parser();
   selector_h_descriptors = parser -> ParseHistogramSpecifier(specifier);
   delete parser;
 }
-void CentralProcessor::LoadDataSampleDescriptors(){
+void CentralProcessor::LoadDataSampleDescriptors()
+{
   /* Parser *parser = new Parser();
   datasample_descriptors = parser -> ParseDataSampleDescriptor(gspyDataSampleSpecifiers);
   delete parser;*/
 }
 
 
-void CentralProcessor::StartTApplication() const{
+void CentralProcessor::StartTApplication() const
+{
   application . Run(kTRUE);
 }
 
-void CentralProcessor::TerminateTApplication() const{
+void CentralProcessor::TerminateTApplication() const
+{
   application.Terminate();
 }
 
-void CentralProcessor::CloseRegisters(){
-  THStack_pool -> Close();
+void CentralProcessor::SumData() const
+{
+  output_file_name = gOutputDirectoryName + "/output_files/output_hadd/" + "Data8TeV_SingleMu2012_TOTAL_out.root";
+  output_file = new TFile(output_file_name, "recreate");
+  
+  input_file_pool = new TFilePool(input_file_names);
+  input_file_pool -> ls();
+  HistogramPlotter * histogram_plotter = new HistogramPlotter;
+  histogram_plotter -> SumData();
+  delete histogram_plotter;
+}
+
+void CentralProcessor::CloseRegisters()
+{
+  /*THStack_pool -> Close();
   delete THStack_pool;
   TGraph_pool -> Close();
   delete TGraph_pool;
@@ -179,7 +203,10 @@ void CentralProcessor::CloseRegisters(){
   free(input_file);
   data_file -> Close();
   delete data_file;
-  printf("Got here\n");
+  printf("Got here\n");*/
+  if (input_file_pool != NULL) input_file_pool -> Close();
+  if (input_file != NULL) input_file -> Close();
+  if (output_file != NULL) output_file -> Close();
 }
 
 CentralProcessor::~CentralProcessor(){

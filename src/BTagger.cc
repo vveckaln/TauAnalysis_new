@@ -7,7 +7,12 @@
 
 BTagger::BTagger(EventSink<DigestedEvent*> *next_processor_stage):EventProcessor<DigestedEvent*, DigestedEvent*>(next_processor_stage)
 {
-  activated = false;
+  activated = true;
+  events_received = 0;
+  events_btag_lowered = 0;
+  events_btag_raised = 0;
+  btag_file = NULL;
+  if (gIsData) return;
   btag_file = new TFile("/exper-sw/cmst3/cmssw/users/vveckaln/CMSSW_5_3_15/src/LIP/TauAnalysis/data/weights/btagEff.root", "READ");
 
   const TList *dirs = btag_file -> GetListOfKeys();
@@ -27,14 +32,14 @@ BTagger::BTagger(EventSink<DigestedEvent*> *next_processor_stage):EventProcessor
 	( (TGraphErrors *) btag_file -> Get(iDir + "/udsgeff"), 
 	  (TGraphErrors *) btag_file -> Get(iDir + "/sfudsg") );
     }
-  events_received = 0;
-  events_btag_changed = 0;
+  
+
 }
 
 void BTagger::Run()
 {
  
-  const double CSV_CUT   = 0.405;
+  const double CSV_CUT   = /*0.405*/ 0.679;
   output_buffer = input_buffer;
   
   for (unsigned long entry_ind = 0; entry_ind < input_buffer -> size(); entry_ind ++)
@@ -47,7 +52,7 @@ void BTagger::Run()
 	const double btagvalue = jet -> CSV_discriminator;
 	jet -> BTagSFUtil_isBtagged = btagvalue > CSV_CUT;
 
-	if (not activated)
+	if (gIsData)
 	  {
 	    continue;
 	  }
@@ -55,8 +60,7 @@ void BTagger::Run()
 	const double bseed_sin_phi = sin(jet -> Phi()*1000000);
 	const double bseed = abs(static_cast<int>(bseed_sin_phi*100000));
 	BTagSFUtil btsfutil( bseed );
-	const int bflavid= jet -> genflav;
-
+	const int bflavid  = jet -> genflav;
 	TString flavKey("udsg");
 	if(abs(bflavid) == 4) flavKey = "c";
 	if(abs(bflavid) == 5) flavKey = "b";
@@ -72,10 +76,13 @@ void BTagger::Run()
 	    const float sf = sfGr -> Eval(jetpt);
 	    bool hasBtagCorr = jet -> BTagSFUtil_isBtagged;
 	    btsfutil.modifyBTagsWithSF(hasBtagCorr, sf, eff);
-	    if (jet -> BTagSFUtil_isBtagged != hasBtagCorr)
+	    if (jet -> BTagSFUtil_isBtagged > hasBtagCorr)
 	      {
-		printf("jet -> BTagSFUtil_isBtagged != hasBtagCorr\n");
-		events_btag_changed ++;
+		events_btag_lowered ++;
+	      }
+	    if (jet -> BTagSFUtil_isBtagged < hasBtagCorr)
+	      {
+		events_btag_raised ++;
 	      }
 	    jet -> BTagSFUtil_isBtagged = hasBtagCorr;
 	  }
@@ -88,15 +95,21 @@ void BTagger::Run()
 
 void BTagger::Report()
 {
-  ContinueReportToNextStage();
   printf("Btagger reports\n");
   printf("Events received %lu\n", events_received);
-  printf("Btag modified %lu\n", events_btag_changed);
+  printf("Btag raised %lu\n", events_btag_raised);
+  printf("Btag lowered %lu\n", events_btag_lowered);
+  printf("Btag changed %lu\n", events_btag_lowered + events_btag_raised);
+  ContinueReportToNextStage();
+
 }
 
 BTagger::~BTagger()
 {
-  btag_file -> Close();
-  delete btag_file;
-  btag_file = NULL;
+  if (btag_file)
+    {
+      btag_file -> Close();
+      delete btag_file;
+      btag_file = NULL;
+    }
 }

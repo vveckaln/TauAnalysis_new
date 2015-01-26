@@ -1,4 +1,5 @@
 #include "LIP/TauAnalysis/interface/llvvObjects.h"
+#include "LIP/TauAnalysis/interface/rootdouble.h"
 
 namespace {
  namespace {
@@ -83,6 +84,6 @@ namespace {
   edm::Wrapper<llvvTau> t6;
   edm::Wrapper<llvvTauCollection> t7;
 
-
+  //rootdouble r1;
  }
 }

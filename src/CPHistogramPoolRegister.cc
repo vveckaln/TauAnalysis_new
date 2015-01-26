@@ -1,11 +1,11 @@
 #include "LIP/TauAnalysis/interface/CPHistogramPoolRegister.hh"
 
 namespace cpHistogramPoolRegister{
-  bool          isData                                     = false;
   HistogramPool *histogram_pool                            = NULL;
   MapOfObjectPools<TH1D> *mapOfHistogramPools              = NULL; 
   HistogramPool *data_histo_pool                           = NULL;
   MapOfObjectPools<TH1D> *mapOfSelectorHistoPools          = NULL; 
+  MapOfObjectPools<TH1D> *mapOfChannelGateHistoPools       = NULL;
   HistogramPool *Selector_data_report_pool                 = NULL;
   THStackPool   *THStack_pool                              = NULL;
   TCanvasPool   *TCanvas_pool                              = NULL;

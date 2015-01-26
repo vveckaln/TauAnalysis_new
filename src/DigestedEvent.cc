@@ -57,7 +57,7 @@ unsigned char DigestedEvent::GetBtagCount() const
   for (unsigned short ind = 0; ind < Jets.size(); ind ++)
     {
    
-  if (Jets[ind].BTagSFUtil_isBtagged) BtagCount ++;
+      if (Jets[ind].BTagSFUtil_isBtagged) BtagCount ++;
     }
   return BtagCount;
 }
@@ -136,11 +136,11 @@ const PhysicsObject * DigestedEvent::GetConstPhysicsObject(const char * type, co
 unsigned char DigestedEvent::GetObjectCount(const char * type) const
 {
   if (TString(type) == "electron") return Electrons.size();
-  if (TString(type) == "muon") return Muons.size();
-  if (TString(type) == "tau") return Taus.size();
-  if (TString(type) == "jet") return Jets.size();
-  if (TString(type) == "met") return met.size();
-  if (TString(type) == "vertex") return Vertices.size();
+  if (TString(type) == "muon")     return Muons.size();
+  if (TString(type) == "tau")      return Taus.size();
+  if (TString(type) == "jet")      return Jets.size();
+  if (TString(type) == "met")      return met.size();
+  if (TString(type) == "vertex")   return Vertices.size();
   return 0;
 }
 
@@ -229,30 +229,29 @@ unsigned char DigestedEvent::PurgeZeroPt()
     return purges;
 }
 
-void DigestedEvent::ls(const char* field) const 
+void DigestedEvent::ls(const char* field, const char *option) const 
 {
   if (TString(field) == "all")
-  {
-    const char numb_fields = 5;
-    const char *fields[numb_fields] = 
-      {"electron", "muon", "tau", "jet", "met"};
-    for (ushort field_ind = 0; field_ind < numb_fields; field_ind ++)
     {
-      printf("Listing field %s\n", fields[field_ind]);
-      for (unsigned char ind = 0; ind < GetObjectCount(fields[field_ind]); ind ++)
-      {
-        printf("   Object %2u : ", ind);
-        GetConstObject(fields[field_ind], ind) -> ls();
-      }
+      const char numb_fields = 5;
+      const char *fields[numb_fields] = 
+	{"electron", "muon", "tau", "jet", "met"};
+      for (ushort field_ind = 0; field_ind < numb_fields; field_ind ++)
+	{
+	  ls(fields[field_ind]);
+	}
+      return;
     }
-    return;
-  }
   printf("Listing field %s\n", field);
+  if (GetObjectCount(field) == 0) 
+    {
+      printf("   No objects\n");
+    }
   for (unsigned char ind = 0; ind < GetObjectCount(field); ind ++)
-  {
+    {
       printf("   Object %2u : ", ind);
-      GetConstObject(field, ind) -> ls();
-  }
+      GetConstObject(field, ind) -> ls(option);
+    }
   
 }
 

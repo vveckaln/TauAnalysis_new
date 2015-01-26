@@ -50,7 +50,7 @@ PhysicsObject::PhysicsObject(const LorentzVectorF math_lorentz_vector_f)
 void PhysicsObject::ListLorentzVector() const
 {
   
-  printf("Px = % 11f Py = % 11f Pz = % 11f Pt = % 11f, E = % 11f\n", Px(), Py(), Pz(), Pt(), E());
+  printf("Px=%9f Py=% 9f Pz=% 9f Pt=% 9f E=% 9f Eta=% 9f Phi=%9f\n", Px(), Py(), Pz(), Pt(), E(), Eta(), Phi());
   if (Pt() == 0)
   {
     printf("Pt() == 0\n");
@@ -92,7 +92,7 @@ Lepton::Lepton(const LorentzVectorF math_lorentz_vector_f) : PhysicsObject(math_
 {
 }
 
-void Lepton::ls() const
+void Lepton::ls(const char * option) const
 {
 }
 
@@ -126,14 +126,18 @@ Electron::Electron(const llvvLepton llvvLepton_obj) :
 
 }
 
-void Electron::ls() const 
+void Electron::ls(const char * option) const 
 {
   ListLorentzVector();
+  if (TString(option) == "verbose")
+    {
+      printf("      charge %d, rel_isol = %f\n", charge, relative_isolation);       
+    }
 }
 
-Electron::~Electron()
+/*Electron::~Electron()
 {
-}
+}*/
 
 const char* Muon::title = "muon";
 
@@ -162,15 +166,19 @@ Muon::Muon(const llvvLepton llvvLepton_obj) :
 
 }
 
-void Muon::ls() const 
+void Muon::ls(const char * option) const 
 {
   ListLorentzVector();
+  if (TString(option) == "verbose")
+    {
+      printf("      charge %d, rel_isol = %f\n", charge, relative_isolation);       
+    }
 }
 
 
-Muon::~Muon()
+/*Muon::~Muon()
 {
-}
+}*/
 
 const char* Tau::title = "tau";
 
@@ -198,15 +206,23 @@ Tau::Tau(const llvvTau llvvTau_obj) :
 
 }
 
-void Tau::ls() const 
+void Tau::ls(const char * option) const 
 {
   ListLorentzVector();
+  if (TString(option) == "verbose")
+    {
+      printf("      charge %d\n", charge);       
+    }
 }
 
-
-Tau::~Tau()
+bool Tau::passID(const uint64_t IdBit) const
 {
+  return (idbits & ((uint64_t)1<<IdBit)) > 0;
 }
+
+/*Tau::~Tau()
+{
+}*/
 
 Jet::Jet() :
   PhysicsObject()
@@ -237,15 +253,20 @@ double Jet::GetPt() const
   return -1;
 }
 
-void Jet::ls() const 
+void Jet::ls(const char * option) const 
 {
   ListLorentzVector();
+  if (TString(option) == "verbose")
+    {
+      printf("      b-tagged = %s\n", BTagSFUtil_isBtagged ? "true" : "false");       
+    }
+  
 }
 
 
-Jet::~Jet()
+/*Jet::~Jet()
 {
-}
+}*/
 
 MET::MET() :
   PhysicsObject()
@@ -268,24 +289,24 @@ MET::MET(const llvvMet llvvMet_obj) :
 }
 
 
-void MET::ls() const 
+void MET::ls(const char * option) const 
 {
   ListLorentzVector();
 }
 
 
-MET::~MET()
+/*MET::~MET()
+{
+}*/
+
+ /*Vertex::Vertex()
+{
+}*/
+
+void Vertex::ls(const char * option) const
 {
 }
 
-Vertex::Vertex()
+/*Vertex::~Vertex()
 {
-}
-
-void Vertex::ls() const
-{
-}
-
-Vertex::~Vertex()
-{
-}
+}*/

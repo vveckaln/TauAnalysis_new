@@ -14,6 +14,7 @@ FileReader::FileReader(EventSink<ReadEvent_llvv> * next_processor_stage):
 EventProcessor<ReadEvent_llvv, ReadEvent_llvv>(next_processor_stage)
 {
   duplicates_checker = new DuplicatesChecker;
+  number_duplicates = 0;
 }
 
 void FileReader::Run()
@@ -22,11 +23,11 @@ void FileReader::Run()
 
   fwlite::ChainEvent & fwlite_ChainEvent = *fwlite_ChainEvent_ptr; 
 
-  const unsigned long totalEntries = fwlite_ChainEvent.size();
   //printf("%lu\n", totalEntries);
   //getchar();
   output_buffer = new EventBuffer<ReadEvent_llvv>(10);
-  const uint division = 20;
+  const unsigned long totalEntries = fwlite_ChainEvent.size();
+  const uint division = gVariables::gDebug ? 20 : 1;
   for (unsigned long entry_ind = 0; entry_ind < totalEntries/division; entry_ind ++)
     {
       ReadEvent_llvv read_event;// = output_buffer -> GetWriteSlot(); 
@@ -36,12 +37,13 @@ void FileReader::Run()
 	  printf("Read %lu events\n", entry_ind);
 	  //getchar();
 	}
-      if (isData and duplicates_checker -> 
+      if (gIsData and duplicates_checker -> 
 	  isDuplicate( 
 		   fwlite_ChainEvent.eventAuxiliary().run(),
 		   fwlite_ChainEvent.eventAuxiliary().luminosityBlock(),
 		   fwlite_ChainEvent.eventAuxiliary().event()))
 	{
+	  number_duplicates ++;
 	  continue;
 	}
 
@@ -59,9 +61,11 @@ void FileReader::Run()
       jetCollHandle.getByLabel(fwlite_ChainEvent, "llvvObjectProducersUsed");
       if(!jetCollHandle.isValid()){printf("llvvJetCollection Object NotFound\n");continue;}
       
-      for(unsigned int i = 0; i < jetCollHandle ->size();i++)
+      for(unsigned int jet_ind = 0; jet_ind < jetCollHandle ->size(); jet_ind ++)
 	{
-	  read_event.jets.push_back(llvvJetExt((*jetCollHandle)[i]));
+
+	  read_event.jets.push_back(llvvJetExt((*jetCollHandle)[jet_ind]));
+
 	}
      
       fwlite::Handle< llvvMet > metHandle;
@@ -87,13 +91,20 @@ void FileReader::Run()
 	    }
 	}
       
-      
       fwlite::Handle< vector<bool> > triggerBitsHandle;
       triggerBitsHandle.getByLabel(fwlite_ChainEvent, "llvvObjectProducersUsed", "triggerBits");
       if(!triggerBitsHandle.isValid()){printf("triggerBits Object NotFound\n");continue;}
       read_event.triggerBits = *triggerBitsHandle;
 
-      
+      fwlite::Handle< llvvGenParticleCollection > genPartCollHandle;
+      genPartCollHandle.getByLabel(fwlite_ChainEvent, "llvvObjectProducersUsed");
+      if(!genPartCollHandle.isValid()){printf("llvvGenParticleCollection Object NotFound\n");continue;}
+      read_event.gen = *genPartCollHandle;
+
+      read_event.Run         = fwlite_ChainEvent.eventAuxiliary().run();
+      read_event.Lumi        = fwlite_ChainEvent.eventAuxiliary().luminosityBlock();
+      read_event.Event       = fwlite_ChainEvent.eventAuxiliary().event();
+
       output_buffer -> GetWriteSlot() = read_event;
       output_buffer -> PushWriteSlot();
 
@@ -118,6 +129,7 @@ void FileReader::Run()
  
 void FileReader::Report()
 {
+  printf("number of duplicates %lu\n", number_duplicates); 
   ContinueReportToNextStage();
 }
 

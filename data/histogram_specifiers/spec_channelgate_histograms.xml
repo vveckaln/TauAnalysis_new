@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<samples>
+
+    <histogram Xaxis_title="Selection level" Yaxis_title="Events" nbinsx="4" xlow="0" xup="20" >numb_events_selection_stages</histogram>
+
+</samples>
+ 

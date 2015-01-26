@@ -40,5 +40,5 @@ public:
   ~ MapOfObjectPools();
 };
 
-#include "LIP/TauAnalysis/interface/templates/MapOfObjectPools.tpp"
+#include "LIP/TauAnalysis/interface/templates/MapOfObjectPools.cpp"
 #endif

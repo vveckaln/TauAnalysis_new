@@ -12,7 +12,8 @@ class BTagger
   :public EventProcessor<DigestedEvent*, DigestedEvent*> 
 {
   ulong events_received;
-  ulong events_btag_changed;
+  ulong events_btag_raised;
+  ulong events_btag_lowered;
   bool activated;
   TFile *btag_file;
   map< pair<TString, TString>, pair<TGraphErrors*, TGraphErrors*> > btagEfficiencyCorrectionGraphs;

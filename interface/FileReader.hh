@@ -7,6 +7,7 @@
 class FileReader 
   :public EventProcessor<ReadEvent_llvv, ReadEvent_llvv> 
 {
+  unsigned long number_duplicates;
   DuplicatesChecker * duplicates_checker;
 public:
   FileReader(EventSink<ReadEvent_llvv> *next_processor_stage);

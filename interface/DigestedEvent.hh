@@ -12,6 +12,9 @@ class DigestedEvent: public Event
   TLorentzVector *non_const_object;
   TLorentzVector previous_state;
 public:
+  unsigned int Run;
+  unsigned int Lumi;
+  unsigned int Event; 
   vector<Electron> Electrons;
   vector<Muon> Muons;
   vector<Tau> Taus;
@@ -23,7 +26,7 @@ public:
 
   DigestedEvent();
   ~DigestedEvent();
-  void ls(const char *) const;
+  void ls(const char *, const char * = "") const;
   void Open();
   void Close();
   unsigned char GetBtagCount() const;

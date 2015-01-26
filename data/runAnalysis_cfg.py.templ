@@ -1,8 +1,10 @@
 import FWCore.ParameterSet.Config as cms
 
-runProcess = cms.PSet(
-    input = cms.vstring("@input"),
+PhysicsAnalysisParSet = cms.PSet(
+    input = cms.vstring(@input),
     outdir = cms.string("@outdir"),
     isData = cms.bool(@isData),
     XSection = cms.double(@xsec),
+    debug = cms.bool(@debug),
+    mctruthmode = cms.int32(@mctruthmode)
 )

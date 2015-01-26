@@ -8,12 +8,10 @@ using namespace cpFileRegister;
 UncertaintiesApplicator::UncertaintiesApplicator(EventSink<DigestedEvent *> *next_processor_stage) : 
 EventProcessor<DigestedEvent*, DigestedEvent *>(next_processor_stage)
 {
-  printf("UncertaintiesApplicator Begin %f\n", gLumiWeights[1] -> weight(33));
 
   const TString jecDir = "/exper-sw/cmst3/cmssw/users/vveckaln/CMSSW_5_3_15/src/LIP/TauAnalysis/data/jec";
   muSCleFitCorrector = getMuonCorrector(jecDir, input_file_name);
-  factorizedJetCorrector = utils::cmssw::getJetCorrector(jecDir, not isData);
-    printf("UncertaintiesApplicator End %f\n", gLumiWeights[1] -> weight(33));
+  factorizedJetCorrector = utils::cmssw::getJetCorrector(jecDir, not gIsData);
 
 }
 
@@ -49,7 +47,7 @@ void UncertaintiesApplicator::ApplyMuScleFitCorrector() const
     {
       Muon * const muon = (Muon*) processed_event -> GetPhysicsObject("muon", muon_ind);
       muSCleFitCorrector -> applyPtCorrection(*muon , muon -> charge );
-      if (not isData) 
+      if (not gIsData) 
 	muSCleFitCorrector -> applyPtSmearing(*muon, muon -> charge, false);
     }
 }

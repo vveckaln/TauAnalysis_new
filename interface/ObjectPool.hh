@@ -31,7 +31,7 @@ public:
   void SetAllYaxesTitle(const char*) const;
   void SetYaxesTitle(const vector<HistogramDescriptor> *) const;
   void Sumw2() const;
-  void GetFromFile(const vector<HistogramDescriptor> * , TFile *);
+  void GetFromFile(const vector<HistogramDescriptor> * , TFile *, const char* = "");
   void ls() const;
   void Write();
   void SetFillColor(Color_t);
@@ -47,5 +47,5 @@ public:
 protected:
 };
 
-#include "LIP/TauAnalysis/interface/templates/ObjectPool.tpp"
+#include "LIP/TauAnalysis/interface/templates/ObjectPool.cpp"
 #endif
