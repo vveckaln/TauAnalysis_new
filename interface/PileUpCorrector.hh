@@ -5,10 +5,13 @@
 #include "LIP/TauAnalysis/interface/EventProcessor.hh"
 #include "LIP/TauAnalysis/interface/CPHistogramPoolRegister.hh"
 #include "LIP/TauAnalysis/interface/CPFileRegister.hh"
+#include "LIP/TauAnalysis/interface/CPFilePoolRegister.hh"
+
 #include "LIP/TauAnalysis/interface/LeptonEfficiencySF.h"
 
 #include "DataFormats/FWLite/interface/ChainEvent.h"
 #include "PhysicsTools/Utilities/interface/LumiReWeighting.h"
+#include "LIP/TauAnalysis/interface/TopPtWeighter.h"
 #include "TGraph.h"
 
 using namespace cpHistogramPoolRegister;
@@ -33,13 +36,15 @@ class PileUpCorrector : public EventProcessor<DigestedEvent*, DigestedEvent*>
 			      PuShifter_t PuShifters) const;
 
   unsigned long getMergeableCounterValue(const vector<string>& urls, const string counter) const;
-  double XSectionWeight;
-  edm::LumiReWeighting* LumiWeights[2];
-  double PUNorm[2][3];
+  double                        XSectionWeight;
+  edm::LumiReWeighting*         LumiWeights[2];
+  double                        PUNorm[2][3];
   void ApplyLeptonEfficiencySF() const;
   void ApplyIntegratedLuminosity() const;
-  LeptonEfficiencySF leptonEfficiencySF;
-
+  void ApplyTopPtWeighter() const;
+  LeptonEfficiencySF            leptonEfficiencySF;
+  bool                          print_mode;
+  TopPtWeighter *               topPtWeighter;
 public:
   PileUpCorrector(EventSink<DigestedEvent *> *next_processor_stage);
   void Run();

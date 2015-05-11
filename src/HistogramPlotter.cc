@@ -1,4 +1,8 @@
 #include "LIP/TauAnalysis/interface/HistogramPlotter.hh"
+#include "LIP/TauAnalysis/interface/HStructure_worker.hh"
+#include "LIP/TauAnalysis/interface/HStructure_TFile.hh"
+#include "LIP/TauAnalysis/interface/HStructure_TH1D.hh"
+
 #include "LIP/TauAnalysis/interface/ReadEvent.hh"
 #include "LIP/TauAnalysis/interface/FileReader.hh"
 #include "LIP/TauAnalysis/interface/BTagger.hh"
@@ -25,52 +29,68 @@ HistogramPlotter::HistogramPlotter()
 void HistogramPlotter::AddHistograms() const
 {
   
-  HistogramPool * histogram_pool_other = new HistogramPool();
-  double mcv_total = 0;
-  for (unsigned int option_ind = 0; option_ind < input_file_names . size(); option_ind ++)
+  HStructure_worker *worker_mother = new HStructure_worker;
+  Parser parser;
+  vector<HistogramDescriptor> * hdescr = parser.ParseHistogramSpecifier("/exper-sw/cmst3/cmssw/users/vveckaln/CMSSW_5_3_15/src/LIP/TauAnalysis/data/histogram_specifiers/spec_selector_histograms.xml");
+  const unsigned char split = active_HStructure_TFile -> GetChildren() . size();
+  const unsigned char nhistograms = hdescr -> size(); 
+  for (unsigned char hind = 0; hind < nhistograms; hind ++)
     {
-      TFile* const input_file  = (*input_file_pool)[input_file_names[option_ind].c_str()];
-      if (not input_file || not input_file -> IsOpen() || input_file -> IsZombie() || input_file -> TestBit(TFile::kRecovered)) continue;
+     
+      double mcv_total = 0;
+      double mcv[split];
 
-      if (not gIsData)
+      HStructure_TH1D * sum_histogram = new HStructure_TH1D; 
+      for (unsigned int file_ind = 0; file_ind < split; file_ind ++)
 	{
-	  mcv_total += ((rootdouble*)input_file -> Get("MergeableCounterValue")) -> GetInformation();
+	  HStructure_TH1D * worker = new HStructure_TH1D;
+	  TFile * file = ((HStructure_TFile*)active_HStructure_TFile -> GetChildren()[file_ind]) -> GetFile();
+	  worker -> GetRef() = file -> Get(hdescr -> at(hind).histogram_name.Data());
+	  worker -> SetBit(kIsFilled, true);
+	  worker -> Stamp();
+	  sum_histogram -> AddChild(worker);
+	  if (not gIsData)
+	    {
+	      mcv[file_ind] = ((rootdouble*)file -> Get("MergeableCounterValue")) -> GetInformation();
+	      mcv_total += mcv[file_ind];
+	    }
 	}
+      unsigned char step = 0;
+      if (not gIsData)
+      for (HStructure_worker::iterator it = sum_histogram -> begin("children"); it != sum_histogram -> end("children"); it.increment("children"), step ++)
+	{
+	  ((TH1D*)it -> GetPtr()) -> Scale(mcv[step]/mcv_total);
+	}
+      worker_mother -> AddChild(sum_histogram);
+      sum_histogram -> SetName(samples_names[number_active_sample] + "_TOTAL");
     }
-  for (unsigned int option_ind = 0; option_ind < input_file_names . size(); option_ind ++)
-    {
-      TFile* const input_file = (*input_file_pool)[input_file_names[option_ind].c_str()];
-      if (not input_file || not input_file -> IsOpen() || input_file -> IsZombie() || input_file -> TestBit(TFile::kRecovered)) continue;
-      
-      histogram_pool_other -> GetFromFile(selector_h_descriptors, input_file, "SELECTOR_BASE");
-
-      if (not gIsData)
-	{
-	  const double mcv = ((rootdouble*)input_file -> Get("MergeableCounterValue")) -> GetInformation();
-	  (*histogram_pool_other)["numb_events_selection_stagesSELECTOR_BASE"] -> Scale(mcv/mcv_total);
-	}
-
-      histogram_pool_other -> GetFromFile(selector_h_descriptors, input_file, "CHANNELGATE");
-      if (option_ind == 0)
-	{
-      
-	  histogram_pool = (HistogramPool*)histogram_pool_other -> Clone("TOTAL");
-	  histogram_pool -> Reset();
-	}
-      histogram_pool -> Add(histogram_pool_other);
-      
-      
-    }  
-  output_file -> cd();
-  histogram_pool -> Write();
-  TH1D *h_cg = (*histogram_pool)["numb_events_selection_stagesCHANNELGATE"];
+  
+  //worker_mother -> test("all");
+  //getchar();
+  worker_mother -> FillBottomUp("children");
+  printf("RESULTS %s\n", gSystem -> BaseName(output_file -> GetName()));
+  HStructure_TH1D * str = (HStructure_TH1D*) worker_mother -> GetHStructure(samples_names[number_active_sample] + "_TOTAL", "numb_events_selection_stagesSELECTOR_BASE");
+      Table t;
+      t.FillFromLabeledHistogram(str -> Get());
+      t.ls();
+   
+  printf("HISTOGRAMS FILLED\n");
+  HStructure_TFile * output = new HStructure_TFile;
+output -> SetName((samples_names[number_active_sample] + "_TOTAL").Data());
+  *output = output_file;
+  output -> cd();
+  output -> SetBit(kOpenForOutput, true);
+  printf("GOING TO WRITE\n");
+  worker_mother -> Write("children");
+  printf("HISTOGRAMS WRITTEN\n");
+  /*TH1D *h_cg = (*histogram_pool)["numb_events_selection_stagesCHANNELGATE"];
   Table table_cg("ChannelGate", "ChannelGate");
   table_cg.FillFromLabeledHistogram(h_cg);
   table_cg.ls();
   TH1D *h = (*histogram_pool)["numb_events_selection_stagesSELECTOR_BASE"];
   Table table_h("SELECTER_BASE", "SELECTOR_BASE");
   table_h.FillFromLabeledHistogram(h);
-  table_h.ls();
+  table_h.ls();*/
   
 }
 
@@ -178,7 +198,9 @@ void HistogramPlotter::SumData() const
       
     }  
   output_file -> cd();
-  histogram_pool -> Write();
+  const char * remove = "TOTAL";
+  printf("%p\n", remove);
+  histogram_pool -> Write(NULL, remove);
   TH1D *h_cg = (*histogram_pool)["numb_events_selection_stagesCHANNELGATETOTAL"];
   Table table_cg("ChannelGate", "ChannelGate");
   table_cg.FillFromLabeledHistogram(h_cg);

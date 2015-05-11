@@ -1,0 +1,15 @@
+{
+  "proc":[
+     {
+      "tag":"VV",
+      "isdata":false,
+      "color":592,
+      "lcolor":1,
+      "marker":1,
+      "data":[
+        { "dtag":"MC8TeV_WJets"                               ,   "split":10, "xsec":37509 , "br":[ 1.0 ]     }
+       
+      ]
+    }
+  ]
+}

@@ -27,7 +27,7 @@ class EventBuffer<TEvent *>
   TEvent        **buffer;
   unsigned long   consumed;
   unsigned long   capacity;
-  bool IsIndependent;
+  bool            IsIndependent;
 public:
   EventBuffer(const unsigned long capacity, const char* = "");
   EventBuffer(const EventBuffer<TEvent*>* const other_buffer);

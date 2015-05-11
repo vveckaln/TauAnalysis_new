@@ -1,5 +1,6 @@
 #include "LIP/TauAnalysis/interface/PileUpCorrector.hh"
 #include "LIP/TauAnalysis/interface/GlobalVariables.hh"
+#include "LIP/TauAnalysis/interface/HStructure_TFile.hh"
 #include "DataFormats/FWLite/interface/Handle.h"
 #include "DataFormats/Common/interface/MergeableCounter.h"
 #include "LIP/TauAnalysis/interface/rootdouble.h"
@@ -8,12 +9,26 @@
 #include <math.h>
 
 using namespace gVariables;
-PileUpCorrector::PileUpCorrector(EventSink<DigestedEvent *> *next_processor_stage):EventProcessor<DigestedEvent*, DigestedEvent *>(next_processor_stage)
+PileUpCorrector::PileUpCorrector(EventSink<DigestedEvent *> *next_processor_stage): EventProcessor<DigestedEvent*, DigestedEvent *>(next_processor_stage)
 {
-  if (gIsData){
-    printf("isData, returning\n");
-    return;
-  }
+  topPtWeighter  = NULL;
+  LumiWeights[0] = NULL;
+  LumiWeights[1] = NULL;
+  print_mode     = false;
+  fwlite::ChainEvent & fwlite_ChainEvent = *fwlite_ChainEvent_ptr; 
+
+  if (IsTTbarMC)
+    {
+      topPtWeighter = new TopPtWeighter(TString(gSystem -> BaseName(output_file_name)).ReplaceAll(".root", ""), 
+					"/lustre/ncg.ingrid.pt/cmslocal/viesturs/llvv_analysis_output/output_files/output_event_analysis",
+					"/exper-sw/cmst3/cmssw/users/vveckaln/CMSSW_5_3_15/src/LIP/TauAnalysis/data/weights",
+					fwlite_ChainEvent);
+    }
+  if (gIsData)
+    {
+      printf("isData, returning\n");
+      return;
+    }
   printf("continuing executing\n");
   if (gVariables::gDebug)
     XSectionWeight = gXSection/ 1100000;
@@ -23,23 +38,24 @@ PileUpCorrector::PileUpCorrector(EventSink<DigestedEvent *> *next_processor_stag
       XSectionWeight = gXSection/ MergeableCounterValue;
       rootdouble mcv("MergeableCounterValue", "MergeableCounterValue");
       mcv.SetInformation(MergeableCounterValue);
-      output_file -> cd();
-      mcv.Write();
+      for (unsigned char sample_ind = 0; sample_ind < *number_of_samples; sample_ind ++)
+	{
+	  ((HStructure_TFile*)active_HStructure_TFile -> GetHStructure(samples_names[sample_ind])) -> GetFile() -> cd();
+	  mcv.Write();
+	}
     }
   LumiWeights[0] = NULL; LumiWeights[1] = NULL;
   printf("XSectionWeiht = %f\n", XSectionWeight); 
-  fwlite::ChainEvent & fwlite_ChainEvent = *fwlite_ChainEvent_ptr; 
-
   vector<float> MCPileUp[2]; 
   FILE *pfile[] = 
     {
       fopen("data/PileUp/dataPileupDistributionDouble.txt", "r"),
-      fopen("data/PileUp/dataPileupDistributionDouble.txt", "r")
+      fopen("data/PileUp/singleLepDataPileupDistributionDouble.txt", "r")
     };
   vector<float> DataPileUp[2];
   PuShifter_t PuShifters[2];
 
-  for (int ind = 0; ind < 2; ind++)
+  for (unsigned char ind = /*0*/1; ind < 2; ind++)
     {
       while (not feof(pfile[ind]))
 	{
@@ -74,11 +90,24 @@ void PileUpCorrector ::Run()
 	processed_event -> pileup_corr_weight = 1;
 	continue;
       }
+
     double puWeight = LumiWeights[1] -> weight(processed_event -> ngenITpu) * PUNorm[1][0];
-    
+    if (print_mode)
+      {
+	printf("EVENT IDENTITY %u %u %u\n", processed_event -> Run, processed_event -> Lumi, processed_event -> Event);
+	printf("LumiWeights = %f, PUNorm = %f, puWeight = %f\n", LumiWeights[1] -> weight(processed_event -> ngenITpu), PUNorm[1][0], puWeight);
+      }
     processed_event -> pileup_corr_weight = XSectionWeight*puWeight;
+
     ApplyLeptonEfficiencySF();
     ApplyIntegratedLuminosity();
+    ApplyTopPtWeighter();
+    if (print_mode)
+      {
+	printf("weight = %f\n", processed_event -> pileup_corr_weight);
+	printf("************** NEXT EVENT **************\n");
+	getchar();
+      }
     //printf("%f %f %f\n", processed_event -> pileup_corr_weight, XSectionWeight, puWeight);
     //getchar();
     //processed_event -> pileup_corr_weight = 1.0;
@@ -95,6 +124,13 @@ void PileUpCorrector::ApplyLeptonEfficiencySF() const
 					     lepton -> Pt(), 
 					     lepton -> Eta(), 
 					     absid, "tight").first;
+  if (print_mode) 
+    {
+      printf("leptonEfficiency = %f\n",  leptonEfficiencySF . getLeptonEfficiency(
+					     lepton -> Pt(), 
+					     lepton -> Eta(), 
+					     absid, "tight").first);
+    }
 
 }
 
@@ -105,6 +141,20 @@ void PileUpCorrector::ApplyIntegratedLuminosity() const
 
 }
 
+void PileUpCorrector::ApplyTopPtWeighter() const
+{
+  float weightTopPt(1.0), wgtTopPtUp(1.0), wgtTopPtDown(1.0);
+  if(processed_event -> tPt>0 && processed_event -> tbarPt>0 && topPtWeighter)
+    {
+      topPtWeighter -> computeWeight(processed_event -> tPt, processed_event -> tbarPt);
+      topPtWeighter -> getEventWeight(weightTopPt, wgtTopPtUp, wgtTopPtDown);
+    }
+  processed_event -> pileup_corr_weight *= weightTopPt;
+  if (print_mode) 
+    {
+      printf("weightTopPt = %f\n", weightTopPt);
+    }
+}
 
 void PileUpCorrector::Report()
 {
@@ -227,6 +277,17 @@ unsigned long PileUpCorrector::getMergeableCounterValue(const vector<string>& ur
 
 PileUpCorrector::~PileUpCorrector()
 {
-  
-  
+  if (topPtWeighter)
+    {
+      delete topPtWeighter;
+      topPtWeighter = NULL;
+    }
+  for (short ind = 0; ind < 2; ind ++)
+    {
+      if (LumiWeights[ind])
+	{
+	  delete LumiWeights[ind];
+	  LumiWeights[ind] = NULL;
+	}
+    }
 }

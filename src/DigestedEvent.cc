@@ -6,6 +6,7 @@ using namespace cpHistogramPoolRegister;
 DigestedEvent::DigestedEvent()
 {
   non_const_object = NULL;
+  print_mode = false;
 }
 
 DigestedEvent::~DigestedEvent()
@@ -51,16 +52,6 @@ Jet *DigestedEvent::GetLeadingJet(const char* field, const int rank) const
   return const_cast<Jet*>(leading_jet[rank - 1]);
 }
 
-unsigned char DigestedEvent::GetBtagCount() const
-{
-  unsigned char BtagCount = 0;
-  for (unsigned short ind = 0; ind < Jets.size(); ind ++)
-    {
-   
-      if (Jets[ind].BTagSFUtil_isBtagged) BtagCount ++;
-    }
-  return BtagCount;
-}
 
 double DigestedEvent::GetJetPt(const uint index) const
 {
@@ -141,18 +132,101 @@ unsigned char DigestedEvent::GetObjectCount(const char * type) const
   if (TString(type) == "jet")      return Jets.size();
   if (TString(type) == "met")      return met.size();
   if (TString(type) == "vertex")   return Vertices.size();
+  if (TString(type) == "all") return GetObjectCount("electron") + GetObjectCount("muon") + 
+				GetObjectCount("tau") + GetObjectCount("jet") + GetObjectCount("met") 
+				+ GetObjectCount("vertex");
   return 0;
 }
 
+bool DigestedEvent::ValidateElectron(const unsigned short electron_ind) const
+{
+  double const ref_rel_isolation            = 0.15;
+
+  const GeV    ELECTRON_PT_MIN              = 35;
+  const double ELECTRON_ETA_MAX             = 2.5;
+  const double ETA_EXCLUSION_REGION_MIN     = 1.4442;
+  const double ETA_EXCLUSION_REGION_MAX     = 1.5660;
+  const Electron * const electron           = &Electrons[electron_ind];
+  const double relative_isolation           = electron -> relative_isolation;
+  const double AbsEta                       = fabs(electron -> el_info.sceta);
+  const GeV    Pt                           = electron -> Pt();
+  const bool   relative_isolation_valid     = relative_isolation < ref_rel_isolation;
+  const bool   Eta_valid                    = AbsEta < ELECTRON_ETA_MAX;
+  const bool   Pt_valid                     = Pt > ELECTRON_PT_MIN;
+  const bool   dZ_valid                     = fabs(electron -> dZ) < 1;
+  const bool   d0_valid                     = electron -> d0 < 0.02;
+  const bool   outside_eta_exclusion_region = AbsEta < ETA_EXCLUSION_REGION_MIN or AbsEta > ETA_EXCLUSION_REGION_MAX;
+  
+  bool         passID                       = true;
+  if (electron -> el_info.isConv) passID = false;
+  const float MVATriggerV0(electron -> el_info.mvatrigv0);
+  if (AbsEta < 0.8 and MVATriggerV0 < 0.94)
+      passID = false;
+  if (AbsEta < 1.479 and AbsEta > 0.8 and MVATriggerV0 < 0.85) 
+      passID = false;
+  if (AbsEta > 1.479 and MVATriggerV0 < 0.92)
+      passID = false;
+  
+  const bool electron_valid = Eta_valid and Pt_valid and outside_eta_exclusion_region and passID and relative_isolation_valid and dZ_valid and d0_valid;
+  //electron -> ls("verbose");
+  
+  /*printf("Eta valid = %s, Pt valid %s, IsConv = %s, MVATriggerV0 = %f, relative_isolation_valid = %s\n",
+      Eta_valid                ? "true" : "false",
+      Pt_valid                 ? "true" : "false",
+      electron -> el_info.isConv ? "true" : "false",
+      electron -> el_info.mvatrigv0,
+	     
+      relative_isolation_valid ? "true" : "false");
+      printf("Electron valid VALID = %s\n", electron_valid ? "true" : "false");*/
+  return electron_valid;
+
+}
+
+bool DigestedEvent::ValidateMuon(const unsigned short muon_ind) const
+{
+  double const ref_rel_isolation        = 0.12; 
+  const GeV    MUON_PT_MIN              = 30;
+  const double MUON_ETA_MAX             = 2.1;
+  const Muon * const muon               = &Muons[muon_ind];
+  const double relative_isolation       = muon -> relative_isolation;
+  const double AbsEta                   = fabs(muon -> Eta());
+  const GeV    Pt                       = muon -> Pt();
+  const bool   relative_isolation_valid = relative_isolation < ref_rel_isolation;
+  const bool   Eta_valid                = AbsEta < MUON_ETA_MAX;
+  const bool   Pt_valid                 = Pt > MUON_PT_MIN;
+  const bool   dZ_valid                 = muon -> dZ < 0.5;
+  const bool   d0_valid                 = muon -> d0 < 0.2;
+  bool         passID                   = true;;
+  bool isTight ((muon -> idbits >> 10) & 0x1);
+  if(!isTight) passID = false;
+
+  const bool muon_valid = Eta_valid and Pt_valid and passID and relative_isolation_valid and dZ_valid and d0_valid;
+  /*if (print_mode)
+    {
+      printf("* * * * * * * * * * * * * * * * * \n");
+      printf("LEADING LEPTON VALIDATION:\n");
+      printf("Eta valid = %s, Pt valid %s, passID valid = %s, relative_isolation_valid = %s\n",
+      Eta_valid                ? "true" : "false",
+      Pt_valid                 ? "true" : "false",
+      passID                   ? "true" : "false",
+      relative_isolation_valid ? "true" : "false");
+      printf("LEADING LEPTON VALID = %s\n", muon_valid ? "true" : "false");
+      }*/
+  return muon_valid;
+}
+
+
 Lepton * DigestedEvent::GetLeadingLepton(const char * option) const
 {
+ 
   double Pt = -1;
   if (TString(option) == "electron" or TString(option) == "muon")
     {
       const Lepton * lepton = NULL; 
       for (unsigned char ind = 0; ind < GetObjectCount(option); ind ++)
 	{
-	  if (GetConstPhysicsObject(option, ind) -> Pt() > Pt)
+	  const bool lepton_valid = (TString(option) == "electron") ? ValidateElectron(ind) : ValidateMuon(ind);
+	  if (lepton_valid and GetConstPhysicsObject(option, ind) -> Pt() > Pt)
 	    {
 	      lepton = (Lepton*)GetConstObject(option, ind);
 	      Pt = lepton -> Pt();
@@ -164,14 +238,144 @@ Lepton * DigestedEvent::GetLeadingLepton(const char * option) const
   if (TString(option) == "electronmuon" )
     {
       const Lepton * const electron = (Lepton*) GetLeadingLepton("electron");
-      const Lepton * const muon = (Lepton*) GetLeadingLepton("muon");
+      const Lepton * const muon     = (Lepton*) GetLeadingLepton("muon");
       if (electron == NULL) return const_cast<Lepton*>(muon);
-      if (muon == NULL) return const_cast<Lepton*>(electron);
+      if (muon     == NULL) return const_cast<Lepton*>(electron);
       return electron -> Pt() > muon -> Pt() ? 
 	const_cast<Lepton*>(electron) : 
 	const_cast<Lepton*>(muon);
     }
   return NULL;
+}
+
+bool DigestedEvent::ValidateJet(const unsigned short jet_ind, const Lepton & lepton) const
+{
+  const GeV JET_PT_MIN            = 20;
+  const double JET_ETA_MAX        = 2.4;
+  const double JET_LEPTON_DR_MIN  = 0.3;//0.4;
+    
+  const Jet * const jet           = &Jets . at(jet_ind);
+  const double DeltaR             = jet -> DeltaR(lepton);
+  const double Pt                 = jet -> /*GetPt()*/ Pt();
+  const double AbsEta             = fabs(jet -> Eta());
+  if (Pt < 15 or AbsEta > 4.7) return false; 
+  const bool DeltaR_valid         = DeltaR > JET_LEPTON_DR_MIN;
+  const bool Eta_valid            = AbsEta < JET_ETA_MAX;
+  const bool Pt_valid             = Pt > JET_PT_MIN;
+  const bool passPFloose          = (jet -> idbits >> 0) & 0x1;
+  const int  puId                 = (jet -> idbits >> 3) & 0xf;
+  const bool passLoosePuId        = (puId >> 2) & 0x1;
+  const bool Jet_valid            = DeltaR_valid 
+    and Eta_valid 
+    and Pt_valid
+    and passPFloose
+      and passLoosePuId;
+  //printf("DeltaR %f PT %f passPFloose %s passLoosePuId %s\n", DeltaR, jet -> Pt(), passPFloose ? "true" : "false", passLoosePuId ? "true" : "false");
+  return Jet_valid;
+}
+
+bool DigestedEvent::ValidateTau(const unsigned short tau_ind, const Lepton * lepton) const
+{
+  const GeV TAU_PT_MIN       = 20; 
+  const double TAU_ETA_MAX   = 2.4;
+  
+  const Tau * const tau                = &Taus.at(tau_ind); 
+  const double AbsEta                  = fabs(tau -> Eta());
+  const double tau_Pt                  = tau -> Pt();
+  if(tau_Pt < 20.0 || AbsEta > 2.3) return false;
+  const bool tau_Eta_valid             = AbsEta < TAU_ETA_MAX;
+  const bool tau_Pt_valid              = tau_Pt > TAU_PT_MIN;
+  const bool againstElectronMediumMVA5 = tau -> passID(llvvTAUID::againstElectronMediumMVA5);
+  const bool againstMuonTight2         = tau -> passID(llvvTAUID::againstMuonTight2);
+  const bool decayModeFinding          = tau -> passID(llvvTAUID::decayModeFinding);
+  const bool byMediumCombinedIsolationDeltaBetaCorr3Hits = tau -> passID(llvvTAUID::byMediumCombinedIsolationDeltaBetaCorr3Hits);
+  const bool passID                    = againstElectronMediumMVA5
+    and againstMuonTight2 
+    and decayModeFinding 
+    and byMediumCombinedIsolationDeltaBetaCorr3Hits;
+      
+  double tau_lepton_deltaR;
+  bool overlapwithlepton;
+  if (lepton)
+    {
+     tau_lepton_deltaR = tau -> DeltaR(*lepton);
+     overlapwithlepton = tau_lepton_deltaR < 0.1;
+    }
+  else overlapwithlepton = false;
+  const bool dZvalid                   = abs(tau -> dZ) < 0.5; 
+  const bool emfraction_valid          = tau -> emfraction < 2;
+  const bool tau_valid                 = tau_Eta_valid 
+    and tau_Pt_valid 
+    and passID 
+    and tau -> isPF 
+    and dZvalid 
+    and emfraction_valid 
+    and not overlapwithlepton;
+      
+    if (print_mode)
+      {
+	  printf("listing Tau\n");
+	  tau -> ls("verbose");
+	  printf("tau.idbits %lu\n", tau -> idbits);// cout<<tau -> idbit<<;
+	  
+	  //cout<<"test "<< tau-> idbits & ((uint64_t)1<<llvvTAUID::againstMuonTight2);
+	  printf("\nEta valid = %s, Pt valid = %s, \n overlapwithlepton %s againstElectronMediumMVA5 = %s, againstMuonTight2 = %s, decayModeFinding = %s, byMediumCombinedIsolationDeltaBetaCorr3Hits = %s\n isPF %s, dZ %f, emfraction %f", 
+		 tau_Eta_valid                    ? "true" : "false", 
+		 tau_Pt_valid                     ? "true" : "false", 
+		 overlapwithlepton                ? "true" : "false",
+		 againstElectronMediumMVA5        ? "true" : "false",
+		 againstMuonTight2                ? "true" : "false",
+		 decayModeFinding                 ? "true" : "false",
+		 byMediumCombinedIsolationDeltaBetaCorr3Hits
+		 ? "true" : "false",		 
+		 tau -> isPF                      ? "true" : "false",
+		 abs(tau -> dZ), tau -> emfraction);
+	  printf("Tau valid = %s\n", tau_valid ? "true" : "false");
+   }
+ return tau_valid; 
+}
+
+bool DigestedEvent::DeleteTauJet(const Lepton * const lepton)
+{
+  const double ref_DeltaR = 0.4;
+  bool TauJetFound = false;
+  for (ushort jet_ind = 0; jet_ind < Jets.size(); jet_ind ++)
+  {
+    //if (not ValidateJet(jet_ind, *lepton)) continue;
+    const Jet* const jet = &Jets[jet_ind];
+    for (unsigned short tau_ind = 0; tau_ind < Taus.size(); tau_ind ++)
+      {
+	const Tau* const tau = &Taus[tau_ind];
+	const double DeltaR = jet -> DeltaR(*tau);
+	if (DeltaR < ref_DeltaR) 
+	  {
+	    /*printf("jet\n");
+	    Jets[jet_ind].ls("verbose");
+	    printf("tau\n");
+	    Taus[tau_ind].ls("verbose");*/
+	    Jets.erase(Jets.begin() + jet_ind);
+	    TauJetFound = true;      
+	  }
+      }
+  }
+  //getchar();
+
+  return TauJetFound;
+}
+
+unsigned short DigestedEvent::GetBtagCount(const Lepton & lepton) const
+{
+  unsigned char Btag_count = 0;
+  for (uint jet_ind = 0; jet_ind < Jets . size(); jet_ind ++)  
+    {
+      const bool jet_valid = ValidateJet(jet_ind, lepton) and Jets[jet_ind].Pt() > 30;
+
+      // printf("Counting jet %u, jet valid %s, btagged %s\n", jet_ind, jet_valid ? "true": "false", Jets[jet_ind].BTagSFUtil_isBtagged ? "true" : "false");
+      
+      if (jet_valid)
+	if (Jets[jet_ind].BTagSFUtil_isBtagged) Btag_count ++;
+    }
+  return Btag_count;
 }
 
 void DigestedEvent::erase(const char *field, const uint ind)
@@ -238,7 +442,7 @@ void DigestedEvent::ls(const char* field, const char *option) const
 	{"electron", "muon", "tau", "jet", "met"};
       for (ushort field_ind = 0; field_ind < numb_fields; field_ind ++)
 	{
-	  ls(fields[field_ind]);
+	  ls(fields[field_ind], option);
 	}
       return;
     }

@@ -3,6 +3,8 @@
 
 #include "LIP/TauAnalysis/interface/PureEvent.hh"
 #include "LIP/TauAnalysis/interface/ObjectPool.hh"
+#include "LIP/TauAnalysis/interface/HStructure.hh"
+
 #include <map>
 #include "TH1D.h"
 #include "TString.h"
@@ -11,7 +13,8 @@
 
 using namespace std;
 
-class HistogramPool: public ObjectPool<TH1D>{
+class HistogramPool: public ObjectPool<TH1D> 
+{
   static unsigned int instances;
   bool temporary;
   TString directory_title;
@@ -19,7 +22,7 @@ public:
   HistogramPool();
   map<TString, TH1D*>* histogram_map;
   HistogramPool(const vector<HistogramDescriptor> * , const char* title = "", const char * is_temporary = "");
-  void AddObjects(const vector<HistogramDescriptor> *);
+  void AddObjects(const vector<HistogramDescriptor> *, const char * = "");
 
   PureEvent *processed_event;
   virtual ~ HistogramPool();

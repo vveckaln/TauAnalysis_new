@@ -24,9 +24,12 @@ parser.add_option('-d', '--dir'        ,    dest = 'indir'              , help =
 parser.add_option('-o', '--out'        ,    dest = 'outdir'             , help = 'output directory'                      , default = '')
 parser.add_option('-c', '--cfg'        ,    dest = 'cfg_file'           , help = 'base configuration file template'      , default = '')
 parser.add_option('-s', '--sub'        ,    dest = 'queue'              , help = 'batch queue'                           , default = '')
-parser.add_option('-t', '--test'       ,    dest = 'debug'               , help = 'small runs for test and debugging'     , default = False)
-(opt, args) = parser.parse_args()
+parser.add_option('-t', '--test'       ,    dest = 'debug'              , help = 'small runs for test and debugging'     , default = False)
+parser.add_option('-r', '--run'        ,    dest = 'run_option'         , help = 'run option'                            , default = 'process')
 
+(opt, args) = parser.parse_args()
+if (opt.run_option == 'hadd') :
+    opt.indir += '/output_files/event_analysis'
 FarmDirectory = opt.outdir+"/FARM"
 JobName = opt.theExecutable
 LaunchOnCondor.Jobs_RunHere = 1
@@ -44,7 +47,6 @@ procList = json.load(jsonFile, encoding = 'utf-8').items()
 
 #run over sample
 for proc in procList :
-
     #run over processes
     for desc in proc[1] :
 
@@ -60,41 +62,55 @@ for proc in procList :
                           
             if (xsec > 0 and not isdata) :
                 for ibr in br :  xsec = xsec*ibr
-
+            split_store = split
             if (opt.debug) :
                 split = 1
             if (opt.queue == '') :
-                split = 1        
-	    for segment in range(0, split) :
+                split = 1  
+            if (opt.run_option == 'hadd') :
+                split = 1
+            for segment in range(0, split) :
                 
-                eventsFile = '\'' + opt.indir + '/' + origdtag + '_' + str(segment) + '.root\''
-                
+                if (not opt.run_option == "hadd") :
+                    if (split_store == 1) :
+                        eventsFile = '\'' + opt.indir + '/' + origdtag + '.root\''
+                    else :
+                        eventsFile = '\'' + opt.indir + '/' + origdtag + '_' + str(segment) + '.root\''
+                else:
+                        eventsFile = '\'' + opt.indir + '/' + origdtag + '\''
+                   
                 #create the cfg file
-            	sedcmd = 'sed \"'
+                sedcmd = 'sed \"'
 
                 sedcmd += 's%@input%'        + eventsFile       + '%;'
                 sedcmd += 's%@outdir%'       + opt.outdir       + '%;'
                 sedcmd += 's%@isData%'       + str(isdata)      + '%;'
                 sedcmd += 's%@xsec%'         + str(xsec)        + '%;'
-           	sedcmd += 's%@debug%'        + str(opt.debug)   + '%;'
+                sedcmd += 's%@debug%'        + str(opt.debug)   + '%;'
                 sedcmd += 's%@mctruthmode%'  + str(mctruthmode) + '%;'
+                sedcmd += 's%@file_split%'   + str(split_store) + '%;'
+                sedcmd += 's%@segment%'      + str(segment)     + '%;'
 
-            	sedcmd += '\"'
-		
-                cfgfile = opt.outdir +'/configuration_files/config_event_analysis/' + origdtag + '_' + str(segment) + '_cfg.py'
+                sedcmd += '\"'
+                if (opt.run_option == 'process') :
+                    cfgfile = opt.outdir +'/configuration_files/event_analysis/' + origdtag + '_' + str(segment) + '_cfg.py'
+                if (opt.run_option == 'hadd') :
+                    cfgfile = opt.outdir +'/configuration_files/hadd/' + origdtag + '_' + str(segment) + '_cfg.py'
+
                 os.system('cat ' + opt.cfg_file + ' | ' + sedcmd + ' > ' + cfgfile)
 
-                #run the job
-               
+            #run the job
+
                 if len(opt.queue) == 0 :
                     os.system(opt.theExecutable + 
                               ' ' + cfgfile + 
-                              ' process'  )
-                              #+ ' >selection_FOR_muon_channel_Data8TeV_SingleMu2012A_0.txt')
+                              ' ' + str(opt.run_option)
+                              )
                 else :
                     LaunchOnCondor.SendCluster_Push(["BASH", str(opt.theExecutable + 
                                                                  ' ' + cfgfile + 
-                                                                 ' process')])
-LaunchOnCondor.SendCluster_Submit()
-
-                
+                                                                 ' ' + str(opt.run_option)
+                                                                 )
+                                                                ])
+                #raw_input('press Enter')
+LaunchOnCondor.SendCluster_Submit()                

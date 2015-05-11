@@ -4,7 +4,8 @@
 #include "LIP/TauAnalysis/interface/llvvObjects.h"
 #include "TLorentzVector.h"
 #include "TVectorD.h"
-
+#include <vector>
+using namespace std;
 
 class Object
 {
@@ -40,6 +41,10 @@ public:
   Lepton(const LorentzVector);
   Lepton(const LorentzVectorF);
   virtual void ls(const char* = "") const;
+  //virtual void ListLorentzVector() const;
+
+  float d0;
+  float dZ;
   char charge;
   double relative_isolation;
   int idbits;
@@ -54,12 +59,15 @@ public:
   Electron(const TLorentzVector * const, const TVectorD * const);
   Electron(const llvvLepton);
   virtual void ls(const char * = "") const;
-  double relative_isolation;
-  union
+  virtual void ListLorentzVector() const;
+
+  struct 
   {
     float mvatrigv0;
-    bool isConv;
+    float sceta;
+    bool  isConv;
   } el_info;
+  
   virtual ~Electron() = default;
   
 };
@@ -73,7 +81,6 @@ public:
   Muon(const llvvLepton);
 
   virtual void ls(const char * = "") const;
-  double relative_isolation;
   virtual ~Muon() = default;
 };
 
@@ -84,9 +91,12 @@ public:
   Tau();
   Tau(const TLorentzVector * const, const TVectorD * const);
   Tau(const llvvTau);
+  vector<TLorentzVector> tracks;
   bool passID(const uint64_t IdBit) const;
+  unsigned long idbits;
   bool isPF;
-  float dZ, emfraction;
+  float emfraction;
+  void ls_tracks() const;
   virtual void ls(const char * = "") const;
   virtual ~Tau() =  default;
 };

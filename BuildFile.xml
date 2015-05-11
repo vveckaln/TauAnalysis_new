@@ -2,8 +2,31 @@
 <use name="FWCore/PythonParameterSet"/>
 <use name="FWCore/ParameterSet"/>
 <use name="DataFormats/FWLite"/>
+<use name="CLHEP"/>
 <use name="boost"/>
 <use name="root"/>
+<use name="roofit"/>
+<use name="roostats"/>
+<use name="DataFormats/Common"/>
+<use name="FWCore/Utilities"/>
+<use name="FWCore/Framework"/>
+<use name="FWCore/ParameterSet"/>
+<use name="FWCore/FWLite"/>
+<use name="DataFormats/FWLite"/>
+<use name="FWCore/ServiceRegistry"/>
+<use name="FWCore/Services"/>
+<use name="DataFormats/VertexReco"/>
+<use name="DataFormats/BeamSpot"/>
+<use name="DataFormats/EgammaCandidates"/>
+<use name="DataFormats/PatCandidates"/>
+<use name="SimDataFormats/GeneratorProducts"/>
+<use name="CondFormats/JetMETObjects"/>
+<use name="RecoEcal/EgammaCoreTools"/>
+<use name="RecoEgamma/EgammaTools"/>
+<use name="PhysicsTools/UtilAlgos"/>
+<use name="PhysicsTools/Utilities"/>
 <export>
-  <lib name="1"/>
+<lib name="1"/>
 </export>
+<flags CXXFLAGS="-g" />
+<flags LDFLAGS="-lXMLIO" />

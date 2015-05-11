@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<samples>
+
+    <sample sample_title="data single #mu"                      color="kWhite"      marker="21" id="1"       >Data8TeV_SingleMu2012</sample>
+    <sample sample_title="data single #mu 2012A"                color="kWhite"  marker="21" id="1_1"     >Data8TeV_SingleMu2012A</sample>
+    <sample sample_title="data single #mu 2012B"                color="kWhite" marker="21" id="1_2"     >Data8TeV_SingleMu2012B</sample>
+    <sample sample_title="data single #mu 2012C"                color="kWhite"   marker="21" id="1_3"     >Data8TeV_SingleMu2012C</sample>
+    <sample sample_title="data single #mu 2012D"                color="kWhite"    marker="21" id="1_4"     >Data8TeV_SingleMu2012D</sample>
+   
+</samples>
+ 

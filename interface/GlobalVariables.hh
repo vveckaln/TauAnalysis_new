@@ -17,7 +17,9 @@ namespace gVariables
   extern bool           gIsData;
   extern double         gXSection;
   extern bool           gDebug; 
-  extern int            gmctruthmode;
+  extern unsigned char  gmctruthmode;
+  extern unsigned char  gfile_split;
+  extern unsigned char  gsegment;
   extern vector<int>    gjacknifeCfg; 
   extern TString        gInputFileName; 
   extern TString        gOutputFileName;

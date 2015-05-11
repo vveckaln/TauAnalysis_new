@@ -54,16 +54,16 @@ void HistogramPool::SetTitle(const char * directory_title)
   this -> directory_title = directory_title;
 }
 
-void HistogramPool::AddObjects(const vector<HistogramDescriptor> * object_descriptors)
+void HistogramPool::AddObjects(const vector<HistogramDescriptor> * object_descriptors, const char * append)
 {
   char str[4];
   sprintf(str, "%u", instances);
-  TString append = str;
+  TString append_inst = str;
   for (unsigned char obj_ind = 0; obj_ind < object_descriptors -> size(); obj_ind ++){
     
     TString title =  (temporary)?
-      object_descriptors -> at(obj_ind).histogram_title + append :
-      object_descriptors -> at(obj_ind).histogram_title;
+      object_descriptors -> at(obj_ind).histogram_title + append_inst :
+      object_descriptors -> at(obj_ind).histogram_title + append;
     TH1D *obj = new TH1D (
 			  title, 
 			  object_descriptors -> at(obj_ind).histogram_title,
@@ -111,9 +111,10 @@ void HistogramPool::AddEntryToLegend(TLegend *& legend, const char* label, Optio
 void HistogramPool::Normalise(HistogramPool *other)
 {
   
-  for (it = object_map.begin(); it != object_map.end(); ++it){
-    const double ratio = other -> object_map . at(it -> first) -> Integral()/it-> second -> Integral();
-    it -> second -> Scale(ratio);
+  for (it = object_map.begin(); it != object_map.end(); ++it)
+    {
+      const double ratio = other -> object_map . at(it -> first) -> Integral()/it-> second -> Integral();
+      it -> second -> Scale(ratio);
   }
 }
 

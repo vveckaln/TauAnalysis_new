@@ -18,9 +18,12 @@
 
 #include <vector>
 using namespace std;
-
+class HStructure_TFile;
+class HStructure_worker;
 namespace cpHistogramPoolRegister{
   //********************* CENTRAL PROCESSOR HISTOGRAM POOL REGISTER ******
+  extern HStructure_TFile * active_HStructure_TFile;
+  extern HStructure_worker * hstruct_worker;
   extern HistogramPool *histogram_pool;
   extern MapOfObjectPools<TH1D> *mapOfHistogramPools; 
   extern MapOfObjectPools<TH1D> *mapOfSelectorHistoPools; 
@@ -46,6 +49,14 @@ namespace cpHistogramPoolRegister{
   extern JetCorrectionUncertainty * jetCorrectionUncertainty;
   extern fwlite::ChainEvent * fwlite_ChainEvent_ptr;
   extern edm::LumiReWeighting* gLumiWeights[2];
+  extern const unsigned short * number_of_samples;
+  extern unsigned short number_active_sample;
+  extern const TString * samples_names;
+  extern bool IsTTbarMC;
+  extern bool IsSingleMuPD;
+  extern bool IsDY;
+  extern bool IstW;
+  extern bool IsGeneric;
   //********************** PROGRAMMED UNCERTAINTIES **********************
   extern const uint number_uncertainties;
   extern const uint number_subuncertainties;

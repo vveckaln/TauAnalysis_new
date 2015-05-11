@@ -1,6 +1,8 @@
 #ifndef _ObjectPool_hh
 #define _ObjectPool_hh
 #include "LIP/TauAnalysis/interface/HistogramDescriptor.hh"
+#include "LIP/TauAnalysis/interface/HierarchicalObjectPool.hh"
+
 #include <vector>
 #include <map>
 #include "TString.h"
@@ -9,16 +11,43 @@
 
 class TCanvasPool;
 using namespace std;
+
+
 template<class Object>
-class ObjectPool{
+class ObjectPool: public HierarchicalObjectPool
+{
 protected:
   TString title;
   TString directory_name;
 public:
   ObjectPool(const char* = "");
+  struct iterator
+  {
+    iterator(typename map<TString, Object*>::iterator it): it(it) {};
+    typename map<TString, Object *>::iterator it;
+    typename map<TString, Object *>::iterator & Get() {return it;};
+    iterator & operator =(const typename map<TString, Object*>::const_iterator & it) 
+    {
+      this -> it = it; return *this;
+    };
+    ~iterator() {};
+  };
+
+  struct const_iterator
+  {
+    const_iterator(typename map<TString, Object*>::const_iterator cit): cit(cit) {};
+    typename map<TString, Object *>::const_iterator cit;
+    typename map<TString, Object *>::iterator & Get() {return cit;};
+    iterator & operator =(const typename map<TString, Object*>::const_iterator & cit) 
+    {
+      this -> cit = cit; return *this;
+    };
+    ~const_iterator() {};
+  };
   typename map<TString, Object *>::iterator it;
   typename map<TString, Object *>::const_iterator cit;
   map<TString, Object*> object_map;
+  map<TString, Object*> *operator -> (){return &object_map;};
   ObjectPool(const vector<HistogramDescriptor> * );
   Object *&operator[](const TString);
   Object *& at(const TString);
@@ -31,9 +60,9 @@ public:
   void SetAllYaxesTitle(const char*) const;
   void SetYaxesTitle(const vector<HistogramDescriptor> *) const;
   void Sumw2() const;
-  void GetFromFile(const vector<HistogramDescriptor> * , TFile *, const char* = "");
-  void ls() const;
-  void Write();
+  virtual void GetFromFile(const vector<HistogramDescriptor> * , TFile *, const char* = "");
+  virtual void ls() const;
+  virtual void Write(const char * name = NULL, const char * removal = 0);
   void SetFillColor(Color_t);
   void SetMarkerStyle(Style_t);
   void SetDirectoryName(const char *);

@@ -5,6 +5,8 @@
 
 #include "DataFormats/FWLite/interface/ChainEvent.h"
 #include "DataFormats/FWLite/interface/Handle.h"
+#include "DataFormats/HepMCCandidate/interface/GenParticle.h"
+
 
 #include <iostream>
 using namespace cpFileRegister;
@@ -27,7 +29,7 @@ void FileReader::Run()
   //getchar();
   output_buffer = new EventBuffer<ReadEvent_llvv>(10);
   const unsigned long totalEntries = fwlite_ChainEvent.size();
-  const uint division = gVariables::gDebug ? 20 : 1;
+  const uint division = gVariables::gDebug ? 40 : 1;
   for (unsigned long entry_ind = 0; entry_ind < totalEntries/division; entry_ind ++)
     {
       ReadEvent_llvv read_event;// = output_buffer -> GetWriteSlot(); 
@@ -76,7 +78,10 @@ void FileReader::Run()
       fwlite::Handle< llvvTauCollection > tauCollHandle;
       tauCollHandle.getByLabel(fwlite_ChainEvent, "llvvObjectProducersUsed");
       read_event.taus = *tauCollHandle;   
-
+      for (unsigned int ind = 0; ind < (*tauCollHandle).size(); ind ++)
+	{
+	  printf("size %lu %lu\n", read_event.taus[ind].tracks.size(), (*tauCollHandle)[ind].tracks.size() );
+	}
       fwlite::Handle< double > rhoHandle;
       rhoHandle.getByLabel(fwlite_ChainEvent, "kt6PFJets", "rho");
       if(!rhoHandle.isValid()){printf("rho Object NotFound\n");continue;}
@@ -86,8 +91,10 @@ void FileReader::Run()
 	 
 	  if (abs(read_event.leptons[lepton_ind].id) ==11)
 	    {
-	      read_event.leptons[lepton_ind].el_info = * read_event.leptons[lepton_ind].electronInfoRef.get();
-	      
+	      read_event.leptons[lepton_ind].el_info    = *read_event.leptons[lepton_ind].electronInfoRef.get();
+	      /*printf("IsConv %s %s\n", read_event . leptons[lepton_ind].el_info.isConv ? "true" : "false", read_event . leptons[lepton_ind].electronInfoRef->isConv ? "true" : "false");
+	      printf("mvatrigv0 %f %f\n", read_event . leptons[lepton_ind].el_info.mvatrigv0, read_event . leptons[lepton_ind].electronInfoRef->mvatrigv0);
+	      printf("sceta %f %f\n",  read_event . leptons[lepton_ind].el_info.sceta,        read_event. leptons[lepton_ind].electronInfoRef->sceta);*/
 	    }
 	}
       
@@ -100,7 +107,13 @@ void FileReader::Run()
       genPartCollHandle.getByLabel(fwlite_ChainEvent, "llvvObjectProducersUsed");
       if(!genPartCollHandle.isValid()){printf("llvvGenParticleCollection Object NotFound\n");continue;}
       read_event.gen = *genPartCollHandle;
-
+      /*printf("%lu %lu\n", read_event.gen.size(), genPartCollHandle -> size());
+      for (unsigned long ind = 0; ind < genPartCollHandle -> size(); ind ++)
+	{
+	  const reco::GenParticle & p = (*genPartCollHandle)[ind];
+	  printf("daughters %lu\n", p.numberOfDaughters());
+	}
+	getchar();*/
       read_event.Run         = fwlite_ChainEvent.eventAuxiliary().run();
       read_event.Lumi        = fwlite_ChainEvent.eventAuxiliary().luminosityBlock();
       read_event.Event       = fwlite_ChainEvent.eventAuxiliary().event();

@@ -6,6 +6,8 @@
 #include "LIP/TauAnalysis/interface/HistogramDescriptor.hh"
 #include "LIP/TauAnalysis/interface/DataSampleDescriptor.hh"
 #include "LIP/TauAnalysis/interface/ParserHashes.hh"
+#include "LIP/TauAnalysis/interface/HStructure.hh"
+
 #include <TString.h>
 #include "TXMLEngine.h" // needs '<flags LDFLAGS="-lXMLIO">' in the BuildFile
 
@@ -14,20 +16,31 @@ using namespace parserHashes;
 
 class Parser
 {
+protected:
+  map<TString, Style_t> style_map;
+  map<TString, Color_t> color_map;
+  void LoadColors();
+  void LoadStyles();
+  TXMLEngine *xml;
+  const char* ProcessChild(XMLNodePointer_t processnode);
 public:
   Parser();
   vector <HistogramDescriptor>* ParseHistogramSpecifier(const char *);
   vector <DataSampleDescriptor>* ParseDataSampleDescriptor(const char *);
+  HStructure * CreateHierarchicalStructure(const char*);
+
   vector <TString>* Parse(const char * input_xml_file);
   ~Parser();
-  void LoadColors();
-  void LoadStyles();
-protected:
-  map<TString, Style_t> style_map;
-  map<TString, Color_t> color_map;
-  TXMLEngine *xml;
-  const char* ProcessChild(XMLNodePointer_t processnode);
   
+  Color_t GetColor(const char* ) const;
+  Style_t GetStyle(const char* ) const;
+};
+struct dynamic_structure
+{
+  dynamic_structure();
 
+  HStructure *current;
+  dynamic_structure *previous;
+  dynamic_structure *next;
 };
 #endif

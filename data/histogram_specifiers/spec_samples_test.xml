@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<samples>
+
+    <sample sample_title="MC"                                            color="3"    id="1"       >MC8TeV</sample>
+    <sample sample_title="t#bar{t}#rightarrowl#tau_{h}+X"                color="kBlue"  id="1_1"     >MC8TeV_TTJetsMassiveBinDecay_muon_tau</sample>
+    
+  
+    <sample sample_title="other t#bar{t}"                                color="kGreen"  id="1_2"     >MC8TeV_TTJetsMassiveBinDecay_other_ttbar</sample>
+    <sample sample_title="QCD"                                           color="kRed"  id="1_3"     >MC8TeV_QCD</sample>
+        
+    <sample sample_title="lepton+jets"                                   color="822"  id="1_2_1"   >MC8TeV_TTJetsMassiveBinDecay_lepton_jets</sample>
+    <sample sample_title="dilepton: e#mu"                                color="822"  id="1_2_2"   >MC8TeV_TTJetsMassiveBinDecay_dilepton_muon_electron</sample>
+    <sample sample_title="dilepon: #mu#mu"                               color="822"  id="1_2_3"   >MC8TeV_TTJetsMassiveBinDecay_dilepton_muon_muon</sample>
+   
+    
+    <sample sample_title="QCD Pt30to80"                                  color="822"  id="1_3_1"   >MC8TeV_QCDPt30to80</sample>
+    <sample sample_title="QCD Pt80to170"                                 color="822"  id="1_3_2"   >MC8TeV_QCDPt80to170</sample>
+   
+
+</samples>
+ 

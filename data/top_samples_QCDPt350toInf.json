@@ -1,0 +1,14 @@
+{
+  "proc":[
+     {
+      "tag":"VV",
+      "isdata":false,
+      "color":592,
+      "lcolor":1,
+      "marker":1,
+      "data":[
+       { "dtag":"MC8TeV_QCDPt350toInf" , "split":2, "xsec":810 , "br":[ 0.11 ] , "dset":"/QCD_Pt_350_EMEnriched_TuneZ2star_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM" }
+      ]
+    }
+  ]
+}

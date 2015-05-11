@@ -7,7 +7,9 @@ namespace gVariables
   bool           gIsData;
   double         gXSection;
   bool           gDebug; 
-  int            gmctruthmode;
+  unsigned char  gmctruthmode;
+  unsigned char  gfile_split;
+  unsigned char  gsegment;
   vector<int>    gjacknifeCfg; 
   TString        gInputFileName; 
   TString        gOutputFileName;

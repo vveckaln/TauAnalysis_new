@@ -22,6 +22,13 @@ public:
   void StartTApplication() const;
   void TerminateTApplication() const;
   void SumData() const;
+  void ProduceTotal() const;
+  void SetEnvironment() const;
+  void SetEnvironment_TTbarMC() const;
+  void SetEnvironment_DY() const;
+  void SetEnvironment_tW() const;
+  void OpenOutputFiles() const;
+  void ProduceTauFakes() const;
   void CloseRegisters();
   virtual ~CentralProcessor();
 

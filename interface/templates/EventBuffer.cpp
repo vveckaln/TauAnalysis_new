@@ -14,44 +14,52 @@ EventBuffer<TEvent>::EventBuffer(const unsigned long capacity): capacity(capacit
 } 
 
 template <class TEvent>
-TEvent & EventBuffer<TEvent>::GetWriteSlot() const{
+TEvent & EventBuffer<TEvent>::GetWriteSlot() const
+{
   return buffer[consumed];
 }
 
 template <class TEvent>
-void EventBuffer<TEvent>::PushWriteSlot(){
+void EventBuffer<TEvent>::PushWriteSlot()
+{
   consumed ++;
 }
 
 template <class TEvent>
-bool EventBuffer<TEvent>::IsFull() const{
+bool EventBuffer<TEvent>::IsFull() const
+{
   return consumed >= capacity;
 }
 
 template <class TEvent>
-bool EventBuffer<TEvent*>::IsFull() const{
+bool EventBuffer<TEvent*>::IsFull() const
+{
   return consumed >= capacity;
 }
 
 template <class TEvent>
-bool EventBuffer<TEvent>::IsEmpty() const{
+bool EventBuffer<TEvent>::IsEmpty() const
+{
   return consumed == 0;
 }
 
 template <class TEvent>
-unsigned long EventBuffer<TEvent>::size() const{
+unsigned long EventBuffer<TEvent>::size() const
+{
   return consumed;
 }
 
 
 template <class TEvent>
-unsigned long EventBuffer<TEvent>::GetCapacity() const{
+unsigned long EventBuffer<TEvent>::GetCapacity() const
+{
   return capacity;
 }
 
 template <class TEvent>
-TEvent & EventBuffer<TEvent>::operator[] (const unsigned long index) const{
-       return buffer[index];
+TEvent & EventBuffer<TEvent>::operator[] (const unsigned long index) const
+{
+  return buffer[index];
 }
 
 
@@ -59,11 +67,12 @@ TEvent & EventBuffer<TEvent>::operator[] (const unsigned long index) const{
 template <class TEvent>
 EventBuffer<TEvent>::~EventBuffer()
 {
-  for (unsigned ind = 0; ind < this -> size(); ind ++){
-    buffer[ind] . Close();
-  }	
+  for (unsigned ind = 0; ind < this -> size(); ind ++)
+    {
+      buffer[ind] . Close();
+    }	
   //free((TEvent*)buffer);
- delete [] buffer;
+  delete [] buffer;
 }
 
 template <class TEvent>
@@ -71,17 +80,18 @@ EventBuffer<TEvent*>::EventBuffer(const unsigned long capacity, const char * opt
 {
   //buffer = (TEvent**) malloc(sizeof(TEvent)*capacity);
   buffer = new TEvent*[capacity];
-  IsIndependent = (TString(option) == "dependent") ? false : true;
+  IsIndependent = (TString(option) == "independent");
   for (uint ind = 0; ind < capacity; ind ++)
-  {
-    buffer[ind] = (IsIndependent) ? new TEvent() : NULL;
-  }
+    {
+      buffer[ind] = (IsIndependent) ? new TEvent() : NULL;
+    }
   consumed = 0;
   //printf("constructed pointer buffer\n");
 } 
 
 template <class TEvent>
-void EventBuffer<TEvent*>::DeepCopy(const EventBuffer<TEvent*>* const other_buffer){
+void EventBuffer<TEvent*>::DeepCopy(const EventBuffer<TEvent*>* const other_buffer)
+{
   IsIndependent = true;
   new (this) EventBuffer<TEvent*>(other_buffer -> GetCapacity());
   
@@ -101,15 +111,17 @@ EventBuffer<TEvent*>::EventBuffer(const EventBuffer<TEvent*>* const other_buffer
   IsIndependent = true;
   consumed = other_buffer -> size();
   capacity = other_buffer -> GetCapacity();
-  buffer = (TEvent**) malloc(sizeof(TEvent)*capacity);
+  typedef TEvent * tp;
+  //buffer = (TEvent**) malloc(sizeof(TEvent)*capacity);
+  buffer = new tp[capacity];
   for (uint ind = 0; ind < other_buffer -> GetCapacity(); ind ++)
-  {
-    buffer[ind] = new TEvent(); 
-  }
+    {
+      buffer[ind] = new TEvent(); 
+    }
   for (uint ind = 0; ind < other_buffer -> size(); ind ++)
-  {
-    *buffer[ind] = *other_buffer -> operator[](ind); 
-  }      
+    {
+      *buffer[ind] = *other_buffer -> operator[](ind); 
+    }      
 }
 
 template <class TEvent>
@@ -146,13 +158,14 @@ template <class TEvent>
 EventBuffer<TEvent*>::~EventBuffer()
 {
   //printf("%s\n", IsIndependent ? "true": "false");	
-  if (not IsIndependent) 
-  {
-     for (ushort ind = 0; ind < consumed; ind ++){
-       buffer[ind] -> Close();
-       delete buffer[ind];
-     }
-  }
+  if (IsIndependent) 
+    {
+      for (ushort ind = 0; ind < consumed; ind ++)
+	{
+	  buffer[ind] -> Close();
+	  delete buffer[ind];
+	}
+    }
   //free((TEvent**)buffer);
   delete [] buffer;
  //printf("destructed pointer buffer\n");

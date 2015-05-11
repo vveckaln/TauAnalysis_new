@@ -1,0 +1,15 @@
+{
+  "proc":[
+    {
+       "tag":"other t#bar{t}",
+      "isdata":false,
+      "color":822,
+      "lcolor":1,
+      "mctruthmode":1,
+      "data":[
+        { "dtag":"MC8TeV_TTJetsMassiveBinDecay"                     , "split":15, "xsec":245.8       , "br":[ 1.0 ]                 , "dset":"Unknown"        }
+       
+      ]
+    }
+  ]
+}

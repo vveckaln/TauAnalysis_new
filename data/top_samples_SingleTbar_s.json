@@ -1,0 +1,14 @@
+{
+  "proc":[
+     {
+      "tag":"VV",
+      "isdata":false,
+      "color":592,
+      "lcolor":1,
+      "marker":1,
+      "data":[
+      { "dtag":"MC8TeV_SingleTbar_s" , "split":1, "xsec":1.76 , "br":[ 1.0 ] , "dset":"/Tbar_s-channel_TuneZ2star_8TeV-powheg-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM" }
+      ]
+    }
+  ]
+}

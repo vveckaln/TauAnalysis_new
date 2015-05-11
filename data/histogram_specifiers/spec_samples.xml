@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<samples>
+
+    <sample sample_title="MC"                                            color="3"    id="1"       >MC8TeV</sample>
+    
+    <sample sample_title="t#bar{t}#rightarrowl#tau_{h}+X"                color="614"  id="1_1"     >MC8TeV_TTJetsMassiveBinDecay_muon_tau</sample>
+    <sample sample_title="other t#bar{t}"                                color="822"  id="1_2"     >MC8TeV_TTJetsMassiveBinDecay_other_ttbar</sample>
+    <sample sample_title="single t"                                      color="824"  id="1_3"     >MC8TeV_single_t</sample>
+    <sample sample_title="diboson"                                       color="592"  id="1_4"     >MC8TeV_diboson</sample>
+    <sample sample_title="DY+jets"                                       color="831"  id="1_5"     >MC8TeV_DYJetsToLL</sample>
+    <sample sample_title="W+jets"                                        color="kRed" id="1_6"     >MC8TeV_WJets</sample>
+    <sample sample_title="QCD"                                           color="809"  id="1_7"     >MC8TeV_QCD</sample>
+    
+    <sample sample_title="lepton+jets"                                   color="822"  id="1_2_1"   >MC8TeV_TTJetsMassiveBinDecay_lepton_jets</sample>
+    <sample sample_title="dilepton: e#mu"                                color="822"  id="1_2_2"   >MC8TeV_TTJetsMassiveBinDecay_dilepton_muon_electron</sample>
+    <sample sample_title="dilepon: #mu#mu"                               color="822"  id="1_2_3"   >MC8TeV_TTJetsMassiveBinDecay_dilepton_muon_muon</sample>
+    <sample sample_title="#tau#tau"                                      color="822"  id="1_2_5"   >MC8TeV_TTJetsMassiveBinDecay_tau_tau</sample>
+    <sample sample_title="#tau + jets"                                   color="592"  id="1_2_6"   >MC8TeV_TTJetsMassiveBinDecay_tau_jets</sample>
+    <sample sample_title="hadronic"                                      color="822"  id="1_2_7"   >MC8TeV_TTJetsMassiveBinDecay_hadronic</sample>
+    
+    <sample sample_title="QCD Pt30to80"                                  color="822"  id="1_7_1"   >MC8TeV_QCDPt30to80</sample>
+    <sample sample_title="QCD Pt80to170"                                 color="822"  id="1_7_2"   >MC8TeV_QCDPt80to170</sample>
+    <sample sample_title="QCD Pt170to250"                                color="822"  id="1_7_3"   >MC8TeV_QCDPt170to250</sample>
+    <sample sample_title="QCD Pt250to350"                                color="822"  id="1_7_4"   >MC8TeV_QCDPt250to350</sample>
+    <sample sample_title="QCD Pt350toInf"                                color="822"  id="1_7_5"   >MC8TeV_QCDPt350toInf</sample>
+
+    <sample sample_title="DY 10to50 #tau#tau"                            color="822"  id="1_5_1"   >MC8TeV_DYJetsToLL_10to50_tau_tau_jets</sample>
+    <sample sample_title="DY 10to50 lepton+lepton"                       color="822"  id="1_5_2"   >MC8TeV_DYJetsToLL_10to50_lepton_lepton_jets</sample>
+    <sample sample_title="DY 50toInf #tau#tau"                           color="822"  id="1_5_3"   >MC8TeV_DYJetsToLL_50toInf_tau_tau_jets</sample>
+    <sample sample_title="DY 50toInf lepton+lepton"                      color="822"  id="1_5_4"   >MC8TeV_DYJetsToLL_50toInf_lepton_lepton_jets</sample>
+
+    <sample sample_title="WW"                                            color="592"  id="1_4_1"   >MC8TeV_WW</sample>
+    <sample sample_title="WZ"                                            color="592"  id="1_4_2"   >MC8TeV_WZ</sample>
+    <sample sample_title="ZZ"                                            color="592"  id="1_4_3"   >MC8TeV_ZZ</sample>
+
+    <sample sample_title="single t and #bar{t} s-ch"                     color="592"  id="1_3_1"   >MC8TeV_SingleTandTbar_s</sample>
+    <sample sample_title="single t and #bar{t} t-ch"                     color="592"  id="1_3_2"   >MC8TeV_SingleTandTbar_t</sample>
+    <sample sample_title="single t and #bar{t}W dilepton: #mu#tau"       color="592"  id="1_3_3"   >MC8TeV_SingleTandTbar_tW_dilepton_muon_tau</sample>
+    <sample sample_title="single t and #bar{t}W dilepton: e#mu"          color="592"  id="1_3_4"   >MC8TeV_SingleTandTbar_tW_dilepton_muon_electron</sample>
+    <sample sample_title="single t and #bar{t}W dilepton: #mu#mu"        color="592"  id="1_3_5"   >MC8TeV_SingleTandTbar_tW_dilepton_muon_muon</sample>
+    <sample sample_title="single t and #bar{t}W lepton +jets"            color="592"  id="1_3_6"   >MC8TeV_SingleTandTbar_tW_lepton_jets</sample>
+    <sample sample_title="single t and #bar{t}W #tau + jets"             color="592"  id="1_3_7"   >MC8TeV_SingleTandTbar_tW_tau_jets</sample>
+    <sample sample_title="single t and #bar{t}W #tau#tau"                color="592"  id="1_3_8"   >MC8TeV_SingleTandTbar_tW_tau_tau</sample>
+    <sample sample_title="single t and #bar{t}W hadronic"                color="592"  id="1_3_9"   >MC8TeV_SingleTandTbar_tW_hadronic</sample>
+
+    <sample sample_title="single t s-ch"                                 color="592"  id="1_3_1_1" >MC8TeV_SingleT_s</sample>
+    <sample sample_title="single #bar{t} s-ch"                           color="592"  id="1_3_1_2" >MC8TeV_SingleTbar_s</sample>
+    
+    <sample sample_title="single t t-ch"                                 color="592"  id="1_3_2_1" >MC8TeV_SingleT_t</sample>
+    <sample sample_title="single #bar{t} t-ch"                           color="592"  id="1_3_2_2" >MC8TeV_SingleTbar_t</sample>
+   
+    <sample sample_title="single tW : #mu#tau"                   color="592"  id="1_3_3_1" >MC8TeV_SingleT_tW_muon_tau</sample>
+    <sample sample_title="single #bar{t}W : #mu#tau"             color="592"  id="1_3_3_2" >MC8TeV_SingleTbar_tW_muon_tau</sample>
+   
+    <sample sample_title="single tW dilepton: e#mu"                      color="592"  id="1_3_4_1" >MC8TeV_SingleT_tW_dilepton_muon_electron</sample>
+    <sample sample_title="single #bar{t}W dilepton: e#mu"                color="592"  id="1_3_4_2" >MC8TeV_SingleTbar_tW_dilepton_muon_electron</sample>
+
+    <sample sample_title="single tW dilepton: #mu#mu"                    color="592"  id="1_3_5_1" >MC8TeV_SingleT_tW_dilepton_muon_muon</sample>
+    <sample sample_title="single #bar{t}W dilepton: #mu#mu"              color="592"  id="1_3_5_2" >MC8TeV_SingleTbar_tW_dilepton_muon_muon</sample>
+    
+    <sample sample_title="single tW lepton +jets"                        color="592"  id="1_3_6_1" >MC8TeV_SingleT_tW_lepton_jets</sample>
+    <sample sample_title="single #bar{t}W lepton +jets"                  color="592"  id="1_3_6_2" >MC8TeV_SingleTbar_tW_lepton_jets</sample>
+ 
+    <sample sample_title="single tW #tau + jets"                         color="592"  id="1_3_7_1" >MC8TeV_SingleT_tW_tau_jets</sample>
+    <sample sample_title="single #bar{t}W #tau + jets"                   color="592"  id="1_3_7_2" >MC8TeV_SingleTbar_tW_tau_jets</sample>
+ 
+    <sample sample_title="single tW #tau#tau"                            color="592"  id="1_3_8_1" >MC8TeV_SingleT_tW_tau_tau</sample>
+    <sample sample_title="single #bar{t}W #tau#tau"                      color="592"  id="1_3_8_2" >MC8TeV_SingleTbar_tW_tau_tau</sample>
+
+    <sample sample_title="single tW hadronic"                            color="592"  id="1_3_9_1" >MC8TeV_SingleT_tW_hadronic</sample>
+    <sample sample_title="single #bar{t}W hadronic"                      color="592"  id="1_3_9_2" >MC8TeV_SingleTbar_tW_hadronic</sample>
+</samples>
+ 

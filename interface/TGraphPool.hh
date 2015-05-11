@@ -10,7 +10,8 @@
 
 using namespace std;
 
-class TGraphPool: public ObjectPool<TGraph>{
+class TGraphPool: public ObjectPool<TGraph>
+{
 public:
   TGraphPool();
   void ConstructRatioGraphs(HistogramPool *, HistogramPool *);

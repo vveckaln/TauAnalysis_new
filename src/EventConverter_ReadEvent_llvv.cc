@@ -22,31 +22,10 @@ EventConverter<ReadEvent_llvv>::EventConverter(EventSink<DigestedEvent*> * next_
 template<>
 void EventConverter<ReadEvent_llvv>::Run()
 {
-  output_buffer = new EventBuffer<DigestedEvent*>(10, "dependent");
+  output_buffer = new EventBuffer<DigestedEvent*>(10, "independent");
   for (ulong entry_ind = 0; entry_ind < input_buffer -> size(); entry_ind ++)
   {
     const ReadEvent_llvv * const read_event = &(*input_buffer)[entry_ind];
-    bool hasTop(false);
-    unsigned short ngenLeptonsStatus3(0);
-    if(not gIsData)
-      {
-	for(size_t igen=0; igen < read_event -> gen.size(); igen++)
-	  {
-	    if(read_event -> gen[igen].status != 3) continue;
-	    const int absid = abs(read_event -> gen[igen].id);
-	    if(absid == 6)
-	      {
-		hasTop = true;
-	      }
-	    if(absid!=11 && absid!=13 && absid!=15) continue;
-	    ngenLeptonsStatus3 ++;
-	  }
-	if(gmctruthmode == 1 && (ngenLeptonsStatus3 != 2 || !hasTop)) continue;
-	if(gmctruthmode == 2 && (ngenLeptonsStatus3 == 2 || !hasTop)) continue;
-	
-      }
-    
-    
     output_buffer -> GetWriteSlot() = ConvertEvent(read_event);
     output_buffer -> PushWriteSlot();
 
@@ -91,10 +70,16 @@ DigestedEvent* EventConverter<ReadEvent_llvv>::ConvertEvent(const ReadEvent_llvv
       if (abs(read_event -> leptons[lepton_ind].id) == 11)
 	{
 	  Electron electron(read_event -> leptons[lepton_ind]);
-	  electron.relative_isolation = relative_isolation;
-	  electron.idbits = read_event -> leptons[lepton_ind].idbits;
-	  electron.el_info.isConv = read_event -> leptons[lepton_ind].el_info.isConv;
-	  electron.el_info.mvatrigv0 = read_event -> leptons[lepton_ind].el_info.mvatrigv0;
+	  electron.relative_isolation   = relative_isolation;
+	  electron.idbits               = read_event -> leptons[lepton_ind].idbits;
+	  electron.dZ                   = read_event -> leptons[lepton_ind].dZ;
+	  electron.d0                   = read_event -> leptons[lepton_ind].d0;
+	  electron.el_info.isConv       = read_event -> leptons[lepton_ind].el_info.isConv;
+	  electron.el_info.mvatrigv0    = read_event -> leptons[lepton_ind].el_info.mvatrigv0;
+	  electron.el_info.sceta        = read_event -> leptons[lepton_ind].el_info.sceta;
+	  /*printf("Converter IsConv %s %s\n", electron.el_info.isConv ? "true" : "false", read_event -> leptons[lepton_ind].el_info.isConv ? "true" : "false");
+	   printf("Converter mvatrigv0 %f %f\n", electron.el_info.mvatrigv0, read_event->leptons[lepton_ind].el_info.mvatrigv0);
+	   printf("Converter sceta %f %f\n",  electron.el_info.sceta,        read_event->leptons[lepton_ind].el_info.sceta);*/
 	  brokenDownEvent -> Electrons . push_back( electron );
 	  
 	} 
@@ -102,6 +87,8 @@ DigestedEvent* EventConverter<ReadEvent_llvv>::ConvertEvent(const ReadEvent_llvv
       if (abs(read_event -> leptons[lepton_ind].id) == 13)
 	{
 	  Muon muon( Muon(read_event -> leptons[lepton_ind]));
+	  muon.dZ                   = read_event -> leptons[lepton_ind].dZ;
+	  muon.d0                   = read_event -> leptons[lepton_ind].d0;
 	  muon . relative_isolation = relative_isolation;
 	  muon.idbits = read_event -> leptons[lepton_ind].idbits;
 	  brokenDownEvent -> Muons . push_back( muon);
@@ -115,6 +102,11 @@ DigestedEvent* EventConverter<ReadEvent_llvv>::ConvertEvent(const ReadEvent_llvv
       tau.isPF       = read_event -> taus[tau_ind].isPF;
       tau.dZ         = read_event -> taus[tau_ind].dZ;
       tau.emfraction = read_event -> taus[tau_ind].emfraction;
+      for (unsigned int ind = 0; ind < read_event -> taus[tau_ind].tracks.size(); ind ++)
+	{
+	  const LorentzVectorF * const l = & read_event -> taus[tau_ind].tracks[ind];
+	  tau.tracks.push_back(TLorentzVector(l -> Px(), l -> Py(), l -> Pz(), l -> E()));
+	}
       brokenDownEvent -> Taus.push_back( tau );
     }  
     
@@ -137,7 +129,40 @@ DigestedEvent* EventConverter<ReadEvent_llvv>::ConvertEvent(const ReadEvent_llvv
   brokenDownEvent -> Run         = read_event -> Run;
   brokenDownEvent -> Lumi        = read_event -> Lumi;
   brokenDownEvent -> Event       = read_event -> Event;
-
+  
+  brokenDownEvent -> hasTop              = false;
+  brokenDownEvent -> ngenElectronStatus3 = 0;
+  brokenDownEvent -> ngenMuonStatus3     = 0;
+  brokenDownEvent -> ngenTauStatus3      = 0;
+  brokenDownEvent -> tPt                 = 0;
+  brokenDownEvent -> tbarPt              = 0;
+  if(not gIsData)
+    {
+      for(size_t igen = 0; igen < read_event -> gen.size(); igen++)
+	{
+	  if(read_event -> gen[igen].status != 3) continue;
+	  const int absid = abs(read_event -> gen[igen].id);
+	  if(absid == 6)
+	    {
+	      brokenDownEvent -> hasTop = true;
+	      if(IsTTbarMC)
+		{
+		  if(read_event -> gen[igen].id > 0) 
+		    brokenDownEvent -> tPt = read_event -> gen[igen].pt();
+		  else 
+		    brokenDownEvent -> tbarPt = read_event -> gen[igen].pt();
+		}
+	      
+	    }
+	  if (absid == 11) brokenDownEvent -> ngenElectronStatus3 ++;
+	  if (absid == 13) brokenDownEvent -> ngenMuonStatus3 ++;
+	  if (absid == 15) brokenDownEvent -> ngenTauStatus3 ++;
+	}
+      //printf("ngenLeptonsStatus3 =%u\n", brokenDownEvent -> ngenLeptonsStatus3); 
+    }
+  brokenDownEvent -> gen = read_event -> gen;
+  //printf("%u %lu\n", brokenDownEvent -> GetObjectCount("all"), read_event -> gen.size());
+  //getchar();
   return brokenDownEvent;
 }
 

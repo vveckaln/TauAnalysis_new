@@ -47,15 +47,13 @@ PhysicsObject::PhysicsObject(const LorentzVectorF math_lorentz_vector_f)
   *(TLorentzVector*)(this) = t_lorentz_vector;
 }
 
+
+
 void PhysicsObject::ListLorentzVector() const
 {
   
-  printf("Px=%9f Py=% 9f Pz=% 9f Pt=% 9f E=% 9f Eta=% 9f Phi=%9f\n", Px(), Py(), Pz(), Pt(), E(), Eta(), Phi());
-  if (Pt() == 0)
-  {
-    printf("Pt() == 0\n");
-    getchar();
-  }
+  printf("Pt=% 10f E=% 10f Eta=% 10f Phi=% 10f Px=% 10f, Py=% 10f Pz=% 10f\n", Pt(), E(), Eta(), Phi(), Px(), Py(), Pz());
+ 
 }
 
 PhysicsObject & PhysicsObject::operator += (const TLorentzVector other)
@@ -91,6 +89,13 @@ Lepton::Lepton(const LorentzVector math_lorentz_vector) : PhysicsObject(math_lor
 Lepton::Lepton(const LorentzVectorF math_lorentz_vector_f) : PhysicsObject(math_lorentz_vector_f)
 {
 }
+
+/*void Lepton::ListLorentzVector() const
+{
+  
+  printf("Pt=% 10f E=% 10f Eta=% 10f Phi=% 10f\n", Pt(), E(), Eta(), Phi());
+ 
+  }*/
 
 void Lepton::ls(const char * option) const
 {
@@ -133,6 +138,13 @@ void Electron::ls(const char * option) const
     {
       printf("      charge %d, rel_isol = %f\n", charge, relative_isolation);       
     }
+}
+
+void Electron::ListLorentzVector() const
+{
+  
+  printf("Pt=% 10f E=% 10f Eta=% 10f sceta=% 10f Phi=% 10f\n", Pt(), E(), Eta(), el_info.sceta, Phi());
+ 
 }
 
 /*Electron::~Electron()
@@ -204,6 +216,20 @@ Tau::Tau(const llvvTau llvvTau_obj) :
   charge = (llvvTau_obj.id > 0) ? 1 : -1;
   ((Lepton*)(this)) -> title = TString(title);
 
+}
+
+void Tau::ls_tracks() const 
+{
+  printf("Listing tau tracks\n");
+  if (tracks.size() == 0)
+    {
+      printf("no tracks\n");
+    }
+  else
+  for (unsigned int ind = 0; ind < tracks.size(); ind ++)
+    {
+      printf("track ind %u %f\n", ind, tracks[ind].Pt());
+    }
 }
 
 void Tau::ls(const char * option) const 

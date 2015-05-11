@@ -3,9 +3,11 @@
 
 #include "TString.h"
 #include "TFile.h"
+#include "LIP/TauAnalysis/interface/TFilePool.hh"
 #include <vector>
 using namespace std;
-namespace cpFileRegister{
+namespace cpFileRegister
+{
   //********************* CENTRAL PROCESSOR FILE REGISTER ******
   extern TString     input_file_name;
   extern TFile     * input_file;
@@ -13,5 +15,6 @@ namespace cpFileRegister{
   extern TFile     * data_file;
   extern TString     output_file_name;
   extern TFile     * output_file;
+  extern vector<TString> output_file_names;
 }
 #endif

@@ -1,0 +1,15 @@
+{
+  "proc":[
+     {
+      "tag":"VV",
+      "isdata":false,
+      "color":592,
+      "lcolor":1,
+      "marker":1,
+      "data":[
+        { "dtag":"MC8TeV_WZ"                               ,  "split":2, "xsec":1.057       , "br":[ 1.0 ]                 , "dset":"/WZJetsTo3LNu_TuneZ2_8TeV-madgraph-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM"      }
+       
+      ]
+    }
+  ]
+}
