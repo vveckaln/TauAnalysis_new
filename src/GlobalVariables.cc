@@ -19,4 +19,5 @@ namespace gVariables
   TString        gsubArea;
   vector<double> dataPileupDistributionDouble; 
   vector<double> singleLepDataPileupDistributionDouble; 
+  vector<edm::LuminosityBlockRange> luminosityBlockRange;
 } 

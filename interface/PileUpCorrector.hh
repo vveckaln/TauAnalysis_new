@@ -1,28 +1,24 @@
 #ifndef _PileUpCorrector_hh
 #define _PileUpCorrector_hh
 #include "TF1.h"
-#include "LIP/TauAnalysis/interface/DigestedEvent.hh"
+#include "LIP/TauAnalysis/interface/ReadEvent_llvv.hh"
 #include "LIP/TauAnalysis/interface/EventProcessor.hh"
-#include "LIP/TauAnalysis/interface/CPHistogramPoolRegister.hh"
-#include "LIP/TauAnalysis/interface/CPFileRegister.hh"
-#include "LIP/TauAnalysis/interface/CPFilePoolRegister.hh"
+#include "LIP/TauAnalysis/interface/Register.hh"
 
 #include "LIP/TauAnalysis/interface/LeptonEfficiencySF.h"
 
 #include "DataFormats/FWLite/interface/ChainEvent.h"
 #include "PhysicsTools/Utilities/interface/LumiReWeighting.h"
-#include "LIP/TauAnalysis/interface/TopPtWeighter.h"
 #include "TGraph.h"
 
-using namespace cpHistogramPoolRegister;
-using namespace cpFileRegister;
+using namespace cpregister;
 typedef vector<TGraph *> PuShifter_t;
 enum PuShifterTypes {PUDOWN, PUUP};
 
-class PileUpCorrector : public EventProcessor<DigestedEvent*, DigestedEvent*> 
+class PileUpCorrector : public EventProcessor<ReadEvent_llvv, ReadEvent_llvv> 
 {
-  DigestedEvent * processed_event;
-  void getMCPileUpDistribution(
+  ReadEvent_llvv * processed_event;
+  /*void getMCPileUpDistribution(
 			       fwlite::ChainEvent&, 
 			       const unsigned int Npu, 
 			       vector<float> &);
@@ -33,7 +29,7 @@ class PileUpCorrector : public EventProcessor<DigestedEvent*, DigestedEvent*>
 			      vector<float>& MCPileUp, 
 			      double* PUNorm, 
 			      edm::LumiReWeighting* LumiWeights, 
-			      PuShifter_t PuShifters) const;
+			      PuShifter_t PuShifters) const;*/
 
   unsigned long getMergeableCounterValue(const vector<string>& urls, const string counter) const;
   double                        XSectionWeight;
@@ -44,9 +40,9 @@ class PileUpCorrector : public EventProcessor<DigestedEvent*, DigestedEvent*>
   void ApplyTopPtWeighter() const;
   LeptonEfficiencySF            leptonEfficiencySF;
   bool                          print_mode;
-  TopPtWeighter *               topPtWeighter;
+  
 public:
-  PileUpCorrector(EventSink<DigestedEvent *> *next_processor_stage);
+  PileUpCorrector(EventSink<ReadEvent_llvv> *next_processor_stage);
   void Run();
   void Report();
   virtual ~PileUpCorrector();

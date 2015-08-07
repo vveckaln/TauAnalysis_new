@@ -2,7 +2,6 @@
 #define _UncertaintiesApplicator_hh
 #include "LIP/TauAnalysis/interface/DigestedEvent.hh"
 #include "LIP/TauAnalysis/interface/EventProcessor.hh"
-#include "LIP/TauAnalysis/interface/HistogramPool.hh"
 #include "LIP/TauAnalysis/interface/MuScleFitCorrector.h"
 #include "LIP/TauAnalysis/interface/MacroUtils.h"
 

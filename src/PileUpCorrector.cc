@@ -4,26 +4,19 @@
 #include "DataFormats/FWLite/interface/Handle.h"
 #include "DataFormats/Common/interface/MergeableCounter.h"
 #include "LIP/TauAnalysis/interface/rootdouble.h"
+#include "LIP/TauAnalysis/interface/MacroUtils.h"
 
 #include "TROOT.h"
 #include <math.h>
 
 using namespace gVariables;
-PileUpCorrector::PileUpCorrector(EventSink<DigestedEvent *> *next_processor_stage): EventProcessor<DigestedEvent*, DigestedEvent *>(next_processor_stage)
+PileUpCorrector::PileUpCorrector(EventSink<ReadEvent_llvv> *next_processor_stage): EventProcessor<ReadEvent_llvv, ReadEvent_llvv>(next_processor_stage)
 {
-  topPtWeighter  = NULL;
   LumiWeights[0] = NULL;
   LumiWeights[1] = NULL;
   print_mode     = false;
   fwlite::ChainEvent & fwlite_ChainEvent = *fwlite_ChainEvent_ptr; 
 
-  if (IsTTbarMC)
-    {
-      topPtWeighter = new TopPtWeighter(TString(gSystem -> BaseName(output_file_name)).ReplaceAll(".root", ""), 
-					"/lustre/ncg.ingrid.pt/cmslocal/viesturs/llvv_analysis_output/output_files/output_event_analysis",
-					"/exper-sw/cmst3/cmssw/users/vveckaln/CMSSW_5_3_15/src/LIP/TauAnalysis/data/weights",
-					fwlite_ChainEvent);
-    }
   if (gIsData)
     {
       printf("isData, returning\n");
@@ -64,17 +57,18 @@ PileUpCorrector::PileUpCorrector(EventSink<DigestedEvent *> *next_processor_stag
 	  DataPileUp[ind].push_back(read_value);
 	}
       fclose(pfile[ind]);
-      getMCPileUpDistribution(fwlite_ChainEvent, DataPileUp[ind].size(), MCPileUp[ind]);
+      utils::getMCPileupDistributionFromMiniAOD(fwlite_ChainEvent, DataPileUp[ind].size(), MCPileUp[ind]);
       while(MCPileUp[ind] . size() < DataPileUp[ind].size()) 
 	MCPileUp[ind] . push_back(0.0);
       while(MCPileUp[ind] . size() > DataPileUp[ind].size())
 	DataPileUp[ind].push_back(0.0);
 
       LumiWeights[ind] = new edm::LumiReWeighting(MCPileUp[ind], DataPileUp[ind]);
-      PuShifters[ind] = getPUshifters(DataPileUp[ind], 0.05);
-      getPileUpNormalization(MCPileUp[ind], PUNorm[ind], LumiWeights[ind], PuShifters[ind]);
+      PuShifters[ind] = utils::cmssw::getPUshifters(DataPileUp[ind], 0.05);
+      utils::getPileupNormalization(MCPileUp[ind], PUNorm[ind], LumiWeights[ind], PuShifters[ind]);
      
     }
+
   gLumiWeights[0] = LumiWeights[0]; gLumiWeights[1] = LumiWeights[1];
 }
 
@@ -84,21 +78,33 @@ void PileUpCorrector ::Run()
  
   for (unsigned char ind = 0; ind < input_buffer -> size(); ind ++)
     { 
-    processed_event = input_buffer -> operator[](ind); 
+    processed_event = &input_buffer -> operator[](ind); 
     if (gIsData)
       {
 	processed_event -> pileup_corr_weight = 1;
 	continue;
       }
-
-    double puWeight = LumiWeights[1] -> weight(processed_event -> ngenITpu) * PUNorm[1][0];
+    int ngenITpu = 0;
+    for(vector<PileupSummaryInfo>::const_iterator it = processed_event -> PU.begin(); it != processed_event -> PU.end(); it++)
+      {
+	if(it -> getBunchCrossing() == 0) 
+	  { 
+	    ngenITpu += it -> getPU_NumInteractions(); 
+	  }
+      }
+    const double puWeight = LumiWeights[1] -> weight(ngenITpu) * PUNorm[1][0];
     if (print_mode)
       {
 	printf("EVENT IDENTITY %u %u %u\n", processed_event -> Run, processed_event -> Lumi, processed_event -> Event);
-	printf("LumiWeights = %f, PUNorm = %f, puWeight = %f\n", LumiWeights[1] -> weight(processed_event -> ngenITpu), PUNorm[1][0], puWeight);
+	printf("LumiWeights = %f, PUNorm = %f, puWeight = %f\n", LumiWeights[1] -> weight(ngenITpu), PUNorm[1][0], puWeight);
       }
-    processed_event -> pileup_corr_weight = XSectionWeight*puWeight;
-
+    float shapeWeight = 1.0;
+    if(processed_event -> genEventInfo.weight() < 0)
+      {
+	shapeWeight *= -1;
+      }
+    processed_event -> pileup_corr_weight = XSectionWeight*puWeight*shapeWeight;
+    
     ApplyLeptonEfficiencySF();
     ApplyIntegratedLuminosity();
     ApplyTopPtWeighter();
@@ -117,18 +123,18 @@ void PileUpCorrector ::Run()
 
 void PileUpCorrector::ApplyLeptonEfficiencySF() const
 {
-  const Lepton * const lepton = processed_event -> GetLeadingLepton("electronmuon");
-  const uint absid = lepton -> title == "electron" ? 11 : 13;
+  const reco::LeafCandidate * const lepton = processed_event -> GetLeadingLepton("electronmuon");
+  const uint absid = fabs(lepton -> pdgId());
   processed_event -> pileup_corr_weight	*= 
     leptonEfficiencySF . getLeptonEfficiency(
-					     lepton -> Pt(), 
-					     lepton -> Eta(), 
+					     lepton -> pt(), 
+					     lepton -> eta(), 
 					     absid, "tight").first;
   if (print_mode) 
     {
       printf("leptonEfficiency = %f\n",  leptonEfficiencySF . getLeptonEfficiency(
-					     lepton -> Pt(), 
-					     lepton -> Eta(), 
+					     lepton -> pt(), 
+					     lepton -> eta(), 
 					     absid, "tight").first);
     }
 
@@ -143,7 +149,7 @@ void PileUpCorrector::ApplyIntegratedLuminosity() const
 
 void PileUpCorrector::ApplyTopPtWeighter() const
 {
-  float weightTopPt(1.0), wgtTopPtUp(1.0), wgtTopPtDown(1.0);
+  /*float weightTopPt(1.0), wgtTopPtUp(1.0), wgtTopPtDown(1.0);
   if(processed_event -> tPt>0 && processed_event -> tbarPt>0 && topPtWeighter)
     {
       topPtWeighter -> computeWeight(processed_event -> tPt, processed_event -> tbarPt);
@@ -153,7 +159,7 @@ void PileUpCorrector::ApplyTopPtWeighter() const
   if (print_mode) 
     {
       printf("weightTopPt = %f\n", weightTopPt);
-    }
+      }*/
 }
 
 void PileUpCorrector::Report()
@@ -162,12 +168,12 @@ void PileUpCorrector::Report()
 
 }
 
-void PileUpCorrector::getMCPileUpDistribution(
+/*void PileUpCorrector::getMCPileUpDistribution(
 				    fwlite::ChainEvent& fwlite_ChainEvent, 
 				    const unsigned int Npu, 
 				    vector<float> & MCPileUp)
 {
-    MCPileUp.clear();
+  MCPileUp.clear();
     MCPileUp.resize(Npu);
     for(Long64_t ientry = 0; ientry < fwlite_ChainEvent.size(); ientry++)
       {
@@ -185,7 +191,7 @@ void PileUpCorrector::getMCPileUpDistribution(
 	    MCPileUp.resize(ngenITpu+1);
 	  }
 	MCPileUp[ngenITpu]++;
-      }
+	}
 }
 
 PuShifter_t PileUpCorrector::getPUshifters(vector<float> &Lumi_distr, const float puUnc) const
@@ -249,7 +255,7 @@ void PileUpCorrector::getPileUpNormalization(
   PUNorm[0]/=NEvents;
   PUNorm[1]/=NEvents;
   PUNorm[2]/=NEvents;
-}
+  }*/
 
 unsigned long PileUpCorrector::getMergeableCounterValue(const vector<string>& urls, const string counter) const
 {
@@ -277,11 +283,7 @@ unsigned long PileUpCorrector::getMergeableCounterValue(const vector<string>& ur
 
 PileUpCorrector::~PileUpCorrector()
 {
-  if (topPtWeighter)
-    {
-      delete topPtWeighter;
-      topPtWeighter = NULL;
-    }
+  
   for (short ind = 0; ind < 2; ind ++)
     {
       if (LumiWeights[ind])

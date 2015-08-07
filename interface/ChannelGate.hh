@@ -3,13 +3,12 @@
 #include "LIP/TauAnalysis/interface/DigestedEvent.hh"
 #include "LIP/TauAnalysis/interface/PureEvent.hh"
 #include "LIP/TauAnalysis/interface/EventProcessor.hh"
-#include "LIP/TauAnalysis/interface/CPHistogramPoolRegister.hh"
-#include "LIP/TauAnalysis/interface/CPFilePoolRegister.hh"
+#include "LIP/TauAnalysis/interface/Register.hh"
 
 #include "LIP/TauAnalysis/interface/SamplesCatalogue.hh"
 #include "LIP/TauAnalysis/interface/LeptonEfficiencySF.h"
 #include "TH1F.h"
-using namespace cpHistogramPoolRegister;
+using namespace cpregister;
 
 class ChannelGate : public EventProcessor<DigestedEvent*, DigestedEvent*> 
 {

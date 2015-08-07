@@ -1,6 +1,6 @@
 #ifndef _BTagger_hh
 #define _BTagger_hh
-#include "LIP/TauAnalysis/interface/DigestedEvent.hh"
+#include "LIP/TauAnalysis/interface/ReadEvent_llvv.hh"
 #include "LIP/TauAnalysis/interface/EventProcessor.hh"
 #include "TFile.h"
 #include "TGraphErrors.h"
@@ -8,8 +8,9 @@
 #include <map>
 //#include <utility>
 using namespace std;
+typedef ReadEvenv_llvv event_type;
 class BTagger 
-  :public EventProcessor<DigestedEvent*, DigestedEvent*> 
+  :public EventProcessor<event_type, event_type> 
 {
   ulong events_received;
   ulong events_btag_raised;
@@ -18,7 +19,7 @@ class BTagger
   TFile *btag_file;
   map< pair<TString, TString>, pair<TGraphErrors*, TGraphErrors*> > btagEfficiencyCorrectionGraphs;
 public:
-  BTagger(EventSink<DigestedEvent*> *next_processor_stage);
+  BTagger(EventSink<event_type> *next_processor_stage);
   void Run();
   void Report();
   ~BTagger();

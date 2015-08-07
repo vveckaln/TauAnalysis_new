@@ -6,8 +6,7 @@
 #include "LIP/TauAnalysis/interface/HStructure_TFile.hh"
 #include "LIP/TauAnalysis/interface/Utilities.hh"
 
-#include "LIP/TauAnalysis/interface/CPHistogramPoolRegister.hh"
-#include "LIP/TauAnalysis/interface/CPFileRegister.hh"
+#include "LIP/TauAnalysis/interface/Register.hh"
 using namespace utilities;
 HStructure_worker::HStructure_worker()
 {
@@ -140,12 +139,12 @@ void HStructure_worker::Write(const char * option)
   for (HStructure_worker::iterator it = begin(option); it != end(option); it.increment(option))
     {
       if (not it -> GetPtr()) continue;
-      if (not cpHistogramPoolRegister::active_HStructure_TFile -> GetHStructure(it -> GetName()) -> TestBit(kOpenForOutput))
+      if (not cpregister::active_HStructure_TFile -> GetHStructure(it -> GetName()) -> TestBit(kOpenForOutput))
 	{
 	  
 	  continue;
 	}
-      TFile * file = ((HStructure_TFile*)cpHistogramPoolRegister::active_HStructure_TFile -> GetHStructure(it -> GetName())) -> GetFile();
+      TFile * file = ((HStructure_TFile*)cpregister::active_HStructure_TFile -> GetHStructure(it -> GetName())) -> GetFile();
       file -> cd();
       //printf("%s\n", it -> WhoAmI());
       if (TString(it -> WhoAmI()) == "HStructure_TH1D")

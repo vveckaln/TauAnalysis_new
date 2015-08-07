@@ -1,15 +1,16 @@
 #include "LIP/TauAnalysis/interface/Selector.hh"
 #include "LIP/TauAnalysis/interface/GlobalVariables.hh"
 #include "LIP/TauAnalysis/interface/HStructure_worker.hh"
-#include "LIP/TauAnalysis/interface/CPHistogramPoolRegister.hh"
+#include "LIP/TauAnalysis/interface/Register.hh"
 
 #include "LIP/TauAnalysis/interface/llvvObjects.h"
 #include "LIP/TauAnalysis/interface/Table.h"
 #include "DataFormats/Math/interface/deltaR.h"
+#include "LIP/TauAnalysis/interface/GlobalVariables.hh"
 
 #include <math.h>
 #include "TCanvas.h"
-using namespace cpFileRegister;
+using namespace gVariables;
 
 const short Selector::report_size = 8;
 const char *Selector::Selector_report_Xaxis_labels[report_size] = 

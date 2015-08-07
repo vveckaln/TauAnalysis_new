@@ -1,22 +1,31 @@
 #include "LIP/TauAnalysis/interface/FileReader.hh"
 #include "LIP/TauAnalysis/interface/EventBuffer.hh"
-#include "LIP/TauAnalysis/interface/llvvObjects.h"
-#include "LIP/TauAnalysis/interface/MacroUtils.h"
 
 #include "DataFormats/FWLite/interface/ChainEvent.h"
 #include "DataFormats/FWLite/interface/Handle.h"
-#include "DataFormats/HepMCCandidate/interface/GenParticle.h"
 
+#include "DataFormats/FWLite/interface/Handle.h"
+#include "DataFormats/FWLite/interface/Event.h"
+
+#include "DataFormats/VertexReco/interface/VertexFwd.h"
+#include "DataFormats/PatCandidates/interface/Muon.h"
+#include "DataFormats/PatCandidates/interface/Electron.h"
+#include "DataFormats/PatCandidates/interface/Jet.h"
+#include "DataFormats/PatCandidates/interface/Photon.h"
+#include "DataFormats/PatCandidates/interface/MET.h"
+#include "DataFormats/PatCandidates/interface/Tau.h"
+#include "DataFormats/PatCandidates/interface/GenericParticle.h"
+#include "LIP/TauAnalysis/interface/GlobalVariables.hh"
 
 #include <iostream>
-using namespace cpFileRegister;
-using namespace cpHistogramPoolRegister;
+using namespace cpregister;
+using namespace gVariables;
 
 FileReader::FileReader(EventSink<ReadEvent_llvv> * next_processor_stage):
 EventProcessor<ReadEvent_llvv, ReadEvent_llvv>(next_processor_stage)
 {
-  duplicates_checker = new DuplicatesChecker;
-  number_duplicates = 0;
+  goodLumiFilter  = new lumiUtils::GoodLumiFilter(luminosityBlockRange);
+
 }
 
 void FileReader::Run()
@@ -29,9 +38,12 @@ void FileReader::Run()
   //getchar();
   output_buffer = new EventBuffer<ReadEvent_llvv>(10);
   const unsigned long totalEntries = fwlite_ChainEvent.size();
+  printf("totalEntries = %lu\n", totalEntries);
+  
   const uint division = gVariables::gDebug ? 40 : 1;
   for (unsigned long entry_ind = 0; entry_ind < totalEntries/division; entry_ind ++)
     {
+      printf("entry %lu \n", entry_ind);
       ReadEvent_llvv read_event;// = output_buffer -> GetWriteSlot(); 
       fwlite_ChainEvent.to(entry_ind);
       if (entry_ind % 10000 == 0)
@@ -39,84 +51,55 @@ void FileReader::Run()
 	  printf("Read %lu events\n", entry_ind);
 	  //getchar();
 	}
-      if (gIsData and duplicates_checker -> 
-	  isDuplicate( 
-		   fwlite_ChainEvent.eventAuxiliary().run(),
-		   fwlite_ChainEvent.eventAuxiliary().luminosityBlock(),
-		   fwlite_ChainEvent.eventAuxiliary().event()))
-	{
-	  number_duplicates ++;
-	  continue;
-	}
-
-      fwlite::Handle< llvvGenEvent > genEventHandle;
-      genEventHandle.getByLabel(fwlite_ChainEvent, "llvvObjectProducersUsed");
-      if(!genEventHandle.isValid()){printf("llvvGenEvent Object NotFound\n");continue;}
-      read_event.genEv = *genEventHandle;
-
-      fwlite::Handle< llvvLeptonCollection > leptonCollHandle;
-      leptonCollHandle.getByLabel(fwlite_ChainEvent, "llvvObjectProducersUsed");
-      if(!leptonCollHandle.isValid()){printf("llvvLeptonCollection Object NotFound\n");continue;}
-      read_event.leptons = *leptonCollHandle;
-
-      fwlite::Handle< llvvJetCollection > jetCollHandle;
-      jetCollHandle.getByLabel(fwlite_ChainEvent, "llvvObjectProducersUsed");
-      if(!jetCollHandle.isValid()){printf("llvvJetCollection Object NotFound\n");continue;}
-      
-      for(unsigned int jet_ind = 0; jet_ind < jetCollHandle ->size(); jet_ind ++)
-	{
-
-	  read_event.jets.push_back(llvvJetExt((*jetCollHandle)[jet_ind]));
-
-	}
-     
-      fwlite::Handle< llvvMet > metHandle;
-      metHandle.getByLabel(fwlite_ChainEvent, "llvvObjectProducersUsed", "pfType1CorrectedMet");
-      if(!metHandle.isValid()){printf("llvvMet Object NotFound\n");continue;}
-      read_event.met = *metHandle;
-
-      fwlite::Handle< llvvTauCollection > tauCollHandle;
-      tauCollHandle.getByLabel(fwlite_ChainEvent, "llvvObjectProducersUsed");
-      read_event.taus = *tauCollHandle;   
-      for (unsigned int ind = 0; ind < (*tauCollHandle).size(); ind ++)
-	{
-	  printf("size %lu %lu\n", read_event.taus[ind].tracks.size(), (*tauCollHandle)[ind].tracks.size() );
-	}
-      fwlite::Handle< double > rhoHandle;
-      rhoHandle.getByLabel(fwlite_ChainEvent, "kt6PFJets", "rho");
-      if(!rhoHandle.isValid()){printf("rho Object NotFound\n");continue;}
-      read_event.rho = *rhoHandle;
-      for (unsigned int lepton_ind = 0; lepton_ind < read_event . leptons.size(); lepton_ind ++)
-	{
-	 
-	  if (abs(read_event.leptons[lepton_ind].id) ==11)
-	    {
-	      read_event.leptons[lepton_ind].el_info    = *read_event.leptons[lepton_ind].electronInfoRef.get();
-	      /*printf("IsConv %s %s\n", read_event . leptons[lepton_ind].el_info.isConv ? "true" : "false", read_event . leptons[lepton_ind].electronInfoRef->isConv ? "true" : "false");
-	      printf("mvatrigv0 %f %f\n", read_event . leptons[lepton_ind].el_info.mvatrigv0, read_event . leptons[lepton_ind].electronInfoRef->mvatrigv0);
-	      printf("sceta %f %f\n",  read_event . leptons[lepton_ind].el_info.sceta,        read_event. leptons[lepton_ind].electronInfoRef->sceta);*/
-	    }
-	}
-      
-      fwlite::Handle< vector<bool> > triggerBitsHandle;
-      triggerBitsHandle.getByLabel(fwlite_ChainEvent, "llvvObjectProducersUsed", "triggerBits");
-      if(!triggerBitsHandle.isValid()){printf("triggerBits Object NotFound\n");continue;}
-      read_event.triggerBits = *triggerBitsHandle;
-
-      fwlite::Handle< llvvGenParticleCollection > genPartCollHandle;
-      genPartCollHandle.getByLabel(fwlite_ChainEvent, "llvvObjectProducersUsed");
-      if(!genPartCollHandle.isValid()){printf("llvvGenParticleCollection Object NotFound\n");continue;}
-      read_event.gen = *genPartCollHandle;
-      /*printf("%lu %lu\n", read_event.gen.size(), genPartCollHandle -> size());
-      for (unsigned long ind = 0; ind < genPartCollHandle -> size(); ind ++)
-	{
-	  const reco::GenParticle & p = (*genPartCollHandle)[ind];
-	  printf("daughters %lu\n", p.numberOfDaughters());
-	}
-	getchar();*/
       read_event.Run         = fwlite_ChainEvent.eventAuxiliary().run();
       read_event.Lumi        = fwlite_ChainEvent.eventAuxiliary().luminosityBlock();
       read_event.Event       = fwlite_ChainEvent.eventAuxiliary().event();
+
+      if(!goodLumiFilter -> isGoodLumi(read_event.Run, read_event.Lumi))
+	continue;
+      fwlite::Handle< reco::VertexCollection > vtxHandle;
+      vtxHandle.getByLabel(fwlite_ChainEvent, "offlineSlimmedPrimaryVertices");
+      read_event.vertices = *vtxHandle;
+
+      fwlite::Handle< reco::GenParticleCollection > genHandle;
+      genHandle.getByLabel(fwlite_ChainEvent, "prunedGenParticles");
+      read_event.genEv = *genHandle;
+
+      fwlite::Handle< pat::MuonCollection > muonsHandle;
+      muonsHandle.getByLabel(fwlite_ChainEvent, "slimmedMuons");
+      if(muonsHandle.isValid()){ read_event.muons = *muonsHandle;}
+
+      fwlite::Handle< pat::ElectronCollection > electronsHandle;
+      electronsHandle.getByLabel(fwlite_ChainEvent, "slimmedElectrons");
+      if(electronsHandle.isValid()){ read_event.electrons = *electronsHandle;}
+
+      fwlite::Handle< pat::TauCollection > tausHandle;
+      tausHandle.getByLabel(fwlite_ChainEvent, "slimmedTaus");
+      if(tausHandle.isValid()){ read_event.taus = *tausHandle;}
+
+      for (unsigned int i = 0; i < read_event.taus.size(); i++)
+	{
+	  printf("tau %u px = %f\n", i, read_event.taus[i].px());
+	}
+      fwlite::Handle< pat::JetCollection > jetsHandle;
+      jetsHandle.getByLabel(fwlite_ChainEvent, "slimmedJets");
+      if(jetsHandle.isValid()){ read_event.jets = *jetsHandle;}
+
+      fwlite::Handle< pat::METCollection > metsHandle;
+      metsHandle.getByLabel(fwlite_ChainEvent, "slimmedMETs");
+      if(metsHandle.isValid()){ read_event.MET = *metsHandle;}
+
+      fwlite::Handle< double > rhoHandle;
+      rhoHandle.getByLabel(fwlite_ChainEvent, "fixedGridRhoFastjetAll");
+      if(rhoHandle.isValid()){ read_event.rho = *rhoHandle;}
+      
+      fwlite::Handle< vector<PileupSummaryInfo> > puInfoH;
+      puInfoH.getByLabel(fwlite_ChainEvent, "addPileupInfo");
+      read_event.PU = *puInfoH;
+
+      fwlite::Handle< GenEventInfoProduct > genEventInfoHandle;
+      genEventInfoHandle.getByLabel(fwlite_ChainEvent, "generator");
+      if(genEventInfoHandle.isValid()){ read_event.genEventInfo = * genEventInfoHandle; }
 
       output_buffer -> GetWriteSlot() = read_event;
       output_buffer -> PushWriteSlot();
@@ -138,16 +121,16 @@ void FileReader::Run()
 	  delete output_buffer;
 	}
     }
+  
 }
  
 void FileReader::Report()
 {
-  printf("number of duplicates %lu\n", number_duplicates); 
   ContinueReportToNextStage();
 }
 
 
 FileReader::~FileReader()
 {
-  delete duplicates_checker;
+  delete goodLumiFilter;
 }

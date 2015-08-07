@@ -3,13 +3,13 @@
 #include "LIP/TauAnalysis/interface/DigestedEvent.hh"
 #include "LIP/TauAnalysis/interface/PureEvent.hh"
 #include "LIP/TauAnalysis/interface/EventProcessor.hh"
-#include "LIP/TauAnalysis/interface/CPHistogramPoolRegister.hh"
+#include "LIP/TauAnalysis/interface/Register.hh"
 #include "LIP/TauAnalysis/interface/SamplesCatalogue.hh"
 
 #include "LIP/TauAnalysis/interface/test_utilities.hh"
 
 #include "TH1F.h"
-using namespace cpHistogramPoolRegister;
+using namespace cpregister;
 
 class Selector : public EventProcessor<DigestedEvent*, PureEvent*> 
 {

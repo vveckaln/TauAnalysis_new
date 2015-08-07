@@ -2,8 +2,8 @@
 #define _Fork_hh
 #include "LIP/TauAnalysis/interface/DigestedEvent.hh"
 #include "LIP/TauAnalysis/interface/EventProcessor.hh"
-#include "LIP/TauAnalysis/interface/CPHistogramPoolRegister.hh"
-using namespace cpHistogramPoolRegister;
+#include "LIP/TauAnalysis/interface/Register.hh"
+using namespace cpregister;
 
 class Fork : public EventProcessor<DigestedEvent*, DigestedEvent*> 
 {

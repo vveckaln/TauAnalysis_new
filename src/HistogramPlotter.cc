@@ -7,10 +7,9 @@
 #include "LIP/TauAnalysis/interface/FileReader.hh"
 #include "LIP/TauAnalysis/interface/BTagger.hh"
 #include "LIP/TauAnalysis/interface/Selector.hh"
-#include "LIP/TauAnalysis/interface/CPFileRegister.hh"
-#include "LIP/TauAnalysis/interface/CPFilePoolRegister.hh"
+#include "LIP/TauAnalysis/interface/GlobalVariables.hh"
 
-#include "LIP/TauAnalysis/interface/CPHistogramPoolRegister.hh"
+#include "LIP/TauAnalysis/interface/Register.hh"
 #include "LIP/TauAnalysis/interface/Parser.hh"
 #include "LIP/TauAnalysis/interface/rootdouble.h"
 #include "LIP/TauAnalysis/interface/Table.h"
@@ -18,9 +17,8 @@
 #include "TLegend.h"
 #include "TROOT.h"
 #include "TPad.h"
-using namespace cpFileRegister;
-using namespace cpHistogramPoolRegister;
-
+using namespace cpregister;
+using namespace gVariables;
 HistogramPlotter::HistogramPlotter()
 {
  
@@ -95,7 +93,7 @@ output -> SetName((samples_names[number_active_sample] + "_TOTAL").Data());
 }
 
 void HistogramPlotter::StackHistograms(const char * output_name){
-  TLegend * legend = new TLegend(0.7, 0.7, 0.9, 0.9);
+  /* TLegend * legend = new TLegend(0.7, 0.7, 0.9, 0.9);
 
   histogram_pool = (HistogramPool*) malloc(sizeof(HistogramPool[MCdatasample_descriptors -> size()]));
   input_file = (TFile*) malloc(sizeof(TFile[MCdatasample_descriptors -> size()]));
@@ -173,12 +171,12 @@ void HistogramPlotter::StackHistograms(const char * output_name){
   TCanvas_pool -> Update();
   TCanvas_pool -> Save("pdf");
   TCanvas_pool -> Save("png");
-  
+  */
 }
 
 void HistogramPlotter::SumData() const
 {
-  HistogramPool * histogram_pool_other = new HistogramPool();
+  /*HistogramPool * histogram_pool_other = new HistogramPool();
 
   for (unsigned int option_ind = 0; option_ind < input_file_names . size(); option_ind ++)
     {
@@ -208,7 +206,7 @@ void HistogramPlotter::SumData() const
   TH1D *h = (*histogram_pool)["numb_events_selection_stagesSELECTOR_BASETOTAL"];
   Table table_h("SELECTER_BASE", "SELECTOR_BASE");
   table_h.FillFromLabeledHistogram(h);
-  table_h.ls();
+  table_h.ls();*/
 
 }
 

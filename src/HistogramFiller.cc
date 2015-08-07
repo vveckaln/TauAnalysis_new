@@ -1,9 +1,9 @@
 #include "LIP/TauAnalysis/interface/HistogramFiller.hh"
-#include "LIP/TauAnalysis/interface/CPHistogramPoolRegister.hh"
+#include "LIP/TauAnalysis/interface/Register.hh"
 #include "LIP/TauAnalysis/interface/HStructure_worker.hh"
 
 #include <math.h>
-using namespace cpHistogramPoolRegister;
+using namespace cpregister;
 
 HistogramFiller::HistogramFiller(EventSink<PureEvent *> *next_processor_stage) : 
   EventProcessor<PureEvent*, PureEvent *>(next_processor_stage)

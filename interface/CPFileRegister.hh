@@ -1,4 +1,3 @@
-#ifndef _CPFileRegister_hh
 #define _CPFIleRegister_hh
 
 #include "TString.h"
@@ -6,7 +5,6 @@
 #include "LIP/TauAnalysis/interface/TFilePool.hh"
 #include <vector>
 using namespace std;
-namespace cpFileRegister
 {
   //********************* CENTRAL PROCESSOR FILE REGISTER ******
   extern TString     input_file_name;

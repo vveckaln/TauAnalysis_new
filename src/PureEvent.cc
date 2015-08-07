@@ -1,6 +1,6 @@
 #include "LIP/TauAnalysis/interface/PureEvent.hh"
-#include "LIP/TauAnalysis/interface/CPHistogramPoolRegister.hh"
-using namespace cpHistogramPoolRegister;
+#include "LIP/TauAnalysis/interface/Register.hh"
+using namespace cpregister;
 
 PureEvent::PureEvent()
 {

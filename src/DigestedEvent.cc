@@ -1,7 +1,10 @@
 #include "LIP/TauAnalysis/interface/DigestedEvent.hh"
-#include "LIP/TauAnalysis/interface/CPHistogramPoolRegister.hh"
+#include "LIP/TauAnalysis/interface/Register.hh"
+#include "LIP/TauAnalysis/interface/GlobalVariables.hh"
+
 #include "TMath.h"
-using namespace cpHistogramPoolRegister;
+using namespace cpregister;
+using namespace gVariables;
 
 DigestedEvent::DigestedEvent()
 {

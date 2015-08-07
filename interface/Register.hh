@@ -1,11 +1,6 @@
-#ifndef _CPHistogramPoolRegister_hh
-#define _CPHistogramPoolRegister_hh
+#ifndef _Register_hh
+#define _Register_hh
 
-#include "LIP/TauAnalysis/interface/HistogramPool.hh"
-#include "LIP/TauAnalysis/interface/THStackPool.hh"
-#include "LIP/TauAnalysis/interface/TCanvasPool.hh"
-#include "LIP/TauAnalysis/interface/TGraphPool.hh"
-#include "LIP/TauAnalysis/interface/MapOfObjectPools.hh"
 #include "TApplication.h"
 #include "LIP/TauAnalysis/interface/HistogramDescriptor.hh"
 #include "LIP/TauAnalysis/interface/DataSampleDescriptor.hh"
@@ -20,21 +15,18 @@
 using namespace std;
 class HStructure_TFile;
 class HStructure_worker;
-namespace cpHistogramPoolRegister{
+namespace cpregister
+{
   //********************* CENTRAL PROCESSOR HISTOGRAM POOL REGISTER ******
+  extern TString     input_file_name;
+  extern TFile     * input_file;
+  extern vector<string> input_file_names;
+  extern TString     output_file_name;
+  extern TFile     * output_file;
+
   extern HStructure_TFile * active_HStructure_TFile;
   extern HStructure_worker * hstruct_worker;
-  extern HistogramPool *histogram_pool;
-  extern MapOfObjectPools<TH1D> *mapOfHistogramPools; 
-  extern MapOfObjectPools<TH1D> *mapOfSelectorHistoPools; 
-  extern MapOfObjectPools<TH1D> *mapOfChannelGateHistoPools; 
-
-  extern HistogramPool *data_histo_pool;
-  extern HistogramPool *Selector_report_pool;
-  extern HistogramPool *Selector_data_report_pool;
-  extern THStackPool   *THStack_pool;
-  extern TCanvasPool   *TCanvas_pool;
-  extern TGraphPool    *TGraph_pool;
+ 
   extern vector<HistogramDescriptor> * object_descriptors;
   extern vector<HistogramDescriptor> * selector_h_descriptors;
   extern vector<HistogramDescriptor> * selector_data_h_descriptors;
@@ -72,6 +64,5 @@ namespace cpHistogramPoolRegister{
   //********************** SIGNALS TO FORK *******************************
   extern bool fork_activated;
 }
-#include "LIP/TauAnalysis/interface/templates/test.tpp"
 
 #endif

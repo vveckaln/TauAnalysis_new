@@ -1,3 +1,6 @@
+#include "LIP/TauAnalysis/interface/Parser.hh"
+
+
 template<class TEventInput, class TEventOutput>
 EventProcessor<TEventInput, TEventOutput>::EventProcessor(EventSink<TEventOutput> *sink): EventSource<TEventOutput>(sink)
 {

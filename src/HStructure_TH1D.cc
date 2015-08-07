@@ -1,8 +1,7 @@
 #include "LIP/TauAnalysis/interface/HStructure_TH1D.hh"
 //#include "LIP/TauAnalysis/interface/Table.h"
 
-#include "LIP/TauAnalysis/interface/CPHistogramPoolRegister.hh"
-//#include "LIP/TauAnalysis/interface/CPFileRegister.hh"
+#include "LIP/TauAnalysis/interface/Register.hh"
 
 unsigned int HStructure_TH1D::TH1D_inst = 0;
 

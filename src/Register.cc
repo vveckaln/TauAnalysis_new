@@ -1,18 +1,15 @@
-#include "LIP/TauAnalysis/interface/CPHistogramPoolRegister.hh"
+#include "LIP/TauAnalysis/interface/Register.hh"
 
-namespace cpHistogramPoolRegister
+namespace cpregister
 {
+  TString                        input_file_name;
+  TFile                        * input_file                 = NULL;
+  vector<string>                 input_file_names;
+  TString                        output_file_name;
+  TFile                        * output_file                = NULL;
   HStructure_TFile             * active_HStructure_TFile    = NULL;
   HStructure_worker            * hstruct_worker             = NULL;
-  HistogramPool                * histogram_pool             = NULL;
-  MapOfObjectPools<TH1D>       * mapOfHistogramPools        = NULL; 
-  HistogramPool                * data_histo_pool            = NULL;
-  MapOfObjectPools<TH1D>       * mapOfSelectorHistoPools    = NULL; 
-  MapOfObjectPools<TH1D>       * mapOfChannelGateHistoPools = NULL;
-  HistogramPool                * Selector_data_report_pool  = NULL;
-  THStackPool                  * THStack_pool               = NULL;
-  TCanvasPool                  * TCanvas_pool               = NULL;
-  TGraphPool                   * TGraph_pool                = NULL;
+  
   vector<HistogramDescriptor>  * object_descriptors         = NULL;
   vector<HistogramDescriptor>  * selector_h_descriptors     = NULL;
   vector<HistogramDescriptor>  * selector_data_h_descriptors= NULL;

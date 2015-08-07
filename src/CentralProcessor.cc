@@ -1,21 +1,24 @@
 #include "LIP/TauAnalysis/interface/CentralProcessor.hh"
+#include "LIP/TauAnalysis/interface/GlobalVariables.hh"
+
 #include "LIP/TauAnalysis/interface/HistogramPlotter.hh"
 #include "LIP/TauAnalysis/interface/ReadEvent.hh"
 #include "LIP/TauAnalysis/interface/FileReader.hh"
-#include "LIP/TauAnalysis/interface/EventConverter.hh"
+#include "LIP/TauAnalysis/interface/SamplesCatalogue.hh"
+
+/*#include "LIP/TauAnalysis/interface/EventConverter.hh"
 #include "LIP/TauAnalysis/interface/ReadEvent_llvv.hh"
 #include "LIP/TauAnalysis/interface/BTagger.hh"
 #include "LIP/TauAnalysis/interface/Selector.hh"
-#include "LIP/TauAnalysis/interface/ChannelGate.hh"
+#include "LIP/TauAnalysis/interface/ChannelGate.hh"*/
 
 /*#include "LIP/TauAnalysis/interface/KINbHandler.hh"*/
 #include "LIP/TauAnalysis/interface/Fork.hh"
 /*#include "LIP/TauAnalysis/interface/Purge.hh"*/
 
-#include "LIP/TauAnalysis/interface/HistogramFiller.hh"
+//#include "LIP/TauAnalysis/interface/HistogramFiller.hh"
 /*  #include "LIP/TauAnalysis/interface/UncertaintiesNode.hh"*/
-#include "LIP/TauAnalysis/interface/PileUpCorrector.hh"
-#include "LIP/TauAnalysis/interface/PileUpCorrector.hh"
+//#include "LIP/TauAnalysis/interface/PileUpCorrector.hh"
 #include "LIP/TauAnalysis/interface/HStructure.hh"
 #include "LIP/TauAnalysis/interface/HStructure_THStack.hh"
 #include "LIP/TauAnalysis/interface/HStructure_TH1D.hh"
@@ -24,19 +27,17 @@
 
 #include "LIP/TauAnalysis/interface/CombinedTHStackTH1D.hh"
 
-#include "LIP/TauAnalysis/interface/UncertaintiesApplicator.hh"
-#include "LIP/TauAnalysis/interface/CPFileRegister.hh"
-#include "LIP/TauAnalysis/interface/CPFilePoolRegister.hh"
+//#include "LIP/TauAnalysis/interface/UncertaintiesApplicator.hh"
 
-#include "LIP/TauAnalysis/interface/CPHistogramPoolRegister.hh"
+#include "LIP/TauAnalysis/interface/Register.hh"
 #include "LIP/TauAnalysis/interface/Parser.hh"
 #include "TLegend.h"
 #include "TROOT.h"
 #include "TCanvas.h"
 #include "THStack.h"
 
-using namespace cpFileRegister;
-using namespace cpHistogramPoolRegister;
+using namespace cpregister;
+using namespace gVariables;
 
 CentralProcessor::CentralProcessor()
 {
@@ -72,25 +73,25 @@ void CentralProcessor::Process(const char* option)
   
   FileReader * reader = 
     new FileReader(
-    new EventConverter<ReadEvent_llvv>(
+		   //new EventConverter<ReadEvent_llvv>(
 		   //new Purge(
 		   //new UncertaintiesNode(*/
-  				       new Fork(
-    new UncertaintiesApplicator(				       
-    new ChannelGate(
-    new BTagger(
-    new PileUpCorrector(	  
-  		       new Selector(
-		  new HistogramFiller(	     
+		   // new Fork(
+						//new UncertaintiesApplicator(				       
+						//new ChannelGate(
+						//new BTagger(
+						//new PileUpCorrector(	  
+						//		       new Selector(
+						//		  new HistogramFiller(	     
   NULL
-  				    ) 
-   )
-    )
-    )
- )
-   )
-    )
-				       )
+  // 				    ) 
+  //)
+  // )
+  // )
+  //)
+  //)
+  // )
+  //				       )
    );
   reader -> Run();
   reader -> Report();
@@ -250,8 +251,7 @@ void CentralProcessor::SumData() const
   output_file_name = gOutputDirectoryName + "/output_files/output_hadd/" + "Data8TeV_SingleMu2012_TOTAL_out.root";
   output_file = new TFile(output_file_name, "recreate");
   
-  input_file_pool = new TFilePool(input_file_names);
-  input_file_pool -> ls();
+  
   HistogramPlotter * histogram_plotter = new HistogramPlotter;
   histogram_plotter -> SumData();
   delete histogram_plotter;
@@ -390,8 +390,9 @@ void CentralProcessor::ProduceTauFakes() const
   structure_files -> cd();
   printf("Extracting from file\n");
   HStructure_worker * manager = new HStructure_worker;
+    const unsigned char size = hdescr -> size();
+
   HStructure_worker * worker[size];
-  const unsigned char size = hdescr -> size();
   for (unsigned char ind = 0; ind < size; ind ++)
     {
       worker[ind] = structure_files -> Get1(hdescr -> at(ind).histogram_name);
@@ -434,8 +435,7 @@ void CentralProcessor::CloseRegisters()
   data_file -> Close();
   delete data_file;
   printf("Got here\n");*/
-  if (input_file_pool != NULL) input_file_pool -> Close();
-  if (output_file_pool != NULL) output_file_pool -> Close();
+  
   if (input_file != NULL) input_file -> Close();
   if (output_file != NULL) output_file -> Close();
 }

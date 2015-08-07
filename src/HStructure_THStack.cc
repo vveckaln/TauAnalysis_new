@@ -1,8 +1,7 @@
 #include "LIP/TauAnalysis/interface/HStructure_THStack.hh"
 #include "LIP/TauAnalysis/interface/HStructure_TH1D.hh"
+#include "TList.h"
 
-#include "LIP/TauAnalysis/interface/CPHistogramPoolRegister.hh"
-#include "LIP/TauAnalysis/interface/CPFileRegister.hh"
 #include "LIP/TauAnalysis/interface/Table.h"
 
 HStructure_THStack::HStructure_THStack()

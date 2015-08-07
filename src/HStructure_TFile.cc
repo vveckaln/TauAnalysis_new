@@ -4,8 +4,7 @@
 #include "LIP/TauAnalysis/interface/HStructure_TH1D.hh"
 #include "LIP/TauAnalysis/interface/HStructure_CombinedTHStackTH1D.hh"
 #include "LIP/TauAnalysis/interface/HStructure_worker.hh"
-
-#include "LIP/TauAnalysis/interface/CPHistogramPoolRegister.hh"
+#include "LIP/TauAnalysis/interface/Register.hh"
 
 HStructure_TFile::HStructure_TFile()
 {
@@ -79,7 +78,7 @@ HStructure_TFile & HStructure_TFile::operator = (TFile *f)
 }
 void HStructure_TFile::cd()
 {
-  cpHistogramPoolRegister::active_HStructure_TFile = this;
+  cpregister::active_HStructure_TFile = this;
 }
 
 HStructure_TFile* HStructure_TFile::Open(const char* name, Option_t* option )

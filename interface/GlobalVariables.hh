@@ -1,5 +1,6 @@
 #ifndef _GlobalVariables_hh
 #define _GlobalVariables_hh
+#include "DataFormats/Provenance/interface/LuminosityBlockRange.h"
 
 #include <vector>
 #include "TSystem.h"
@@ -7,7 +8,6 @@
 
 #include "TString.h"
 using namespace::std;
-
 namespace gVariables
 {
   typedef double GeV; 
@@ -29,6 +29,6 @@ namespace gVariables
   extern vector<double> singleLepDataPileupDistributionDouble; 
   extern TString        gspyOutputArea;
   extern TString        gsubArea;
-
+  extern vector<edm::LuminosityBlockRange> luminosityBlockRange;
 }
 #endif

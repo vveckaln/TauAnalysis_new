@@ -1,10 +1,11 @@
 #include "LIP/TauAnalysis/interface/UncertaintiesApplicator.hh"
-#include "LIP/TauAnalysis/interface/CPHistogramPoolRegister.hh"
-#include "LIP/TauAnalysis/interface/CPFileRegister.hh"
+#include "LIP/TauAnalysis/interface/Register.hh"
+#include "LIP/TauAnalysis/interface/GlobalVariables.hh"
+
 
 #include <math.h>
-using namespace cpHistogramPoolRegister;
-using namespace cpFileRegister;
+using namespace cpregister;
+using namespace gVariables;
 UncertaintiesApplicator::UncertaintiesApplicator(EventSink<DigestedEvent *> *next_processor_stage) : 
 EventProcessor<DigestedEvent*, DigestedEvent *>(next_processor_stage)
 {

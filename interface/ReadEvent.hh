@@ -5,7 +5,8 @@
 #include "TTree.h"
 #include "TClonesArray.h"
 
-class ReadEvent: public Event{
+class ReadEvent: public Event
+{
 public:
   int iRun;
   int iEvent;

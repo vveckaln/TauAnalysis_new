@@ -4,7 +4,7 @@
 #include "LIP/TauAnalysis/interface/HStructure_TFile.hh"
 #include "LIP/TauAnalysis/interface/Utilities.hh"
 
-#include "LIP/TauAnalysis/interface/CPHistogramPoolRegister.hh"
+#include "LIP/TauAnalysis/interface/Register.hh"
 using namespace utilities;
 
 HStructure::HStructure()
