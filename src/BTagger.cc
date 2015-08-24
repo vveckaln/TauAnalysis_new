@@ -41,20 +41,20 @@ BTagger::BTagger(EventSink<event_type> *next_processor_stage):EventProcessor<eve
 void BTagger::Run()
 {
  
-  const float CSV_CUT   = /*0.405*/ 0.679;
+  //const float CSV_CUT   = /*0.405*/ 0.679;
   output_buffer = input_buffer;
   bool print_mode;
-  for (unsigned long entry_ind = 0; entry_ind < input_buffer -> size(); entry_ind ++)
+  for (EventBuffer<event_type>::iterator it = input_buffer -> begin(); it != input_buffer -> end(); it ++)
     {
       print_mode = false;
-
+      unsigned int nbtags(0);
       events_received ++;
-      event_type processed_event = &input_buffer[entry_ind];
       //if (processed_event -> Event == 27736402) 
-      if (print_mode) printf("EVENT IDENTITY %u %u %u\n", processed_event -> Run, processed_event -> Lumi, processed_event -> Event);
-      for (uint jet_ind = 0; jet_ind < processed_event -> jets . size(); jet_ind ++)
+      if (print_mode) printf("EVENT IDENTITY %u %u %u\n", it -> Run, it -> Lumi, it -> Event);
+      
+      for (uint jet_ind = 0; jet_ind < it -> jets . size(); jet_ind ++)
 	{
-	  pat::Jet * const jet             = &processed_event -> jets . at(jet_ind);
+	  pat::Jet * const jet             = &it -> jets . at(jet_ind);
 	  
 	  if (print_mode)
 	    {
@@ -71,10 +71,10 @@ void BTagger::Run()
 	  const double bseed_sin_phi = TMath::Sin(jet -> phi()*1000000);
 	  const double bseed = abs(static_cast<int>(bseed_sin_phi*100000));
 	  BTagSFUtil btsfutil( bseed );
-	   const int flavId = jet -> partonFlavour();
+	   const int bflavId = jet -> partonFlavour();
 	  TString flavKey("udsg");
-	  if(abs(bflavid) == 4) flavKey = "c";
-	  if(abs(bflavid) == 5) flavKey = "b";
+	  if(abs(bflavId) == 4) flavKey = "c";
+	  if(abs(bflavId) == 5) flavKey = "b";
 	  const pair<TString, TString> btagKey("csvL", flavKey);
 	  if(btagEfficiencyCorrectionGraphs.find(btagKey) != 
 	     btagEfficiencyCorrectionGraphs.end())
@@ -85,17 +85,18 @@ void BTagger::Run()
 		btagEfficiencyCorrectionGraphs[btagKey].second;
 	      const float eff = mceffGr -> Eval(jetpt);
 	      const float sf  = sfGr    -> Eval(jetpt);
-	      const float leff(0.13), const sfl(1.05), const sflunc(0.12);
-	      const floaf bDiscriminator = jet -> bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
+	      float const leff(0.13), sfl(1.05);
+	      const float bDiscriminator = jet -> bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
 	      bool hasCSVtag(bDiscriminator > 0.423);
 	      const bool hasCSVtag_old = hasCSVtag;
-              if(abs(flavId) == 5) 
+              if(abs(bflavId) == 5) 
 		btsfutil.modifyBTagsWithSF(hasCSVtag, sf,   eff);
-              else if(abs(flavId) == 4) 
+              else if(abs(bflavId) == 4) 
 		btsfutil.modifyBTagsWithSF(hasCSVtag, sf/5, eff);
               else	
 		btsfutil.modifyBTagsWithSF(hasCSVtag, sfl,  leff);
-	      
+	      if (hasCSVtag) 
+		nbtags ++;
 	      if (hasCSVtag_old > hasCSVtag)
 		{
 		  events_btag_lowered ++;
@@ -107,7 +108,10 @@ void BTagger::Run()
 
 	    }
 	  if (print_mode) getchar();
+	  
 	}
+      if (nbtags < 1)
+	input_buffer -> erase(it);
     } 
 
   if (!output_buffer -> IsEmpty()) ProceedToNextStage();

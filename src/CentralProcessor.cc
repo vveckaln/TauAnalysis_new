@@ -6,8 +6,8 @@
 #include "LIP/TauAnalysis/interface/FileReader.hh"
 #include "LIP/TauAnalysis/interface/SamplesCatalogue.hh"
 
-/*#include "LIP/TauAnalysis/interface/EventConverter.hh"
-#include "LIP/TauAnalysis/interface/ReadEvent_llvv.hh"
+#include "LIP/TauAnalysis/interface/Preselector_Leptons.hh"
+/*#include "LIP/TauAnalysis/interface/ReadEvent_llvv.hh"
 #include "LIP/TauAnalysis/interface/BTagger.hh"
 #include "LIP/TauAnalysis/interface/Selector.hh"
 #include "LIP/TauAnalysis/interface/ChannelGate.hh"*/
@@ -61,7 +61,18 @@ void CentralProcessor::SetEnvironment() const
 
 void CentralProcessor::Process(const char* option)
 {
-  fwlite_ChainEvent_ptr = new fwlite::ChainEvent(input_file_names);
+  printf("Input file names\n");
+  for (uint  size  = 0; size < input_file_names.size(); size ++)
+    printf("%s\n", input_file_names[size].c_str());
+  vector<string> file; file.push_back(input_file_names[0]);
+  printf("Going to open\n");
+
+  for (uint  size  = 0; size < file.size(); size ++)
+    printf("%s\n", file[size].c_str());
+
+
+  fwlite_ChainEvent_ptr = new fwlite::ChainEvent(file /*input_file_names*/);
+  printf("opened\n");
   
   //output_file_name  = gOutputDirectoryName + "/output_files/output_event_analysis/" + TString(gSystem -> BaseName(input_file_name)) . 
   //ReplaceAll(".root", "") + "_out.root";
@@ -73,7 +84,7 @@ void CentralProcessor::Process(const char* option)
   
   FileReader * reader = 
     new FileReader(
-		   //new EventConverter<ReadEvent_llvv>(
+		    new Preselector_Leptons(
 		   //new Purge(
 		   //new UncertaintiesNode(*/
 		   // new Fork(
@@ -84,7 +95,7 @@ void CentralProcessor::Process(const char* option)
 						//		       new Selector(
 						//		  new HistogramFiller(	     
   NULL
-  // 				    ) 
+  		    ) 
   //)
   // )
   // )

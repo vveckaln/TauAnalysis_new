@@ -2,12 +2,15 @@
 #define _EventSink_hh
 #include "LIP/TauAnalysis/interface/EventBuffer.hh"
 template<class TEventInput>
-class EventSink{
+class EventSink
+{
 public:
   EventBuffer<TEventInput>  *input_buffer;
+  TEventInput input_event;
   virtual void Run() = 0;
   virtual void Report() = 0;
-  virtual ~EventSink(){
+  virtual ~EventSink()
+  {
   }  
 };
 #endif

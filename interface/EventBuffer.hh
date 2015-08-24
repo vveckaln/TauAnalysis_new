@@ -3,12 +3,31 @@
 #include "stdlib.h"
 #include "TString.h"
 template <class TEvent>
+struct EventCapsule
+{
+  TEvent                 event;
+  EventCapsule<TEvent> * previous;
+  EventCapsule<TEvent> * next;
+};
+
+template <class TEvent>
 class EventBuffer 
 {
-  TEvent        * buffer;
-  unsigned long   consumed;
-  unsigned long   capacity;
+  EventCapsule<TEvent>        * buffer;
+  unsigned long                 consumed;
+  unsigned long                 capacity;
 public:
+  class iterator
+  {
+    EventCapsule<TEvent> *to;
+
+  public:
+    iterator operator ++(); 
+  };
+  EventCapsule<TEvent> * beginning;
+  EventCapsule<TEvent> * theend;
+  iterator begin();
+  iterator end();
   EventBuffer(const unsigned long capacity);
   TEvent &GetWriteSlot() const; 
   void PushWriteSlot();
@@ -22,13 +41,49 @@ public:
 };
 
 template <class TEvent>
+struct EventCapsule<TEvent*>
+{
+  TEvent                * event    ;
+  EventCapsule<TEvent*> * previous ;
+  EventCapsule<TEvent*> * next     ;
+  EventCapsule<TEvent*>();
+};
+
+
+template <class TEvent>
 class EventBuffer<TEvent *> 
 {
-  TEvent        **buffer;
-  unsigned long   consumed;
-  unsigned long   capacity;
-  bool            IsIndependent;
+  EventCapsule<TEvent*>    * buffer;
+  unsigned long              consumed;
+  unsigned long              capacity;
+  bool                       IsIndependent;
 public:
+  class iterator
+  {
+    friend class EventBuffer<TEvent*>;
+    EventCapsule<TEvent*> *to ;
+  public:
+    EventCapsule<TEvent*> *&next();
+    EventCapsule<TEvent*> *&previous();
+  public:
+    
+    iterator  operator ++(); 
+    iterator  operator ++(int); 
+
+    TEvent   *operator -> ();
+    bool      operator != (const iterator &);
+    bool      operator == (const iterator &);
+    iterator();
+    iterator(EventCapsule<TEvent*>  *other);
+    iterator &operator =  (EventCapsule<TEvent*>  *);
+    TEvent  & operator * ();
+  };
+  EventCapsule<TEvent*> * beginning;
+  EventCapsule<TEvent*> * theend;
+  static EventCapsule<TEvent*> * END_OUTOFBOUNDS;
+  iterator begin();
+  iterator end();
+  iterator erase(iterator & it);
   EventBuffer(const unsigned long capacity, const char* = "");
   EventBuffer(const EventBuffer<TEvent*>* const other_buffer);
   void DeepCopy(const EventBuffer<TEvent*>* const);
@@ -41,6 +96,10 @@ public:
   ~EventBuffer();
   TEvent *& operator[] (const unsigned long index) const;
 
-};
+  };
 #include "LIP/TauAnalysis/interface/templates/EventBuffer.cpp"
+#include "LIP/TauAnalysis/interface/templates/EventBuffer_ptr.cpp"
+
+#include "LIP/TauAnalysis/interface/templates/EventBuffer_iterator.cpp"
+
 #endif

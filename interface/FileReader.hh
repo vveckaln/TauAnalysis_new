@@ -3,16 +3,23 @@
 #include "LIP/TauAnalysis/interface/ReadEvent_llvv.hh"
 #include "LIP/TauAnalysis/interface/EventProcessor.hh"
 #include "LIP/TauAnalysis/interface/LumiUtils.h"
+#ifdef event_type
+#undef event_type
+#endif
+#define event_type ReadEvent_llvv * 
 
 class FileReader 
-  :public EventProcessor<ReadEvent_llvv, ReadEvent_llvv> 
+
+  :public EventProcessor<event_type, event_type> 
 {
+
 protected:
   lumiUtils::GoodLumiFilter *goodLumiFilter;  
 public:
-  FileReader(EventSink<ReadEvent_llvv> *next_processor_stage);
+  FileReader(EventSink<event_type> *next_processor_stage);
   void Run();
   void Report();
   virtual ~FileReader();
 };
+//#undef event_type
 #endif

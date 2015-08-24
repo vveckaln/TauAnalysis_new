@@ -5,23 +5,31 @@
 #include <iostream>
 using namespace std;
 template<class TEventOutput>
-class EventSource{
+class EventSource
+{
 public:
-  EventSource(EventSink<TEventOutput> *sink){
+  EventSource(EventSink<TEventOutput> *sink)
+  {
     this -> next_processor_stage = sink;
   }
   EventSink<TEventOutput> * next_processor_stage;
+  TEventOutput output_event;
   EventBuffer<TEventOutput> *output_buffer;
-  void ContinueReportToNextStage(){
-  if (next_processor_stage != NULL) next_processor_stage -> Report();
+  void ContinueReportToNextStage()
+  {
+    if (next_processor_stage != NULL) next_processor_stage -> Report();
   }
-  void ProceedToNextStage(){
-    if (next_processor_stage != NULL){
+  void ProceedToNextStage()
+  {
+    if (next_processor_stage != NULL)
+      {
      	next_processor_stage -> input_buffer = output_buffer;
 	next_processor_stage -> Run();
-    }
+	next_processor_stage -> input_event = output_event;
+      }
   }
-  virtual ~EventSource(){
+  virtual ~EventSource()
+  {
     if (next_processor_stage != NULL) delete next_processor_stage;
   }
 };

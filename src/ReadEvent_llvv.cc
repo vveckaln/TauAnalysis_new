@@ -116,6 +116,17 @@ reco::LeafCandidate * ReadEvent_llvv::GetObject(const char * type, const uint in
   return NULL;
 }
 
+void ReadEvent_llvv::CorrectMET() 
+{
+  if (non_const_object)
+    {
+      LorentzVector jet_difference = *non_const_object - previous_state;
+      MET[0].setP4(MET[0].p4() - jet_difference);
+      non_const_object = NULL;
+    }
+}
+
+
 ReadEvent_llvv::~ReadEvent_llvv()
 {
 }

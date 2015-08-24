@@ -19,6 +19,7 @@
 #include "TPad.h"
 using namespace cpregister;
 using namespace gVariables;
+
 HistogramPlotter::HistogramPlotter()
 {
  

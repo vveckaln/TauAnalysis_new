@@ -7,8 +7,13 @@
 #include "TString.h"
 #include <map>
 //#include <utility>
+#ifdef event_type
+#undef event_type
+#endif
+#define event_type ReadEvent_llvv *
+
 using namespace std;
-typedef ReadEvenv_llvv event_type;
+
 class BTagger 
   :public EventProcessor<event_type, event_type> 
 {
@@ -24,4 +29,6 @@ public:
   void Report();
   ~BTagger();
 };
+
+//#undef event_type
 #endif

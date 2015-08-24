@@ -7,6 +7,7 @@
 #include "DataFormats/PatCandidates/interface/Photon.h"
 #include "DataFormats/PatCandidates/interface/MET.h"
 #include "DataFormats/PatCandidates/interface/Tau.h"
+#include <FWCore/Common/interface/TriggerResultsByName.h>
 #include "SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h"
 #include "LIP/TauAnalysis/interface/Event.hh"
 #include "SimDataFormats/GeneratorProducts/interface/GenEventInfoProduct.h"
@@ -23,6 +24,10 @@ public:
   unsigned int                Run;
   unsigned int                Lumi;
   unsigned int                Event;
+  bool eeTrigger;
+  bool mumuTrigger;
+  bool muTrigger;
+  bool emuTrigger;
   reco::VertexCollection      vertices;
   reco::GenParticleCollection genEv;
   pat::MuonCollection         muons;
@@ -30,12 +35,14 @@ public:
   pat::TauCollection          taus; 
   pat::JetCollection          jets;  
   pat::METCollection          MET;  
+  pat::PhotonCollection       photons;
   vector<PileupSummaryInfo>   PU;
   GenEventInfoProduct         genEventInfo;
 
   double                      rho;
   double                      pileup_corr_weight;
   vector<bool>                triggerBits;
+  unsigned int                nbtags = 0;
   virtual void Open();
   virtual void Close();
   ReadEvent_llvv();
@@ -44,5 +51,7 @@ public:
   reco::LeafCandidate * GetLeadingLepton(const char * option) const;
   reco::LeafCandidate * GetObject(const char * type, const uint ind);
   unsigned char GetObjectCount(const char * type) const;
+  void CorrectMET();
+
 } ;
 #endif
