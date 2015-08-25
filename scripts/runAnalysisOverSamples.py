@@ -26,9 +26,15 @@ initialCommand = '';
 def initProxy():
    global initialCommand
    validCertificate = True
-   if(validCertificate and (not os.path.isfile(os.path.expanduser('~/x509_user_proxy/x509_proxy')))):validCertificate = False
-   if(validCertificate and (time.time() - os.path.getmtime(os.path.expanduser('~/x509_user_proxy/x509_proxy')))>600): validCertificate = False
-   if(validCertificate and int(commands.getstatusoutput('(export X509_USER_PROXY=~/x509_user_proxy/x509_proxy;voms-proxy-init --noregen;voms-proxy-info -all) | grep timeleft | tail -n 1')[1].split(':')[2])<8 ):validCertificate = False
+   if(validCertificate and (not os.path.isfile(os.path.expanduser('~/x509_user_proxy/x509_proxy')))):
+       validCertificate = False
+       print "False step 1"
+   if(validCertificate and (time.time() - os.path.getmtime(os.path.expanduser('~/x509_user_proxy/x509_proxy'))) > 600): 
+       validCertificate = False
+       print "False step 2"
+   if(validCertificate and int(commands.getstatusoutput('(export X509_USER_PROXY=~/x509_user_proxy/x509_proxy;voms-proxy-init --noregen;voms-proxy-info -all) | grep timeleft | tail -n 1')[1].split(':')[2]) < 8 ):
+       validCertificate = False
+       print "False step 3"
 
    if(not validCertificate):
       print "You are going to run on a sample over grid using either CRAB or the AAA protocol, it is therefore needed to initialize your grid certificate"
@@ -172,9 +178,13 @@ for procData in procList :
             if (opt.run_option == 'hadd') :
                 split = 1
             FileList = ['"' + getByLabel(procData, 'dset', 'UnknownDataset') + '"']
-            if(LaunchOnCondor.subTool != 'crab'): 
-                FileList = getFileList(procData)
-                print "FileList obtained"
+            if(LaunchOnCondor.subTool != 'crab'):
+                if (not opt.debug):
+                    FileList = getFileList(procData)
+                else:
+                    FileList = ["\"/exper-sw/cmst3/cmssw/users/vveckaln/CMSSW_7_4_2/src/LIP/TauAnalysis/test/B09C2BE7-0509-E511-B6C7-20CF305B051B.root\",\\n"]
+            print "FileList obtained"
+
             LaunchOnCondor.SendCluster_Create(FarmDirectory, JobName + '_' + dtag)
 
             for segment in range(0, len(FileList)) :
@@ -200,6 +210,7 @@ for procData in procList :
                 sedcmd += 's%@segment%'      + str(segment)                         + '%;'
                 sedcmd += 's%@lumiMask%"'    + getByLabel(procData, 'lumiMask', '') + '"%;'
                 sedcmd += '\''
+               
                 if (opt.run_option == 'process') :
                     cfgfile = opt.outdir +'/configuration_files/event_analysis/' + origdtag + '_' + str(segment) + '_cfg.py'
                 if (opt.run_option == 'hadd') :
