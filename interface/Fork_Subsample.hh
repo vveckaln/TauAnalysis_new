@@ -1,5 +1,5 @@
-#ifndef _ChannelGate_hh
-#define _ChannelGate_hh
+#ifndef _Fork_Subsample_hh
+#define _Fork_Subsample_hh
 #include "LIP/TauAnalysis/interface/DigestedEvent.hh"
 #include "LIP/TauAnalysis/interface/PureEvent.hh"
 #include "LIP/TauAnalysis/interface/EventProcessor.hh"
@@ -16,23 +16,14 @@
 
 using namespace cpregister;
 
-class ChannelGate : public EventProcessor<event_type, event_type> 
+class Fork_Subsample : public EventProcessor<event_type, event_type> 
 {
   double received;
   double passed;
-  bool PassedCleaning;
-  bool LeptonCorresponds;
-  bool Trigger_Fired;
-  bool OtherTriggersVeto;
   bool valid_TTbarMC;
-  static const short report_size;
-  static const char *ChannelGate_report_Xaxis_labels[]; 
+  unsigned char ngen_electron_status3, ngen_muon_status3, ngen_tau_status3;
   EventBuffer<event_type>::iterator it;
-  bool IsLowQualityEvent() const;
-  bool CheckLeadingLepton() ;
-  bool TriggerFired() ;
-  bool VetoAdditionalTriggers() ;
-  bool (ChannelGate::**sample_check_ptr)() const;
+  bool (Fork_Subsample::**sample_check_ptr)() const;
   bool CheckTTbarMC_muon_tau() const;
   bool CheckTTbarMC_lepton_jets() const;
   bool CheckTTbarMC_dilepton_muon_electron() const;
@@ -52,13 +43,11 @@ class ChannelGate : public EventProcessor<event_type, event_type>
   void SetEnvironment_generic();
 
   void CollectStatistics();
-  bool ChannelOpened();
-  inline TH1D * const GetStatisticsHistogram(const unsigned short) const;
 public:
-  ChannelGate(EventSink<event_type> *next_processor_stage);
+  Fork_Subsample(EventSink<event_type> *next_processor_stage);
   void Run();
   void Report();
-  virtual ~ChannelGate();
+  virtual ~Fork_Subsample();
 
 };
 #endif

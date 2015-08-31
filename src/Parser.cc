@@ -111,6 +111,7 @@ vector<HistogramDescriptor>* Parser::ParseHistogramSpecifier(const char* histogr
 	}
       processnode = xml -> GetNext(processnode);
     }
+  delete xmldoc;
   return output_vector;
 }
 

@@ -29,6 +29,9 @@ namespace gVariables
   extern vector<double> singleLepDataPileupDistributionDouble; 
   extern TString        gspyOutputArea;
   extern TString        gsubArea;
+  extern TString        gwork_directory;
+  extern TString        gdset;
+  extern TString        gdtag;
   extern vector<edm::LuminosityBlockRange> luminosityBlockRange;
 }
 #endif

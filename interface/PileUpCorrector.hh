@@ -11,13 +11,18 @@
 #include "PhysicsTools/Utilities/interface/LumiReWeighting.h"
 #include "TGraph.h"
 
+#ifdef event_type
+#undef event_type
+#endif
+#define event_type ReadEvent_llvv * 
+
 using namespace cpregister;
 typedef vector<TGraph *> PuShifter_t;
 enum PuShifterTypes {PUDOWN, PUUP};
 
-class PileUpCorrector : public EventProcessor<ReadEvent_llvv, ReadEvent_llvv> 
+class PileUpCorrector : public EventProcessor<event_type, event_type> 
 {
-  ReadEvent_llvv * processed_event;
+  
   /*void getMCPileUpDistribution(
 			       fwlite::ChainEvent&, 
 			       const unsigned int Npu, 
@@ -42,7 +47,7 @@ class PileUpCorrector : public EventProcessor<ReadEvent_llvv, ReadEvent_llvv>
   bool                          print_mode;
   
 public:
-  PileUpCorrector(EventSink<ReadEvent_llvv> *next_processor_stage);
+  PileUpCorrector(EventSink<event_type> *next_processor_stage);
   void Run();
   void Report();
   virtual ~PileUpCorrector();

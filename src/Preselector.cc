@@ -37,7 +37,7 @@ void Preselector::Run()
        
       if (print_mode)
 	{
-	  printf("EVENT IDENTITY %u %u %u\n", processed_event -> Run, processed_event -> Lumi, processed_event -> Event);
+	  printf("EVENT IDENTITY %u %u %llu\n", processed_event -> Run, processed_event -> Lumi, processed_event -> Event);
 	  
 	}
       

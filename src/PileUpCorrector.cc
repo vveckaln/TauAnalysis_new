@@ -10,24 +10,24 @@
 #include <math.h>
 
 using namespace gVariables;
-PileUpCorrector::PileUpCorrector(EventSink<ReadEvent_llvv> *next_processor_stage): EventProcessor<ReadEvent_llvv, ReadEvent_llvv>(next_processor_stage)
+PileUpCorrector::PileUpCorrector(EventSink<event_type> *next_processor_stage): EventProcessor<event_type, event_type>(next_processor_stage)
 {
   LumiWeights[0] = NULL;
   LumiWeights[1] = NULL;
   print_mode     = false;
-  fwlite::ChainEvent & fwlite_ChainEvent = *fwlite_ChainEvent_ptr; 
-
+  fwlite::ChainEvent & fwlite_ChainEvent = *fwlite_ChainEvent_ptr;
+ 
   if (gIsData)
     {
       printf("isData, returning\n");
       return;
     }
   printf("continuing executing\n");
-  if (gVariables::gDebug)
-    XSectionWeight = gXSection/ 1100000;
+  if (false/*gVariables::gDebug*/)
+    ;//  XSectionWeight = gXSection/ 1100000;*/
   else
     {
-      const double MergeableCounterValue = getMergeableCounterValue(input_file_names, "startCounter");
+      const double MergeableCounterValue = utils::getTotalNumberOfEvents(input_file_names); //getMergeableCounterValue(input_file_names, "startCounter");
       XSectionWeight = gXSection/ MergeableCounterValue;
       rootdouble mcv("MergeableCounterValue", "MergeableCounterValue");
       mcv.SetInformation(MergeableCounterValue);
@@ -38,12 +38,11 @@ PileUpCorrector::PileUpCorrector(EventSink<ReadEvent_llvv> *next_processor_stage
 	}
     }
   LumiWeights[0] = NULL; LumiWeights[1] = NULL;
-  printf("XSectionWeiht = %f\n", XSectionWeight); 
-  vector<float> MCPileUp[2]; 
+    vector<float> MCPileUp[2]; 
   FILE *pfile[] = 
     {
       fopen("data/PileUp/dataPileupDistributionDouble.txt", "r"),
-      fopen("data/PileUp/singleLepDataPileupDistributionDouble.txt", "r")
+      fopen("data/PileUp/dataPU2015B_40pb_singleMu.txt"/*"data/PileUp/singleLepDataPileupDistributionDouble.txt"*/, "r")
     };
   vector<float> DataPileUp[2];
   PuShifter_t PuShifters[2];
@@ -74,58 +73,55 @@ PileUpCorrector::PileUpCorrector(EventSink<ReadEvent_llvv> *next_processor_stage
 
 void PileUpCorrector ::Run()
 {
-  output_buffer = input_buffer;
+  output_event = input_event;
  
-  for (unsigned char ind = 0; ind < input_buffer -> size(); ind ++)
-    { 
-    processed_event = &input_buffer -> operator[](ind); 
-    if (gIsData)
-      {
-	processed_event -> pileup_corr_weight = 1;
-	continue;
-      }
-    int ngenITpu = 0;
-    for(vector<PileupSummaryInfo>::const_iterator it = processed_event -> PU.begin(); it != processed_event -> PU.end(); it++)
-      {
-	if(it -> getBunchCrossing() == 0) 
-	  { 
-	    ngenITpu += it -> getPU_NumInteractions(); 
-	  }
-      }
-    const double puWeight = LumiWeights[1] -> weight(ngenITpu) * PUNorm[1][0];
-    if (print_mode)
-      {
-	printf("EVENT IDENTITY %u %u %u\n", processed_event -> Run, processed_event -> Lumi, processed_event -> Event);
-	printf("LumiWeights = %f, PUNorm = %f, puWeight = %f\n", LumiWeights[1] -> weight(ngenITpu), PUNorm[1][0], puWeight);
-      }
-    float shapeWeight = 1.0;
-    if(processed_event -> genEventInfo.weight() < 0)
-      {
-	shapeWeight *= -1;
-      }
-    processed_event -> pileup_corr_weight = XSectionWeight*puWeight*shapeWeight;
+  if (gIsData)
+    {
+      input_event -> weight = 1;
+      ProceedToNextStage();
+    }
+  int ngenITpu = 0;
+  for(vector<PileupSummaryInfo>::const_iterator it = input_event -> PU.begin(); it != input_event -> PU.end(); it++)
+    {
+      if(it -> getBunchCrossing() == 0) 
+	{ 
+	  ngenITpu += it -> getPU_NumInteractions(); 
+	}
+    }
+  const double puWeight = LumiWeights[1] -> weight(ngenITpu) * PUNorm[1][0];
+  if (print_mode)
+    {
+      printf("EVENT IDENTITY %u %u %llu\n", input_event -> Run, input_event -> Lumi, input_event -> Event);
+      printf("LumiWeights = %f, PUNorm = %f, puWeight = %f\n", LumiWeights[1] -> weight(ngenITpu), PUNorm[1][0], puWeight);
+    }
+  float shapeWeight = 1.0;
+  if(input_event -> genEventInfo.weight() < 0)
+    {
+      shapeWeight *= -1;
+    }
+  input_event -> weight = XSectionWeight*puWeight*shapeWeight;
     
-    ApplyLeptonEfficiencySF();
-    ApplyIntegratedLuminosity();
-    ApplyTopPtWeighter();
-    if (print_mode)
-      {
-	printf("weight = %f\n", processed_event -> pileup_corr_weight);
-	printf("************** NEXT EVENT **************\n");
-	getchar();
-      }
-    //printf("%f %f %f\n", processed_event -> pileup_corr_weight, XSectionWeight, puWeight);
-    //getchar();
-    //processed_event -> pileup_corr_weight = 1.0;
-  }
+  ApplyLeptonEfficiencySF();
+  ApplyIntegratedLuminosity();
+  ApplyTopPtWeighter();
+  if (print_mode)
+    {
+      printf("weight = %f\n", input_event -> weight);
+      printf("************** NEXT EVENT **************\n");
+      getchar();
+    }
+  //getchar();
+  //processed_event -> pileup_corr_weight = 1.0;
+  
   ProceedToNextStage();
 }
 
 void PileUpCorrector::ApplyLeptonEfficiencySF() const
 {
-  const reco::LeafCandidate * const lepton = processed_event -> GetLeadingLepton("electronmuon");
+  const reco::LeafCandidate * const lepton = input_event -> electrons.size() == 1 ?( reco::LeafCandidate*)&input_event -> electrons[0] : 
+    (reco::LeafCandidate*)&input_event -> muons[0];
   const uint absid = fabs(lepton -> pdgId());
-  processed_event -> pileup_corr_weight	*= 
+  input_event -> weight	*= 
     leptonEfficiencySF . getLeptonEfficiency(
 					     lepton -> pt(), 
 					     lepton -> eta(), 
@@ -142,8 +138,8 @@ void PileUpCorrector::ApplyLeptonEfficiencySF() const
 
 void PileUpCorrector::ApplyIntegratedLuminosity() const
 {
-  const double iLumi = 19700;
-  processed_event -> pileup_corr_weight *= iLumi;
+  const double iLumi = 40.100/*19700*/;
+  input_event -> weight *= iLumi;
 
 }
 
@@ -257,7 +253,7 @@ void PileUpCorrector::getPileUpNormalization(
   PUNorm[2]/=NEvents;
   }*/
 
-unsigned long PileUpCorrector::getMergeableCounterValue(const vector<string>& urls, const string counter) const
+/*unsigned long PileUpCorrector::getMergeableCounterValue(const vector<string>& urls, const string counter) const
 {
   unsigned long Total = 0;
   for(unsigned int f_ind = 0; f_ind < urls.size(); f_ind++)
@@ -267,7 +263,7 @@ unsigned long PileUpCorrector::getMergeableCounterValue(const vector<string>& ur
       for(ls.toBegin(); !ls.atEnd(); ++ls)
 	{
 	  fwlite::Handle<edm::MergeableCounter> nEventsTotalCounter;
-	  nEventsTotalCounter.getByLabel(ls,counter.c_str());
+	  nEventsTotalCounter.getByLabel(ls, counter.c_str());
 	  if(!nEventsTotalCounter.isValid())
 	    {
 	      printf("Invalid nEventsTotalCounterH\n");
@@ -278,7 +274,7 @@ unsigned long PileUpCorrector::getMergeableCounterValue(const vector<string>& ur
       file -> Close();
    }
  return Total;
-}
+}*/
 
 
 PileUpCorrector::~PileUpCorrector()

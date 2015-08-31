@@ -8,6 +8,7 @@
 #include "DataFormats/Math/interface/deltaR.h"
 #include "LIP/TauAnalysis/interface/GlobalVariables.hh"
 #include "LIP/TauAnalysis/interface/PatUtils.h"
+#include "LIP/TauAnalysis/interface/Utilities.hh"
 
 #include <math.h>
 #include "TCanvas.h"
@@ -17,44 +18,42 @@ using namespace gVariables;
 
 Preselector_MET::Preselector_MET(EventSink<event_type> *next_processor_stage) : EventProcessor<event_type, event_type>(next_processor_stage)
 {
-  
+  selected = 0;
+  selected2 = 0;
 }
 
 void Preselector_MET::Run()
 {
-  output_buffer = input_buffer;
-  for (it = input_buffer -> begin(); it != input_buffer -> end(); it ++)
-    { 
-     
-      print_mode = false;
-      //Run 190688, lumi 99, evId 22420320
-      if (it -> MET[0].pt() < 40)
-	input_buffer -> erase(it);
+  output_event = input_event;
+  selected += input_event -> weight;;   
+  TH1D * const h = utilities::GetStatisticsHistogram(number_active_sample);
+  h -> Fill("1 lept, #geq 3 jets", input_event -> weight); 
+  print_mode = false;
+  //Run 190688, lumi 99, evId 22420320
+  if (input_event -> MET[0].pt() < 40)
+    return;
 
-      //if (processed_event -> Run == 190688 and processed_event -> Lumi == 99 and processed_event -> Event == 22420320) print_mode = true;
-      //if (not print_mode) continue;
+  //if (processed_event -> Run == 190688 and processed_event -> Lumi == 99 and processed_event -> Event == 22420320) print_mode = true;
+  //if (not print_mode) continue;
        
-      if (print_mode)
-	{
-	  printf("EVENT IDENTITY %u %u %u\n", it -> Run, it -> Lumi, it -> Event);
-	  
-	}
-      
-      if (output_buffer -> IsFull())
-	{
-	  ProceedToNextStage();
-	  
-	}
-    }
-  if (!output_buffer -> IsEmpty())
+  if (print_mode)
     {
-      ProceedToNextStage();
-     }
+      printf("EVENT IDENTITY %u %u %llu\n", input_event -> Run, input_event -> Lumi, input_event -> Event);
+	  
+    }
+  selected2 += input_event -> weight;
+  h -> Fill("E^{miss}_{T}", input_event -> weight); 
+
+  ProceedToNextStage();
+
 }
 
 
 void Preselector_MET::Report()
 {
+  /*printf ("1 lepton and 3 jets %f\n", selected);
+    printf("MET %f\n", selected2);*/
+  ContinueReportToNextStage();
 }
 
 Preselector_MET::~Preselector_MET()

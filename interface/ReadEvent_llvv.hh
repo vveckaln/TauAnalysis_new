@@ -23,13 +23,13 @@ class ReadEvent_llvv: public Event
 public:
   unsigned int                Run;
   unsigned int                Lumi;
-  unsigned int                Event;
+  unsigned long long          Event;
   bool eeTrigger;
   bool mumuTrigger;
   bool muTrigger;
   bool emuTrigger;
   reco::VertexCollection      vertices;
-  reco::GenParticleCollection genEv;
+  reco::GenParticleCollection gen;
   pat::MuonCollection         muons;
   pat::ElectronCollection     electrons;
   pat::TauCollection          taus; 
@@ -40,7 +40,7 @@ public:
   GenEventInfoProduct         genEventInfo;
 
   double                      rho;
-  double                      pileup_corr_weight;
+  float                       weight;
   vector<bool>                triggerBits;
   unsigned int                nbtags = 0;
   virtual void Open();

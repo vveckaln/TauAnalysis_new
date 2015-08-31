@@ -17,7 +17,7 @@ using namespace cpregister;
 class Preselector_Jets : public EventProcessor<event_type, event_type> 
 {
   bool print_mode;
-  
+  double selected;
   EventBuffer<event_type>::iterator it;
   unsigned int PreselectJets();
   

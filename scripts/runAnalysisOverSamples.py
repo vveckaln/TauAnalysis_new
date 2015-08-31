@@ -52,15 +52,17 @@ def getFileList(procData):
    if(isMINIAODDataset or len(getByLabel(procData, 'miniAOD', '')) > 0):
       instance = ""
       if(len(getByLabel(procData, 'dbsURL', '')) > 0): instance =  "instance=prod/" + getByLabel(procData, 'dbsURL', '')
-      print "Going to get sites"
+      print "Going to get sites "
+      print "dset %s\n" % getByLabel(procData, 'dset', '')
       listSites = commands.getstatusoutput('das_client.py --query="site dataset=' + getByLabel(procData, 'dset', '') + ' ' + instance + ' | grep site.name,site.dataset_fraction " --limit=0')[1]
       print "Sites got"
       IsOnLocalTier = False
       for site in listSites.split('\n'):
-         if(localTier != "" and localTier in site and '100.00%' in site):
-            IsOnLocalTier =True
-            print ("Sample is found to be on the local grid tier (%s): %s") %(localTier, site)
-            break
+          print "site %s" % site
+          if(localTier != "" and localTier in site and '100.00%' in site):
+              IsOnLocalTier =True
+              print ("Sample is found to be on the local grid tier (%s): %s") %(localTier, site)
+              break
       list = []
       if(IsOnLocalTier or isMINIAODDataset):
          list = []
@@ -97,11 +99,12 @@ def getFileList(procData):
       groupList = ''
       i = 0;
       while(i < len(list) ):
-         groupList += '"' + list[i] + '",\\n';
-         if(i > 0 and i % ngroup == 0):
-            FileList.append(groupList)
-            groupList = ''
-         i = i + 1;               
+          print "list %s" % list[i]
+          groupList += '"' + list[i] + '",\\n';
+          if(i > 0 and i % ngroup == 0):
+              FileList.append(groupList)
+              groupList = ''
+          i = i + 1;               
       if groupList != '':
           FileList.append(groupList)
    else:
@@ -142,10 +145,14 @@ LaunchOnCondor.Jobs_InitCmds      += [initialCommand]
 
 #define local site
 localTier = ""
+work_directory = ""
 hostname = commands.getstatusoutput("hostname -f")[1]
 if(hostname.find("ucl.ac.be") != -1): localTier = "T2_BE_UCL"
-if(hostname.find("cern.ch") != -1)  : localTier = "T2_CH_CERN"
-
+if(hostname.find("cern.ch") != -1)  : 
+    localTier = "T2_CH_CERN"
+    work_directory = "/afs/cern.ch/user/v/vveckaln/CMSSW_7_4_2/src/LIP/TauAnalysis"
+if(hostname.find("ncg.ingrid.pt") != -1)  :
+    work_directory = "/exper-sw/cmst3/cmssw/users/vveckaln/CMSSW_7_4_2/src/LIP/TauAnalysis"
 initProxy()
 
 #open the file which describes the sample
@@ -163,6 +170,7 @@ for procData in procList :
             origdtag = getByLabel(procData, 'dtag',  '')
             if(origdtag == '') : continue
             dtag = origdtag
+            dset     = getByLabel(procData, 'dset',  '')
             xsec     = getByLabel(procData, 'xsec',  -1)
             br       = getByLabel(procData, 'br',    [])
             init     = getByLabel(procData, 'init',   1)
@@ -182,14 +190,18 @@ for procData in procList :
                 if (not opt.debug):
                     FileList = getFileList(procData)
                 else:
-                    FileList = ["\"/exper-sw/cmst3/cmssw/users/vveckaln/CMSSW_7_4_2/src/LIP/TauAnalysis/test/B09C2BE7-0509-E511-B6C7-20CF305B051B.root\",\\n"]
+                    f = "\"" + work_directory + "/test/22A50E5E-AF08-E511-8380-B8CA3A70A410.root\",\\n"
+                    FileList = [f] 
+                    print f
+#["\"/exper-sw/cmst3/cmssw/users/vveckaln/CMSSW_7_4_2/src/LIP/TauAnalysis/test/B09C2BE7-0509-E511-B6C7-20CF305B051B.root\",\\n"]
             print "FileList obtained"
 
             LaunchOnCondor.SendCluster_Create(FarmDirectory, JobName + '_' + dtag)
-
+#            dset.replace('/', '//')
             for segment in range(0, len(FileList)) :
 
                 if (not opt.run_option == "hadd") :
+                    print FileList[segment]
                     eventsFile = FileList[segment]
                     eventsFile = eventsFile.replace('?svcClass=default', '')
                 else:
@@ -198,17 +210,19 @@ for procData in procList :
                 #create the cfg file
 
                 sedcmd = 'sed \''
-                sedcmd += 's%"@dtag"%"'      + dtag                                 + '"%;'
-            	sedcmd += 's%"@input"%'      + eventsFile                           + '%;'
-                sedcmd += 's%@outdir%'       + opt.outdir                           + '%;'
-                sedcmd += 's%@isData%'       + str(isdata)                          + '%;'
-                sedcmd += 's%@init%'         + str(init)                            + '%;'
-                sedcmd += 's%@xsec%'         + str(xsec)                            + '%;'
-                sedcmd += 's%@debug%'        + str(opt.debug)                       + '%;'
-                sedcmd += 's%@mctruthmode%'  + str(mctruthmode)                     + '%;'
-                sedcmd += 's%@file_split%'   + str(split_store)                     + '%;'
-                sedcmd += 's%@segment%'      + str(segment)                         + '%;'
-                sedcmd += 's%@lumiMask%"'    + getByLabel(procData, 'lumiMask', '') + '"%;'
+                sedcmd += 's%"@dtag"%"'        + dtag                                 + '"%;'
+                sedcmd += 's%"@dset"%"'        + dset                                 + '"%;'
+                sedcmd += 's%"@input"%'        + eventsFile                           + '%;'
+                sedcmd += 's%@outdir%'         + opt.outdir                           + '%;'
+                sedcmd += 's%@work_directory%' + work_directory                       + '%;'
+                sedcmd += 's%@isData%'         + str(isdata)                          + '%;'
+                sedcmd += 's%@init%'           + str(init)                            + '%;'
+                sedcmd += 's%@xsec%'           + str(xsec)                            + '%;'
+                sedcmd += 's%@debug%'          + str(opt.debug)                       + '%;'
+                sedcmd += 's%@mctruthmode%'    + str(mctruthmode)                     + '%;'
+                sedcmd += 's%@file_split%'     + str(split_store)                     + '%;'
+                sedcmd += 's%@segment%'        + str(segment)                         + '%;'
+                sedcmd += 's%@lumiMask%"'      + getByLabel(procData, 'lumiMask', '') + '"%;'
                 sedcmd += '\''
                
                 if (opt.run_option == 'process') :
@@ -221,7 +235,9 @@ for procData in procList :
                 #run the job
                 if opt.queue == "0" :
                     print "launching"
-                    os.system(opt.theExecutable + ' ' + cfgfile + ' ' + str(opt.run_option))
+                    os.system(opt.theExecutable + ' ' + cfgfile + ' ' + str\
+   (opt.run_option))  
+                # os.system("valgrind --track-origins=yes --log-file=valgrind.txt --leak-check=full " + opt.theExecutable + ' ' + cfgfile + ' ' + str(opt.run_option))
                 else:
                     if(LaunchOnCondor.subTool == 'crab'):
                        LaunchOnCondor.Jobs_CRABDataset  = FileList[0]

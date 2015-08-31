@@ -9,6 +9,7 @@
 #include "LIP/TauAnalysis/interface/GlobalVariables.hh"
 #include "LIP/TauAnalysis/interface/PatUtils.h"
 
+#include "LIP/TauAnalysis/interface/Utilities.hh"
 #include <math.h>
 #include "TCanvas.h"
 using namespace gVariables;
@@ -17,48 +18,39 @@ using namespace gVariables;
 
 Preselector_Taus::Preselector_Taus(EventSink<event_type> *next_processor_stage) : EventProcessor<event_type, event_type>(next_processor_stage)
 {
-  
+  selected = 0;
 }
 
 void Preselector_Taus::Run()
 {
-  output_buffer = input_buffer;
-  for (it = input_buffer -> begin(); it != input_buffer -> end(); it ++)
-    { 
-     
-      print_mode = false;
-      //Run 190688, lumi 99, evId 22420320
-      unsigned int ntaus = PreselectTaus(); 
-      if (ntaus != 1) 
-	input_buffer -> erase(it);
-
-      //if (processed_event -> Run == 190688 and processed_event -> Lumi == 99 and processed_event -> Event == 22420320) print_mode = true;
-      //if (not print_mode) continue;
+  output_event = input_event;
+  print_mode = false;
+  //Run 190688, lumi 99, evId 22420320
+  unsigned int ntaus = PreselectTaus(); 
+  if (ntaus != 1) 
+    return;
+  //if (processed_event -> Run == 190688 and processed_event -> Lumi == 99 and processed_event -> Event == 22420320) print_mode = true;
+  //if (not print_mode) continue;
        
-      if (print_mode)
-	{
-	  printf("EVENT IDENTITY %u %u %u\n", it -> Run, it -> Lumi, it -> Event);
-	  
-	}
-      
-      if (output_buffer -> IsFull())
-	{
-	  ProceedToNextStage();
-	  
-	}
-    }
-  if (!output_buffer -> IsEmpty())
+  if (print_mode)
     {
-      ProceedToNextStage();
-     }
+      printf("EVENT IDENTITY %u %u %llu\n", input_event -> Run, input_event -> Lumi, input_event -> Event);
+	  
+    }
+  selected += input_event -> weight;    
+  
+  TH1D * h = utilities::GetStatisticsHistogram(number_active_sample);
+  printf("Preselector_Tau %p\n", h);
+  h -> Fill("1#tau", input_event -> weight);
+  ProceedToNextStage();
 }
 
 
 
 unsigned int Preselector_Taus::PreselectTaus() 
 {
-  pat::TauCollection::iterator taus_it = it -> taus . begin();
-  do
+  pat::TauCollection::iterator taus_it = input_event -> taus . begin();
+  while (taus_it != input_event -> taus.end())
     {
       bool passKin(true), passId(true);
       pat::Tau * tau = &*taus_it;
@@ -81,15 +73,18 @@ unsigned int Preselector_Taus::PreselectTaus()
 	if(!tau -> tauID("againstMuonTight3"))                           passId = false;  
 	if(!tau -> tauID("againstElectronMediumMVA5"))                   passId = false; 
 	
-      if(!passId || !passKin)          it -> taus.erase(taus_it);
-      if (taus_it != it -> taus . end()) taus_it ++;
+      if(!passId || !passKin) 
+	input_event -> taus.erase(taus_it);
+      else
+	taus_it ++;
 
-    } while(taus_it != it -> taus . end());
-  return it -> taus.size();
+    } 
+  return input_event -> taus.size();
 }
 
 void Preselector_Taus::Report()
 {
+  ContinueReportToNextStage();
 }
 
 Preselector_Taus::~Preselector_Taus()

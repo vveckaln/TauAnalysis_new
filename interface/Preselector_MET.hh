@@ -16,7 +16,8 @@ using namespace cpregister;
 class Preselector_MET : public EventProcessor<event_type, event_type> 
 {
   bool print_mode;
-  
+  double selected;
+  double selected2;
   event_type * processed_event;
   EventBuffer<event_type>::iterator it;
   

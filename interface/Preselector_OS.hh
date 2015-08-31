@@ -1,5 +1,5 @@
-#ifndef _Preselector_MET_hh
-#define _Preselector_MET_hh
+#ifndef _Preselector_OS_hh
+#define _Preselector_OS_hh
 #include "LIP/TauAnalysis/interface/ReadEvent_llvv.hh"
 #include "LIP/TauAnalysis/interface/EventProcessor.hh"
 #include "LIP/TauAnalysis/interface/Register.hh"
@@ -16,8 +16,7 @@ using namespace cpregister;
 class Preselector_OS : public EventProcessor<event_type, event_type> 
 {
   bool print_mode;
-  
-  event_type * processed_event;
+  double selected;  
   EventBuffer<event_type>::iterator it;
   
 public:

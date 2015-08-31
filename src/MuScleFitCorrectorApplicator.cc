@@ -6,24 +6,19 @@
 #include <math.h>
 using namespace cpregister;
 using namespace gVariables;
-MuScleFitCorrectorApplicator::MuScleFitCorrectorApplicator(EventSink<ReadEvent_llvv> *next_processor_stage) : 
-EventProcessor<ReadEvent_llvv, ReadEvent_llvv>(next_processor_stage)
+MuScleFitCorrectorApplicator::MuScleFitCorrectorApplicator(EventSink<event_type> *next_processor_stage) : 
+EventProcessor<event_type, event_type>(next_processor_stage)
 {
-  const TString jecDir = "/exper-sw/cmst3/cmssw/users/vveckaln/CMSSW_5_3_15/src/LIP/TauAnalysis/data/jec";
+  const TString jecDir = gwork_directory + "/data/jec";
 
   muSCleFitCorrector = getMuonCorrector(jecDir, input_file_name);
 }
 
 void MuScleFitCorrectorApplicator::Run()
 {
-  output_buffer = input_buffer;
-  for (uint ind = 0; ind < input_buffer -> size(); ind ++)
-  {
-    processed_event = &input_buffer -> operator[](ind); 
-    ApplyMuScleFitCorrector();
-       
-  }
-   if (not output_buffer -> IsEmpty()) ProceedToNextStage();
+  output_event = input_event; 
+  ApplyMuScleFitCorrector();
+  ProceedToNextStage();
 }
 
 void MuScleFitCorrectorApplicator::Report()
@@ -33,9 +28,9 @@ void MuScleFitCorrectorApplicator::Report()
 
 void MuScleFitCorrectorApplicator::ApplyMuScleFitCorrector() const
 {
-  for (unsigned int muon_ind = 0; muon_ind < processed_event -> muons.size(); muon_ind ++)
+  for (unsigned int muon_ind = 0; muon_ind < input_event -> muons.size(); muon_ind ++)
     {
-      pat::Muon * const muon = (pat::Muon*) processed_event -> GetObject("muon", muon_ind);
+      pat::Muon * const muon = & input_event -> muons[muon_ind];
       TLorentzVector p4(muon -> px(), muon -> py(), muon -> pz(), muon ->energy());
       muSCleFitCorrector -> applyPtCorrection(p4 , muon -> pdgId() < 0 ? -1 : 1);
       if (not gIsData) 

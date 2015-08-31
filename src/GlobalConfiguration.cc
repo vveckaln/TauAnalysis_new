@@ -27,7 +27,9 @@ void GlobalConfiguration::SetConfiguration(const char* configuration_file)
   gmctruthmode                           = runProcess.getParameter<int>             ("mctruthmode");
   gfile_split                            = runProcess.getParameter<int>             ("file_split");
   gsegment                               = runProcess.getParameter<int>             ("segment");
-
+  gwork_directory                        = runProcess.getParameter<string>          ("work_directory");
+  gdset                                  = runProcess.getParameter<string>          ("dset");
+  gdtag                                  = runProcess.getParameter<string>          ("dtag");
   for (uint ind = 0; ind < input_file_names.size(); ind++)
     {
       printf("%u %s\n", ind, input_file_names[ind].c_str());

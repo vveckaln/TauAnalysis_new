@@ -7,10 +7,16 @@
 #include "LIP/TauAnalysis/interface/SamplesCatalogue.hh"
 
 #include "LIP/TauAnalysis/interface/Preselector_Leptons.hh"
-/*#include "LIP/TauAnalysis/interface/ReadEvent_llvv.hh"
+#include "LIP/TauAnalysis/interface/Preselector_Jets.hh"
+#include "LIP/TauAnalysis/interface/Preselector_MET.hh"
+#include "LIP/TauAnalysis/interface/Preselector_Taus.hh"
+#include "LIP/TauAnalysis/interface/Preselector_OS.hh"
+#include "LIP/TauAnalysis/interface/Fork_Subsample.hh"
+
+/*#include "LIP/TauAnalysis/interface/ReadEvent_llvv.hh"*/
 #include "LIP/TauAnalysis/interface/BTagger.hh"
-#include "LIP/TauAnalysis/interface/Selector.hh"
-#include "LIP/TauAnalysis/interface/ChannelGate.hh"*/
+//#include "LIP/TauAnalysis/interface/Selector.hh"*/
+#include "LIP/TauAnalysis/interface/ChannelGate.hh"
 
 /*#include "LIP/TauAnalysis/interface/KINbHandler.hh"*/
 #include "LIP/TauAnalysis/interface/Fork.hh"
@@ -18,7 +24,7 @@
 
 //#include "LIP/TauAnalysis/interface/HistogramFiller.hh"
 /*  #include "LIP/TauAnalysis/interface/UncertaintiesNode.hh"*/
-//#include "LIP/TauAnalysis/interface/PileUpCorrector.hh"
+#include "LIP/TauAnalysis/interface/PileUpCorrector.hh"
 #include "LIP/TauAnalysis/interface/HStructure.hh"
 #include "LIP/TauAnalysis/interface/HStructure_THStack.hh"
 #include "LIP/TauAnalysis/interface/HStructure_TH1D.hh"
@@ -28,6 +34,7 @@
 #include "LIP/TauAnalysis/interface/CombinedTHStackTH1D.hh"
 
 //#include "LIP/TauAnalysis/interface/UncertaintiesApplicator.hh"
+#include "LIP/TauAnalysis/interface/MuScleFitCorrectorApplicator.hh"
 
 #include "LIP/TauAnalysis/interface/Register.hh"
 #include "LIP/TauAnalysis/interface/Parser.hh"
@@ -50,9 +57,9 @@ void CentralProcessor::SetEnvironment() const
   number_of_samples = & generic_samples_count;
   samples_names     = generic_samples_names;
   IsGeneric         = true;
-  IsTTbarMC         = input_file_name.Contains("TTJets") or input_file_name.Contains("_TT_");
-  IsDY              = input_file_name.Contains("DY");
-  IstW              = input_file_name.Contains("tW");
+  IsTTbarMC         = gdtag.Contains("TTJets") or gdtag.Contains("_TT_");
+  IsDY              = gdtag.Contains("DY");
+  IstW              = gdtag.Contains("tW");
 
   if (IsTTbarMC) SetEnvironment_TTbarMC();
   if (IsDY)      SetEnvironment_DY();
@@ -61,17 +68,7 @@ void CentralProcessor::SetEnvironment() const
 
 void CentralProcessor::Process(const char* option)
 {
-  printf("Input file names\n");
-  for (uint  size  = 0; size < input_file_names.size(); size ++)
-    printf("%s\n", input_file_names[size].c_str());
-  vector<string> file; file.push_back(input_file_names[0]);
-  printf("Going to open\n");
-
-  for (uint  size  = 0; size < file.size(); size ++)
-    printf("%s\n", file[size].c_str());
-
-
-  fwlite_ChainEvent_ptr = new fwlite::ChainEvent(file /*input_file_names*/);
+  fwlite_ChainEvent_ptr = new fwlite::ChainEvent(input_file_names);
   printf("opened\n");
   
   //output_file_name  = gOutputDirectoryName + "/output_files/output_event_analysis/" + TString(gSystem -> BaseName(input_file_name)) . 
@@ -79,31 +76,25 @@ void CentralProcessor::Process(const char* option)
   SetEnvironment();
   OpenOutputFiles();
   
-  
-  IsSingleMuPD     = gIsData and input_file_name.Contains("SingleMu");
+   IsSingleMuPD     = gIsData and gdtag.Contains("SingleMu");
   
   FileReader * reader = 
     new FileReader(
-		    new Preselector_Leptons(
-		   //new Purge(
-		   //new UncertaintiesNode(*/
-		   // new Fork(
-						//new UncertaintiesApplicator(				       
-						//new ChannelGate(
-						//new BTagger(
-						//new PileUpCorrector(	  
-						//		       new Selector(
-						//		  new HistogramFiller(	     
-  NULL
-  		    ) 
-  //)
-  // )
-  // )
-  //)
-  //)
-  // )
-  //				       )
-   );
+    new MuScleFitCorrectorApplicator(
+    new Preselector_Leptons(
+			    //    new PileUpCorrector(
+    new Preselector_Jets(
+								//new Purge(
+								//new UncertaintiesNode(*/
+								// new Fork(
+								//new UncertaintiesApplicator(				       
+    new ChannelGate(
+    new Fork_Subsample(
+		       new PileUpCorrector(	  
+    new Preselector_MET(
+    new BTagger(	     
+    new Preselector_Taus(
+			 new Preselector_OS(NULL)))))))))));
   reader -> Run();
   reader -> Report();
   /* output_file -> cd();
@@ -271,9 +262,9 @@ void CentralProcessor::SumData() const
 void CentralProcessor::ProduceTotal() const
 {
   Parser parser;
-  HStructure * structure = parser . CreateHierarchicalStructure("/exper-sw/cmst3/cmssw/users/vveckaln/CMSSW_5_3_15/src/LIP/TauAnalysis/data/histogram_specifiers/spec_samples.xml");
-  HStructure * structure_data = parser . CreateHierarchicalStructure("/exper-sw/cmst3/cmssw/users/vveckaln/CMSSW_5_3_15/src/LIP/TauAnalysis/data/histogram_specifiers/spec_data.xml");
-  vector<HistogramDescriptor> * hdescr = parser.ParseHistogramSpecifier("/exper-sw/cmst3/cmssw/users/vveckaln/CMSSW_5_3_15/src/LIP/TauAnalysis/data/histogram_specifiers/spec_selector_histograms.xml");
+  HStructure * structure = parser . CreateHierarchicalStructure(gwork_directory + "/data/histogram_specifiers/spec_samples.xml");
+  HStructure * structure_data = parser . CreateHierarchicalStructure(gwork_directory + "/data/histogram_specifiers/spec_data.xml");
+  vector<HistogramDescriptor> * hdescr = parser.ParseHistogramSpecifier(gwork_directory + "/data/histogram_specifiers/spec_selector_histograms.xml");
   const unsigned char size = hdescr -> size();
   for (unsigned char ind = 0; ind < hdescr -> size(); ind ++)
     {
@@ -284,12 +275,12 @@ void CentralProcessor::ProduceTotal() const
   HStructure_TFile * structure_files_data = (HStructure_TFile*)structure_data -> ConvertToHStructure<HStructure_TFile>("all");
   structure_files_data -> SetBit(kIsData, "true", "all");
   HStructure_TFile * files_mother = new HStructure_TFile;
-  files_mother -> SetName("8TeV");
-  files_mother -> SetTitle("8TeV");
+  files_mother -> SetName("13TeV");
+  files_mother -> SetTitle("13TeV");
   files_mother -> AddChild(structure_files);
   files_mother -> AddChild(structure_files_data);
-  files_mother -> OpenForInput("all", "/lustre/ncg.ingrid.pt/cmslocal/viesturs/llvv_analysis_output/output_files/hadd");
-  files_mother -> OpenForOutput("all", "/lustre/ncg.ingrid.pt/cmslocal/viesturs/llvv_analysis_output/output_files/total_new");
+  files_mother -> OpenForInput("all", gOutputDirectoryName + "/output_files/hadd");
+  files_mother -> OpenForOutput("all", gOutputDirectoryName + "/output_files/total_new");
   printf("Going to list files mother\n"); getchar();
   files_mother -> test("all"); getchar();
   files_mother -> cd();
@@ -328,21 +319,13 @@ void CentralProcessor::OpenOutputFiles() const
       if (number_of_samples == &generic_samples_count)
 	output_file_name = gOutputDirectoryName 
 	  + "/output_files/event_analysis/" 
-	  + TString(gSystem -> BaseName(input_file_name)). ReplaceAll(".root", "")
+	  + gdtag
 	  + "_out.root";
       else
 	{
-	  if (gfile_split != 1)
 	    output_file_name  = gOutputDirectoryName 
 	      + "/output_files/event_analysis/" 
-	      + TString(gSystem -> BaseName(input_file_name)).ReplaceAll("_" + TString(to_string(gsegment)) + ".root", "") 
-	      + "_" + samples_names[sample_ind] 
-	      + "_" + TString(to_string(gsegment))
-	      + "_out.root";
-	  else
-	    output_file_name  = gOutputDirectoryName 
-	      + "/output_files/event_analysis/" 
-	      + TString(gSystem -> BaseName(input_file_name)).ReplaceAll(".root", "") 
+	      + gdtag 
 	      + "_" + samples_names[sample_ind] 
 	      + "_out.root";
 	}
@@ -354,7 +337,7 @@ void CentralProcessor::OpenOutputFiles() const
   files_mother -> SetBit(kOpenForOutput, true, "children");
   files_mother -> test("children");  
   Parser parser;
-  vector<HistogramDescriptor> * hdescr = parser.ParseHistogramSpecifier("/exper-sw/cmst3/cmssw/users/vveckaln/CMSSW_5_3_15/src/LIP/TauAnalysis/data/histogram_specifiers/spec_selector_histograms.xml");
+  vector<HistogramDescriptor> * hdescr = parser.ParseHistogramSpecifier(gwork_directory + "/data/histogram_specifiers/spec_selector_histograms.xml");
   const unsigned char size = hdescr -> size();
   HStructure_worker * worker_mother = new HStructure_worker;
   for (unsigned char ind = 0; ind < size; ind ++)
@@ -364,6 +347,27 @@ void CentralProcessor::OpenOutputFiles() const
   printf("LISTING WORKER\n");
   worker_mother -> test("all");
   hstruct_worker = worker_mother;
+
+  const char *Xaxis_labels[5] = 
+    {
+      "1 lept, #geq 3 jets", 
+      "E^{miss}_{T}", 
+      "#geq 1btag", 
+      "1#tau", 
+      "OS"
+    };
+
+
+  for (unsigned short sample_ind = 0; sample_ind < *number_of_samples; sample_ind ++)
+    {
+      TH1D * h = (TH1D*)hstruct_worker -> GetHStructure(samples_names[sample_ind], "numb_events_selection_stagesSELECTOR_BASE") -> GetRef(); 
+       TAxis *xaxis = h -> GetXaxis();
+      
+      for (int binind = 1; binind <= xaxis -> GetNbins(); binind ++)
+	{
+	  xaxis -> SetBinLabel(binind, Xaxis_labels[binind - 1]);
+	}
+    }
 }
 
 void CentralProcessor::SetEnvironment_TTbarMC() const
@@ -390,13 +394,13 @@ void CentralProcessor::SetEnvironment_tW() const
 void CentralProcessor::ProduceTauFakes() const
 {
   Parser parser;
-  HStructure * structure = parser . CreateHierarchicalStructure("/exper-sw/cmst3/cmssw/users/vveckaln/CMSSW_5_3_15/src/LIP/TauAnalysis/data/histogram_specifiers/spec_samples_taufakes.xml");
-  vector<HistogramDescriptor> * hdescr = parser.ParseHistogramSpecifier("/exper-sw/cmst3/cmssw/users/vveckaln/CMSSW_5_3_15/src/LIP/TauAnalysis/data/histogram_specifiers/spec_selector_histograms.xml");
+  HStructure * structure = parser . CreateHierarchicalStructure(gwork_directory + "/data/histogram_specifiers/spec_samples_taufakes.xml");
+  vector<HistogramDescriptor> * hdescr = parser.ParseHistogramSpecifier(gwork_directory + "/data/histogram_specifiers/spec_selector_histograms.xml");
   HStructure_TFile * structure_files = (HStructure_TFile*)structure -> ConvertToHStructure<HStructure_TFile>("all");
   printf("open for input\n");
-  structure_files -> OpenForInput("all", "/lustre/ncg.ingrid.pt/cmslocal/viesturs/llvv_analysis_output/output_files/tau_fakes_input");
+  structure_files -> OpenForInput("all", gOutputDirectoryName + "/output_files/tau_fakes_input");
   printf("open for output\n"); getchar();
-  structure_files -> OpenForOutput("all", "/lustre/ncg.ingrid.pt/cmslocal/viesturs/llvv_analysis_output/output_files/tau_fakes");
+  structure_files -> OpenForOutput("all", gOutputDirectoryName + "/output_files/tau_fakes");
   structure_files -> test("all"); getchar();
   structure_files -> cd();
   printf("Extracting from file\n");

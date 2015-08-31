@@ -341,6 +341,37 @@ namespace utils
 	   return Total;
 	}
 
+  int getTotalNumberOfEvents(std::vector<std::string>& urls, bool fast)
+  {
+    int toReturn = 0;
+    for(unsigned int f = 0; f < urls.size(); f++)
+      {
+	TFile* file = TFile::Open(urls[f].c_str() );
+	fwlite::Event ev(file);
+	if(fast)
+	  {
+	    toReturn += ev.size();          
+	  }
+	else
+	  {
+	    for(ev.toBegin(); !ev.atEnd(); ++ev)
+	      {
+		fwlite::Handle< GenEventInfoProduct > genEventInfoHandle;
+		genEventInfoHandle.getByLabel(ev, "generator");
+		if(genEventInfoHandle.isValid() && genEventInfoHandle -> weight() < 0)
+		  {
+		    toReturn--;
+		  }
+		else
+		  {
+		    toReturn++;
+		  }
+	      }
+	  }
+	delete file;
+      }
+    return toReturn;
+  }
 
 
   void getMCPileupDistributionFromMiniAOD(fwlite::ChainEvent& ev, unsigned int Npu, std::vector<float>& mcpileup)

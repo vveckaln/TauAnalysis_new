@@ -16,7 +16,7 @@ using namespace cpregister;
 class Preselector_Taus : public EventProcessor<event_type, event_type> 
 {
   bool print_mode;
-  
+  double selected;
   event_type * processed_event;
   EventBuffer<event_type>::iterator it;
   unsigned int PreselectTaus() ;

@@ -24,8 +24,10 @@ public:
     if (next_processor_stage != NULL)
       {
      	next_processor_stage -> input_buffer = output_buffer;
-	next_processor_stage -> Run();
 	next_processor_stage -> input_event = output_event;
+
+	next_processor_stage -> Run();
+       
       }
   }
   virtual ~EventSource()

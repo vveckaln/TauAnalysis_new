@@ -17,6 +17,9 @@ namespace gVariables
   TString        gOutputDirectoryName;
   TString        gspyOutputArea;
   TString        gsubArea;
+  TString        gwork_directory;
+  TString        gdset;
+  TString        gdtag;
   vector<double> dataPileupDistributionDouble; 
   vector<double> singleLepDataPileupDistributionDouble; 
   vector<edm::LuminosityBlockRange> luminosityBlockRange;

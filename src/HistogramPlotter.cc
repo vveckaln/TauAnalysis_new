@@ -30,7 +30,7 @@ void HistogramPlotter::AddHistograms() const
   
   HStructure_worker *worker_mother = new HStructure_worker;
   Parser parser;
-  vector<HistogramDescriptor> * hdescr = parser.ParseHistogramSpecifier("/exper-sw/cmst3/cmssw/users/vveckaln/CMSSW_5_3_15/src/LIP/TauAnalysis/data/histogram_specifiers/spec_selector_histograms.xml");
+  vector<HistogramDescriptor> * hdescr = parser.ParseHistogramSpecifier(gwork_directory + "/data/histogram_specifiers/spec_selector_histograms.xml");
   const unsigned char split = active_HStructure_TFile -> GetChildren() . size();
   const unsigned char nhistograms = hdescr -> size(); 
   for (unsigned char hind = 0; hind < nhistograms; hind ++)

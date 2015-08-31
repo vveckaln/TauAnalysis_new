@@ -17,6 +17,7 @@ using namespace cpregister;
 class Preselector_Leptons : public EventProcessor<event_type, event_type> 
 {
   bool print_mode;
+  double selected;
   vector<pat::Muon*>         *muons_ptr;
   vector<pat::Electron*>     *electrons_ptr;
   EventBuffer<event_type>::iterator it;

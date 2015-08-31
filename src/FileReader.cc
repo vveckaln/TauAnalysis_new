@@ -44,8 +44,7 @@ void FileReader::Run()
   const uint division = 1;//gVariables::gDebug ? 40 : 1;
   for (unsigned long entry_ind = 0; entry_ind < totalEntries/division; entry_ind ++)
     {
-      printf("entry %lu \n", entry_ind);
-      ReadEvent_llvv Event;
+      ReadEvent_llvv Event; 
       event_type read_event= &Event; //output_buffer -> GetWriteSlot(); 
       output_event = read_event;
       event.to(entry_ind);
@@ -54,6 +53,10 @@ void FileReader::Run()
 	  printf("Read %lu events\n", entry_ind);
 	  //getchar();
 	}
+
+      //Skip bad lumi
+      if(!goodLumiFilter -> isGoodLumi(event.eventAuxiliary().run(), event.eventAuxiliary().luminosityBlock()))
+	continue;
       read_event -> Run         = event.eventAuxiliary().run();
       read_event -> Lumi        = event.eventAuxiliary().luminosityBlock();
       read_event -> Event       = event.eventAuxiliary().event();
@@ -71,7 +74,7 @@ void FileReader::Run()
 
       fwlite::Handle< reco::GenParticleCollection > genHandle;
       genHandle.getByLabel(event, "prunedGenParticles");
-      read_event -> genEv = *genHandle;
+      read_event -> gen = *genHandle;
 
       fwlite::Handle< pat::MuonCollection > muonsHandle;
       muonsHandle.getByLabel(event, "slimmedMuons");
@@ -80,19 +83,12 @@ void FileReader::Run()
       fwlite::Handle< pat::ElectronCollection > electronsHandle;
       electronsHandle.getByLabel(event, "slimmedElectrons");
       if(electronsHandle.isValid()){ read_event -> electrons = *electronsHandle;}
-      for (uint ind = 0; ind < read_event -> electrons.size(); ind ++)
-	{
-	  printf("superCluster eta %f \n", read_event -> electrons[ind]. superCluster() -> eta());
-	}
+      
 
       fwlite::Handle< pat::TauCollection > tausHandle;
       tausHandle.getByLabel(event, "slimmedTaus");
       if(tausHandle.isValid()){ read_event -> taus = *tausHandle;}
 
-      for (unsigned int i = 0; i < read_event -> taus.size(); i++)
-	{
-	  printf("tau %u px = %f\n", i, read_event -> taus[i].px());
-	}
       fwlite::Handle< pat::JetCollection > jetsHandle;
       jetsHandle.getByLabel(event, "slimmedJets");
       if(jetsHandle.isValid()){ read_event -> jets = *jetsHandle;}
@@ -117,43 +113,9 @@ void FileReader::Run()
       photonsHandle.getByLabel(event, "slimmedPhotons");
       if(photonsHandle.isValid()){ read_event -> photons = *photonsHandle;}
 
-
-      //output_buffer -> PushWriteSlot();
-
-      //if (output_buffer -> IsFull())
-      //	{
+   ProceedToNextStage();
+   
 	  
-	  
-
-	      
-	      for (uint ind = 0; ind < read_event -> electrons.size(); ind ++)
-		{
-		  printf("superCluster eta %f \n", read_event -> electrons[ind]. superCluster() -> eta());
-
-		}
-	    vector<pat::Electron*> el_vector;
-
-	    vector<pat::Muon*> mu_vector;
-  vector<pat::Electron*> * electrons_ptr; 
-  vector<pat::Muon*> * muons_ptr;
-  
-  electrons_ptr = & el_vector;
-  muons_ptr = & mu_vector;
-  electrons_ptr -> clear();
-  muons_ptr -> clear();
-  ReadEvent_llvv * it = read_event;
-  printf("event at reader %p %p\n", it, output_event);
-  for (size_t ind = 0; ind < it -> electrons.size(); ind ++) 
-	{
-	  electrons_ptr -> push_back(&it -> electrons[ind]);
-	  printf("%lu electron %p\n", ind, & it -> electrons[ind]);
-	  ind ++;
-	}
-	  getchar();
-	  ProceedToNextStage();
-	  printf("deleting output_buffer %p\n", output_buffer);
-	  //delete output_buffer;
-	  printf("Deleted\n");
 	  // output_buffer = NULL;
 	  //output_buffer = new EventBuffer<event_type>(10, "independent");
 	  //}

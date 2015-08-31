@@ -68,14 +68,13 @@ void Table::FillFromLabeledHistogram(const TH1D * histogram)
   AddColumn<unsigned short>      ("Number");
   AddColumn<TString>             ("Entry");
   AddColumn<double>              ("Count");
-  for (ushort bin_ind = 1; bin_ind <= histogram -> GetNbinsX(); bin_ind++)
+   for (ushort bin_ind = 1; bin_ind <= histogram -> GetNbinsX(); bin_ind++)
     {
       push_back(0, bin_ind);
       push_back(1, TString(histogram -> GetXaxis() -> GetBinLabel(bin_ind)));
       push_back(2, histogram -> GetBinContent(bin_ind));
     }
-  
-}
+ }
 
 void Table::Save(const char * address) const
 {
@@ -95,7 +94,6 @@ void Table::Save(const char * address) const
 
 void Table::ls() const
 {
-  
   for (uint col_ind = 0; col_ind < columns. size(); col_ind ++)
     {
       printf("%s   ", columns[col_ind] -> GetTitle());
