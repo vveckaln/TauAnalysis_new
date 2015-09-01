@@ -373,26 +373,32 @@ namespace utils
     return toReturn;
   }
 
-
-  void getMCPileupDistributionFromMiniAOD(fwlite::ChainEvent& ev, unsigned int Npu, std::vector<float>& mcpileup)
+  void getMCPileupDistributionFromMiniAOD(std::vector<std::string>& urls, unsigned int Npu, std::vector<float>& mcpileup)
   {
     mcpileup.clear();
     mcpileup.resize(Npu);
-    for(Long64_t ientry=0;ientry<ev.size();ientry++){
-      ev.to(ientry);
-      
-      fwlite::Handle< std::vector<PileupSummaryInfo> > puInfoH;
-      puInfoH.getByLabel(ev, "addPileupInfo");
-      if(!puInfoH.isValid()){printf("collection PileupSummaryInfos with name addPileupInfo does not exist\n"); exit(0);}
-      unsigned int ngenITpu = 0;
-      for(std::vector<PileupSummaryInfo>::const_iterator it = puInfoH->begin(); it != puInfoH->end(); it++){
-         if(it->getBunchCrossing()==0)      { ngenITpu += it->getPU_NumInteractions(); }
+    for(unsigned int f = 0; f < urls.size(); f++)
+      {
+	TFile* file = TFile::Open(urls[f].c_str() );
+	fwlite::Event ev(file);
+	for(ev.toBegin(); !ev.atEnd(); ++ev){
+	  fwlite::Handle< std::vector<PileupSummaryInfo> > puInfoH;
+	  puInfoH.getByLabel(ev, "addPileupInfo");
+	  if(!puInfoH.isValid()){printf("collection PileupSummaryInfos with name addPileupInfo does not exist\n"); exit(0);}
+	  unsigned int ngenITpu = 0;
+	  for(std::vector<PileupSummaryInfo>::const_iterator it = puInfoH->begin(); it != puInfoH->end(); it++)
+	    {
+	      if(it->getBunchCrossing() == 0)      
+		{ 
+		  ngenITpu += it -> getPU_NumInteractions(); 
+		}
+	    }
+	  if(ngenITpu >= Npu){printf("ngenITpu is larger than vector size... vector is being resized, but you should check that all is ok!"); mcpileup.resize(ngenITpu+1);}
+	  mcpileup[ngenITpu]++;
+	}
+	delete file;
       }
-      if(ngenITpu>=Npu){printf("ngenITpu is larger than vector size... vector is being resized, but you should check that all is ok!"); mcpileup.resize(ngenITpu+1);}
-      mcpileup[ngenITpu]++;
-    }
-  }
-  
+  }  
   void getPileupNormalization(std::vector<float>& mcpileup, double* PUNorm, edm::LumiReWeighting* LumiWeights, utils::cmssw::PuShifter_t PuShifters){
     PUNorm[0]=0; PUNorm[1]=0; PUNorm[2]=0;
     double NEvents=0;

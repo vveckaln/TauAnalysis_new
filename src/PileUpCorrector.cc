@@ -56,7 +56,7 @@ PileUpCorrector::PileUpCorrector(EventSink<event_type> *next_processor_stage): E
 	  DataPileUp[ind].push_back(read_value);
 	}
       fclose(pfile[ind]);
-      utils::getMCPileupDistributionFromMiniAOD(fwlite_ChainEvent, DataPileUp[ind].size(), MCPileUp[ind]);
+      utils::getMCPileupDistributionFromMiniAOD(input_file_names, DataPileUp[ind].size(), MCPileUp[ind]);
       while(MCPileUp[ind] . size() < DataPileUp[ind].size()) 
 	MCPileUp[ind] . push_back(0.0);
       while(MCPileUp[ind] . size() > DataPileUp[ind].size())
@@ -88,7 +88,8 @@ void PileUpCorrector ::Run()
 	  ngenITpu += it -> getPU_NumInteractions(); 
 	}
     }
-  const double puWeight = LumiWeights[1] -> weight(ngenITpu) * PUNorm[1][0];
+  printf("ngenITpu %u\n", ngenITpu);
+     const double puWeight = LumiWeights[1] -> weight(ngenITpu) * PUNorm[1][0];
   if (print_mode)
     {
       printf("EVENT IDENTITY %u %u %llu\n", input_event -> Run, input_event -> Lumi, input_event -> Event);

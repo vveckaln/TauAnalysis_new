@@ -149,7 +149,7 @@ namespace utils
   // this is useful to determine how to normalize the events (compute weight)
   unsigned long getMergeableCounterValue(const std::vector<std::string>& urls, std::string counter);
   int getTotalNumberOfEvents(std::vector<std::string>& urls, bool fast = true);
-
+  void getMCPileupDistributionFromMiniAOD(std::vector<std::string>& urls, unsigned int Npu, std::vector<float>& mcpileup);
   void getMCPileupDistributionFromMiniAOD(fwlite::ChainEvent& ev, unsigned int Npu, std::vector<float>& mcpileup);
   void getMCPileupDistribution(fwlite::ChainEvent& ev, unsigned int Npu, std::vector<float>& mcpileup);
   void getPileupNormalization(std::vector<float>& mcpileup, double* PUNorm, edm::LumiReWeighting* LumiWeights, utils::cmssw::PuShifter_t PuShifters);

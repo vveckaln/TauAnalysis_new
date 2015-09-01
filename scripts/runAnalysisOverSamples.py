@@ -197,11 +197,11 @@ for procData in procList :
             print "FileList obtained"
 
             LaunchOnCondor.SendCluster_Create(FarmDirectory, JobName + '_' + dtag)
-#            dset.replace('/', '//')
-            for segment in range(0, len(FileList)) :
+            print "Filelist length %u" % len(FileList)
+            for segment in range(0, 1): #len(FileList)) :
 
                 if (not opt.run_option == "hadd") :
-                    print FileList[segment]
+                    
                     eventsFile = FileList[segment]
                     eventsFile = eventsFile.replace('?svcClass=default', '')
                 else:

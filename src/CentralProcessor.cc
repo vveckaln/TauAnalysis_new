@@ -68,8 +68,11 @@ void CentralProcessor::SetEnvironment() const
 
 void CentralProcessor::Process(const char* option)
 {
+  for (size_t ind = 0; ind < input_file_names.size(); ind++)
+    printf("file %lu %s\n", ind, input_file_names[ind].c_str());
+  getchar();
   fwlite_ChainEvent_ptr = new fwlite::ChainEvent(input_file_names);
-  printf("opened\n");
+  
   
   //output_file_name  = gOutputDirectoryName + "/output_files/output_event_analysis/" + TString(gSystem -> BaseName(input_file_name)) . 
   //ReplaceAll(".root", "") + "_out.root";

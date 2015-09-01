@@ -1,4 +1,5 @@
 
+
 import FWCore.ParameterSet.Config as cms
 process = cms.Process("AnalysisProc")
 process.load("FWCore.MessageService.MessageLogger_cfi")
@@ -12,14 +13,16 @@ from LIP.TauAnalysis.mvaConfig_cfi import ewkzp2jFull as mySignalMVA
 #from UserCode.llvv_fwk.mvaConfig_cfi import ewkzp2jBase as mySignalMVA
 
 PhysicsAnalysisParSet = cms.PSet(
-    dtag         = cms.string("@dtag"),
-    input        = cms.untracked.vstring("@input"),
-    outdir       = cms.string("@outdir"),
-    isData       = cms.bool(@isData),
-    XSection     = cms.double(@xsec),
-    debug        = cms.bool(@debug),
-    mctruthmode  = cms.int32(@mctruthmode),
-    file_split   = cms.int32(@file_split),
-    segment      = cms.int32(@segment),
+    dtag           = cms.string("@dtag"),
+    dset           = cms.string("@dset"),
+    input          = cms.untracked.vstring("@input"),
+    outdir         = cms.string("@outdir"),
+    work_directory = cms.string("@work_directory"),
+    isData         = cms.bool(@isData),
+    XSection       = cms.double(@xsec),
+    debug          = cms.bool(@debug),
+    mctruthmode    = cms.int32(@mctruthmode),
+    file_split     = cms.int32(@file_split),
+    segment        = cms.int32(@segment),
     lumisToProcess = LumiList.LumiList(filename = @lumiMask).getVLuminosityBlockRange(),
 )

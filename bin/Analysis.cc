@@ -11,7 +11,7 @@ int main(int argc, char* argv[])
   if (string(argv[1]).compare(string("none")) != 0)
     gConfiguration -> SetConfiguration(argv[1]);
   CentralProcessor * central_processor = new CentralProcessor();
-  central_processor -> LoadSelectorHistDescriptors("/exper-sw/cmst3/cmssw/users/vveckaln/CMSSW_5_3_15/src/LIP/TauAnalysis/data/histogram_specifiers/spec_selector_histograms.xml");
+  central_processor -> LoadSelectorHistDescriptors(gwork_directory + "/data/histogram_specifiers/spec_selector_histograms.xml");
   TString option = TString(argv[2]);
   if (option == "process")
     central_processor -> Process("");
