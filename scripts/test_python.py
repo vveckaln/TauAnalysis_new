@@ -6,7 +6,7 @@ import commands
 import LaunchOnCondor
 import LIP.TauAnalysis.storeTools_cff as storeTools
 
-PROXYDIR = "~/x509_user_proxy"
+
 DatasetFileDB = "DAS"  #DEFAULT: will use das_client.py command line interface
 #DatasetFileDB = "DBS" #OPTION:  will use curl to parse https GET request on DBSserver
 
@@ -26,26 +26,21 @@ initialCommand = '';
 def initProxy():
    global initialCommand
    validCertificate = True
-   if(validCertificate and (not os.path.isfile(os.path.expanduser(PROXYDIR + '/x509_proxy')))):
+   if(validCertificate and (not os.path.isfile(os.path.expanduser('~/x509_user_proxy/x509_proxy')))):
        validCertificate = False
        print "False step 1"
-   if(validCertificate and (time.time() - os.path.getmtime(os.path.expanduser(PROXYDIR + '/x509_proxy'))) > 600): 
+   if(validCertificate and (time.time() - os.path.getmtime(os.path.expanduser('~/x509_user_proxy/x509_proxy'))) > 600): 
        validCertificate = False
        print "False step 2"
-   if(validCertificate and int(commands.getstatusoutput('(export X509_USER_PROXY=' + PROXYDIR + '/x509_proxy;voms-proxy-init --noregen;voms-proxy-info --all) | grep timeleft | tail -n 1')[1].split(':')[2]) < 8 ):
+   if(validCertificate and int(commands.getstatusoutput('(export X509_USER_PROXY=~/x509_user_proxy/x509_proxy;voms-proxy-init --noregen;voms-proxy-info -all) | grep timeleft | tail -n 1')[1].split(':')[2]) < 8 ):
        validCertificate = False
        print "False step 3"
-   if(validCertificate):
-       print "Certicate valid"
 
    if(not validCertificate):
       print "You are going to run on a sample over grid using either CRAB or the AAA protocol, it is therefore needed to initialize your grid certificate"
-#      os.system('mkdir -p ~/x509_user_proxy; voms-proxy-init --voms cms -valid 192:00 --out ~/x509_user_proxy/x509_proxy')#all must be done in the same command to avoid environement problems.  Note that the first sourcing is only needed in Louvain
-#      os.system('voms-proxy-init --voms cms -valid 192:00')
-      os.system('mkdir -p ' + PROXYDIR + '; voms-proxy-init --voms cms             -valid 720:00 --out ' + PROXYDIR + '/x509_proxy')
-   initialCommand = 'export X509_USER_PROXY=' + PROXYDIR + '/x509_proxy; voms-proxy-init --voms cms --noregen; '
+      os.system('mkdir -p ~/x509_user_proxy; voms-proxy-init --voms cms -valid 192:00 --out ~/x509_user_proxy/x509_proxy')#all must be done in the same command to avoid environement problems.  Note that the first sourcing is only needed in Louvain
+   initialCommand = 'export X509_USER_PROXY=~/x509_user_proxy/x509_proxy;voms-proxy-init --noregen; '
 
-#   initialCommand = 'export X509_USER_PROXY=' + PROXYDIR + '/x509_proxy;voms-proxy-init --voms cms --noregen; '
 
 def getFileList(procData):
    FileList = [];
@@ -138,9 +133,8 @@ if (opt.run_option == 'hadd') :
 print "opt.debug %s" % opt.debug
 (opt, args) = parser.parse_args()
 scriptFile=os.path.expandvars('${CMSSW_BASE}/bin/${SCRAM_ARCH}/wrapLocalAnalysisRun.sh')
+
 FarmDirectory                      = opt.outdir + "/FARM"
-PROXYDIR                           = FarmDirectory + "/inputs" 
-initProxy()
 JobName                            = opt.theExecutable
 LaunchOnCondor.Jobs_RunHere        = 1
 LaunchOnCondor.Jobs_Queue          = opt.queue
@@ -159,6 +153,7 @@ if(hostname.find("cern.ch") != -1)  :
     work_directory = "/afs/cern.ch/work/v/vveckaln/private/CMSSW_7_4_2/src/LIP/TauAnalysis"
 if(hostname.find("ncg.ingrid.pt") != -1)  :
     work_directory = "/exper-sw/cmst3/cmssw/users/vveckaln/CMSSW_7_4_2/src/LIP/TauAnalysis"
+initProxy()
 
 #open the file which describes the sample
 jsonFile = open(opt.samplesDB, 'r')
@@ -166,14 +161,12 @@ procList = json.load(jsonFile, encoding = 'utf-8').items()
 #run over sample
 for procData in procList :
     #run over processes
-    print "probe A"
     for desc in procData[1] :
         #run over items in process
         isdata      = getByLabel(desc, 'isdata', False)
         mctruthmode = getByLabel(desc, 'mctruthmode', 0)
         data        = desc['data']
         for procData in data :
-            print "probe B"
             origdtag = getByLabel(procData, 'dtag',  '')
             if(origdtag == '') : continue
             dtag = origdtag
@@ -194,10 +187,8 @@ for procData in procList :
                 split = 1
             FileList = ['"' + getByLabel(procData, 'dset', 'UnknownDataset') + '"']
             if(LaunchOnCondor.subTool != 'crab'):
-                if (not opt.debug and not opt.run_option == "hadd"):
+                if (not opt.debug):
                     FileList = getFileList(procData)
-                elif (opt.run_option == "hadd"):
-                    FileList = ["/test/phony_list\",\\n"]
                 else:
                     f = "\"" + work_directory + "/test/1E7F77F3-0209-E511-958C-0025905A6138.root\",\\n"
                     FileList = [f] 
@@ -207,17 +198,14 @@ for procData in procList :
 
             LaunchOnCondor.SendCluster_Create(FarmDirectory, JobName + '_' + dtag)
             print "Filelist length %u" % len(FileList)
-            ind = 1
-            if (not opt.run_option == "hadd" and opt.queue != "0"):
-                ind = len(FileList)
-            for segment in range(0, ind) :
+            for segment in range(0, 1): #len(FileList)) :
 
                 if (not opt.run_option == "hadd") :
                     
                     eventsFile = FileList[segment]
                     eventsFile = eventsFile.replace('?svcClass=default', '')
                 else:
-                    eventsFile = "\"/test/phony_list\",\\n" #'\'' + opt.indir + '/' + origdtag + '\''
+                        eventsFile = '\'' + opt.indir + '/' + origdtag + '\''
                    
                 #create the cfg file
 
@@ -247,10 +235,9 @@ for procData in procList :
                 #run the job
                 if opt.queue == "0" :
                     print "launching"
-#                    os.system(initialCommand + opt.theExecutable + ' ' + cfgfile + ' ' + opt.run_option)  
-                    os.system(initialCommand + opt.theExecutable + ' ' + cfgfile + ' ' + opt.run_option)  
-  
-               # os.system("valgrind --track-origins=yes --log-file=valgrind.txt --leak-check=full " + opt.theExecutable + ' ' + cfgfile + ' ' + str(opt.run_option))
+                    os.system(opt.theExecutable + ' ' + cfgfile + ' ' + str\
+   (opt.run_option))  
+                # os.system("valgrind --track-origins=yes --log-file=valgrind.txt --leak-check=full " + opt.theExecutable + ' ' + cfgfile + ' ' + str(opt.run_option))
                 else:
                     if(LaunchOnCondor.subTool == 'crab'):
                        LaunchOnCondor.Jobs_CRABDataset  = FileList[0]
@@ -259,12 +246,11 @@ for procData in procList :
                        if(commands.getstatusoutput("whoami")[1] == 'viesturs'):
                            LaunchOnCondor.Jobs_CRABStorageSite = 'T2_PT_NCG_Lisbon'
                        else:
-                           LaunchOnCondor.Jobs_CRABStorageSite = 'T2_CH_CERN'
+                           LaunchOnCondor.Jobs_CRABStorageSite = 'T2_BE_UCL'
                        LaunchOnCondor.Jobs_CRABname     = dtag
                        LaunchOnCondor.Jobs_CRABInDBS    = getByLabel(procData, 'dbsURL', 'global')
                        LaunchOnCondor.Jobs_CRABUnitPerJob = 100 / split 
-                    print str(opt.theExecutable + ' ' + cfgfile + ' ' +  str(opt.run_option))
-                    LaunchOnCondor.SendCluster_Push(["BASH", opt.theExecutable + ' ' + cfgfile + ' ' +  opt.run_option])
+                       LaunchOnCondor.SendCluster_Push(["BASH", str(opt.theExecutable + ' ' + cfgfile)])
                 if opt.debug:
                     break
             LaunchOnCondor.SendCluster_Submit()

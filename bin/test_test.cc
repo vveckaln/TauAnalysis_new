@@ -1,4 +1,6 @@
 #include <boost/shared_ptr.hpp>
+#include "DataFormats/FWLite/interface/Event.h"
+
 /*
 #include "FWCore/FWLite/interface/AutoLibraryLoader.h"
 #include "FWCore/PythonParameterSet/interface/MakeParameterSets.h"
@@ -17,9 +19,9 @@
 #include "stdio.h"
 /*#include "TCanvas.h"
 #include "TApplication.h"
-#include "TLorentzVector.h"
+#include "TLorentzVector.h"*/
 #include "TFile.h"
-#include "TH1D.h"
+/*#include "TH1D.h"
 #include "TSystem.h"*/
 using namespace std;
 void TestF(const char * s1 = "", const char * s2 = "pp")
@@ -29,20 +31,21 @@ void TestF(const char * s1 = "", const char * s2 = "pp")
 
 int main() 
 {
-  TestF("hey", "hey2");
-  vector<int> test;
-  for (uint ind = 0; ind < 10; ind ++)
+  TFile * file = TFile::Open("root://cms-xrd-global.cern.ch//store/mc/Phys14DR/QCD_Pt-80to120_Tune4C_13TeV_pythia8/MINIAODSIM/PU20bx25_trkalmb_castor_PHYS14_25_V1-v2/10000/606E03E7-C57C-E411-932B-00259073E532.root");
+  fwlite::Event event(file);
+  unsigned long entry_ind = 0;
+  int toReturn = event.size();
+  printf("size = %d\n", toReturn);
+  for(event.toBegin(); !event.atEnd(); ++event)
     {
-      test.push_back(ind);
+      entry_ind++;
+      if (entry_ind % 10000 == 0)
+	{
+	  printf("Read %lu events\n", entry_ind);
+	  //getchar();
+	}
+
     }
-  vector<int>::iterator it = test.begin();
-  while (it != test.end())
-    {
-      if (*it %2 == 1) 
-	test.erase(it);
-      else 
-	it ++;
-    };
-  for (uint ind = 0; ind < test.size(); ind ++)
-    printf("%u\n", test[ind]);
+  file -> Close();
+
 }

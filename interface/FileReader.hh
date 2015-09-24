@@ -15,6 +15,8 @@ class FileReader
 
 protected:
   lumiUtils::GoodLumiFilter *goodLumiFilter;  
+  unsigned long read;
+
 public:
   FileReader(EventSink<event_type> *next_processor_stage);
   void Run();

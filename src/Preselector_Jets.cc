@@ -56,6 +56,9 @@ unsigned int Preselector_Jets::PreselectJets()
   while(jets_it != input_event -> jets.end())
     {
       pat::Jet * jet = &*jets_it;
+      bool isTauJet(false);
+      if (deltaR(*jet, input_event -> taus[0]) < 0.2 ) 
+	isTauJet = true;
       bool passKin(true);
   
       if(jet -> pt() < JET_PT_MIN/*15*/ || fabs(jet -> eta()) > JET_ETA_MAX/*4.7*/) passKin = false;
@@ -87,7 +90,7 @@ unsigned int Preselector_Jets::PreselectJets()
       //float PUDiscriminant = jet -> userFloat("pileupJetId:fullDiscriminant");
       bool passLooseSimplePuId = patUtils::passPUJetID(*jet); //Uses recommended value of HZZ, will update this as soon my analysis is done. (Hugo)
       
-      if(!passKin || !passPFloose || !passLooseSimplePuId) 
+      if(isTauJet || !passKin || !passPFloose || !passLooseSimplePuId) 
 	input_event -> jets.erase(jets_it);
       else
 	jets_it ++;

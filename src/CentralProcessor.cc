@@ -1,3 +1,4 @@
+
 #include "LIP/TauAnalysis/interface/CentralProcessor.hh"
 #include "LIP/TauAnalysis/interface/GlobalVariables.hh"
 
@@ -60,7 +61,7 @@ void CentralProcessor::SetEnvironment() const
   IsTTbarMC         = gdtag.Contains("TTJets") or gdtag.Contains("_TT_");
   IsDY              = gdtag.Contains("DY");
   IstW              = gdtag.Contains("tW");
-
+  IsWJets           = gdtag.Contains("WJets");
   if (IsTTbarMC) SetEnvironment_TTbarMC();
   if (IsDY)      SetEnvironment_DY();
   if (IstW)      SetEnvironment_tW();
@@ -70,8 +71,8 @@ void CentralProcessor::Process(const char* option)
 {
   for (size_t ind = 0; ind < input_file_names.size(); ind++)
     printf("file %lu %s\n", ind, input_file_names[ind].c_str());
-  getchar();
-  fwlite_ChainEvent_ptr = new fwlite::ChainEvent(input_file_names);
+  //getchar();
+  //  fwlite_ChainEvent_ptr = new fwlite::ChainEvent(input_file_names);
   
   
   //output_file_name  = gOutputDirectoryName + "/output_files/output_event_analysis/" + TString(gSystem -> BaseName(input_file_name)) . 
@@ -85,7 +86,7 @@ void CentralProcessor::Process(const char* option)
     new FileReader(
     new MuScleFitCorrectorApplicator(
     new Preselector_Leptons(
-			    //    new PileUpCorrector(
+    new Preselector_Taus(
     new Preselector_Jets(
 								//new Purge(
 								//new UncertaintiesNode(*/
@@ -96,7 +97,7 @@ void CentralProcessor::Process(const char* option)
 		       new PileUpCorrector(	  
     new Preselector_MET(
     new BTagger(	     
-    new Preselector_Taus(
+    
 			 new Preselector_OS(NULL)))))))))));
   reader -> Run();
   reader -> Report();
@@ -124,7 +125,8 @@ void CentralProcessor::AddHistograms()
 {
   SetEnvironment();
   printf("gfile_split %u\n", gfile_split);
-  
+  input_file_name = gOutputDirectoryName + "/output_files/event_analysis/" + gdtag;
+  printf("input_file_name stub %s\n", input_file_name.Data());
   for (unsigned short segment_ind = 0; segment_ind < *number_of_samples; segment_ind ++)
     {
       number_active_sample = segment_ind;
@@ -135,16 +137,10 @@ void CentralProcessor::AddHistograms()
 	  TString name;
 	  if (number_of_samples == & generic_samples_count)
 	    {
-	      if (gfile_split == 1)
-		name = input_file_name + "_out.root";
-	      else
 		name = input_file_name + "_" + TString(to_string(file_ind)) + "_out.root";
 	    }
 	  else
 	    {
-	      if (gfile_split == 1)
-		name = input_file_name + "_" + samples_names[segment_ind] + "_out.root";
-	      else
 		name = input_file_name + "_" + samples_names[segment_ind] + "_" + TString(to_string(file_ind)) + "_out.root";
 	    }
 	  //printf("%s %u\n", samples_names[segment_ind].Data(), file_ind);
@@ -158,15 +154,9 @@ void CentralProcessor::AddHistograms()
     
       //getchar();
       if (samples_names[segment_ind] != "generic_name") 
-	if (gfile_split == 1)
-	  output_file_name = gOutputDirectoryName + "/output_files/hadd/" + TString(gSystem -> BaseName(input_file_names[0].c_str())).ReplaceAll("_out.root", "") + "_" + samples_names[segment_ind] + "_TOTAL_out.root";
-	else
-	  output_file_name = gOutputDirectoryName + "/output_files/hadd/" + TString(gSystem -> BaseName(input_file_names[0].c_str())).ReplaceAll("_0_out.root", "") + "_" + samples_names[segment_ind] + "_TOTAL_out.root";
+	  output_file_name = gOutputDirectoryName + "/output_files/hadd/" + gdtag + "_" + samples_names[segment_ind] + "_TOTAL_out.root";
       else
-	if (gfile_split == 1)
-	  output_file_name = gOutputDirectoryName + "/output_files/hadd/" + TString(gSystem -> BaseName(input_file_names[0].c_str())).ReplaceAll("_out.root", "") + "_TOTAL_out.root";
-	else
-	  output_file_name = gOutputDirectoryName + "/output_files/hadd/" + TString(gSystem -> BaseName(input_file_names[0].c_str())).ReplaceAll("_0_out.root", "") + "_TOTAL_out.root";
+	  output_file_name = gOutputDirectoryName + "/output_files/hadd/" + gdtag + "_TOTAL_out.root";
       output_file = new TFile(output_file_name, "recreate");
       printf("output_file_name %s\n", output_file_name.Data());
       //getchar();
@@ -322,14 +312,14 @@ void CentralProcessor::OpenOutputFiles() const
       if (number_of_samples == &generic_samples_count)
 	output_file_name = gOutputDirectoryName 
 	  + "/output_files/event_analysis/" 
-	  + gdtag
+	  + gdtag + "_" + TString(to_string(gsegment)) 
 	  + "_out.root";
       else
 	{
 	    output_file_name  = gOutputDirectoryName 
 	      + "/output_files/event_analysis/" 
 	      + gdtag 
-	      + "_" + samples_names[sample_ind] 
+	      + "_" + samples_names[sample_ind] + "_" +  TString(to_string(gsegment))
 	      + "_out.root";
 	}
       HStructure_TFile *str_f = HStructure_TFile::Open(output_file_name, "RECREATE");

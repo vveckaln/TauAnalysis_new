@@ -32,6 +32,8 @@ namespace cpregister
   bool                           IsDY                       = false;
   bool                           IstW                       = false;
   bool                           IsGeneric                  = false;
+  bool                           IsWJets                    = false;
+
   //********************** PROGRAMMED UNCERTAINTIES **********************
   extern const uint number_uncertainties = 2;
   extern const uint number_subuncertainties = 2;

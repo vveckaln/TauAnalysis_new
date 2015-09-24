@@ -21,7 +21,8 @@ class Fork_Subsample : public EventProcessor<event_type, event_type>
   double received;
   double passed;
   bool valid_TTbarMC;
-  unsigned char ngen_electron_status3, ngen_muon_status3, ngen_tau_status3;
+  unsigned char ngen_electron, ngen_muon, ngen_tau, ngen_quark;
+  
   EventBuffer<event_type>::iterator it;
   bool (Fork_Subsample::**sample_check_ptr)() const;
   bool CheckTTbarMC_muon_tau() const;
@@ -34,14 +35,17 @@ class Fork_Subsample : public EventProcessor<event_type, event_type>
 
   bool CheckDY_lepton_lepton() const;
   bool CheckDY_tau_tau() const;
-
+  bool CheckWJets() const;
   bool CheckGeneric() const;
 
   void SetEnvironment_TTbarMC();
   void SetEnvironment_DY();
   void SetEnvironment_tW();
+  void SetEnvironment_WJets();
   void SetEnvironment_generic();
-
+  void CountLeptons_TTbarMC();
+  void CountLeptons_WJets();
+  void CountLeptons_DY();
   void CollectStatistics();
 public:
   Fork_Subsample(EventSink<event_type> *next_processor_stage);

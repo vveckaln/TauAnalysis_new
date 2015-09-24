@@ -139,7 +139,7 @@ def CreateTheShellFile(argv):
         for i in range(len(Jobs_InitCmds)):
                 #shell_file.write('echo ' + Jobs_InitCmds[i]+'\n')
 		shell_file.write(Jobs_InitCmds[i]+'\n')
-
+                
 	if   argv[0]=='BASH':                 
 		if Jobs_RunHere==0:
                 	shell_file.write('cd -\n')
@@ -397,6 +397,7 @@ def SendCluster_Push(Argv):
 	Jobs_Count = Jobs_Count+1
 
 def SendCluster_Submit():
+        print "submitting jobs"
         global subTool
 	global CopyRights
         global Jobs_Count

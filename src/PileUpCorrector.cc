@@ -27,7 +27,9 @@ PileUpCorrector::PileUpCorrector(EventSink<event_type> *next_processor_stage): E
     ;//  XSectionWeight = gXSection/ 1100000;*/
   else
     {
-      const double MergeableCounterValue = utils::getTotalNumberOfEvents(input_file_names); //getMergeableCounterValue(input_file_names, "startCounter");
+      printf("Debug mode %s\n", gVariables::gDebug ? "true" : "false");
+      const double MergeableCounterValue = /*gVariables::gDebug ? 45000 :  */utils::getTotalNumberOfEvents(input_file_names, true); //getMergeableCounterValue(input_file_names, "startCounter");
+      printf("MergeableCounterValue %f\n", MergeableCounterValue);
       XSectionWeight = gXSection/ MergeableCounterValue;
       rootdouble mcv("MergeableCounterValue", "MergeableCounterValue");
       mcv.SetInformation(MergeableCounterValue);
@@ -88,8 +90,7 @@ void PileUpCorrector ::Run()
 	  ngenITpu += it -> getPU_NumInteractions(); 
 	}
     }
-  printf("ngenITpu %u\n", ngenITpu);
-     const double puWeight = LumiWeights[1] -> weight(ngenITpu) * PUNorm[1][0];
+  const double puWeight = LumiWeights[1] -> weight(ngenITpu) * PUNorm[1][0];
   if (print_mode)
     {
       printf("EVENT IDENTITY %u %u %llu\n", input_event -> Run, input_event -> Lumi, input_event -> Event);
@@ -139,7 +140,7 @@ void PileUpCorrector::ApplyLeptonEfficiencySF() const
 
 void PileUpCorrector::ApplyIntegratedLuminosity() const
 {
-  const double iLumi = 40.100/*19700*/;
+  const double iLumi = 1000/*40.100/*19700*/;
   input_event -> weight *= iLumi;
 
 }

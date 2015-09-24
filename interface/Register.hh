@@ -49,6 +49,7 @@ namespace cpregister
   extern bool IsDY;
   extern bool IstW;
   extern bool IsGeneric;
+  extern bool IsWJets;
   //********************** PROGRAMMED UNCERTAINTIES **********************
   extern const uint number_uncertainties;
   extern const uint number_subuncertainties;

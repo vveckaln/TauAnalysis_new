@@ -1,0 +1,18 @@
+
+{
+  "proc":[
+  {
+ "tag":"Single top",
+      "isdata":false,
+      "color":824,
+      "lcolor":1,
+      "data":[
+{ "dtag":"MC13TeV_SingleTbar_t"                     , "split":10, "xsec":30.7        , "br":[ 1.0 ]                 , "dset":"/TBarToLeptons_t-channel_Tune4C_CSA14_13TeV-aMCatNLO-tauola/Phys14DR-PU20bx25_PHYS14_25_V1-v1/MINIAODSIM"                          },
+        { "dtag":"MC13TeV_SingleT_t"                        , "split":10, "xsec":103.4       , "br":[ 1.0 ]                 , "dset":"/TToLeptons_t-channel-CSA14_Tune4C_13TeV-aMCatNLO-tauola/Phys14DR-PU20bx25_PHYS14_25_V1-v1/MINIAODSIM"                             },
+        { "dtag":"MC13TeV_SingleTbar_s"                     , "split":10, "xsec":4.16        , "br":[ 1.0 ]                 , "dset":"/TBarToLeptons_s-channel-CSA14_Tune4C_13TeV-aMCatNLO-tauola/Phys14DR-PU20bx25_PHYS14_25_V1-v1/MINIAODSIM"                          },
+        { "dtag":"MC13TeV_SingleT_s"                        , "split":10, "xsec":7.20        , "br":[ 1.0 ]                 , "dset":"/TToLeptons_s-channel-CSA14_Tune4C_13TeV-aMCatNLO-tauola/Phys14DR-PU20bx25_PHYS14_25_V1-v1/MINIAODSIM"                             }
+
+      ]
+   }	
+  ]
+}

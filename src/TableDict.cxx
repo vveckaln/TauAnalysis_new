@@ -57,7 +57,7 @@ namespace ROOT {
       ::Column_spec<float> *ptr = 0;
       static ::TVirtualIsAProxy* isa_proxy = new ::TInstrumentedIsAProxy< ::Column_spec<float> >(0);
       static ::ROOT::TGenericClassInfo 
-         instance("Column_spec<float>", ::Column_spec<float>::Class_Version(), "interface/Table.h", 28,
+         instance("Column_spec<float>", ::Column_spec<float>::Class_Version(), "LIP/TauAnalysis/interface/Table.h", 28,
                   typeid(::Column_spec<float>), DefineBehavior(ptr, ptr),
                   &Column_speclEfloatgR_Dictionary, isa_proxy, 4,
                   sizeof(::Column_spec<float>) );
@@ -102,7 +102,7 @@ namespace ROOT {
       ::Column_spec<short> *ptr = 0;
       static ::TVirtualIsAProxy* isa_proxy = new ::TInstrumentedIsAProxy< ::Column_spec<short> >(0);
       static ::ROOT::TGenericClassInfo 
-         instance("Column_spec<short>", ::Column_spec<short>::Class_Version(), "interface/Table.h", 28,
+         instance("Column_spec<short>", ::Column_spec<short>::Class_Version(), "LIP/TauAnalysis/interface/Table.h", 28,
                   typeid(::Column_spec<short>), DefineBehavior(ptr, ptr),
                   &Column_speclEshortgR_Dictionary, isa_proxy, 4,
                   sizeof(::Column_spec<short>) );
@@ -147,7 +147,7 @@ namespace ROOT {
       ::Column_spec<double> *ptr = 0;
       static ::TVirtualIsAProxy* isa_proxy = new ::TInstrumentedIsAProxy< ::Column_spec<double> >(0);
       static ::ROOT::TGenericClassInfo 
-         instance("Column_spec<double>", ::Column_spec<double>::Class_Version(), "interface/Table.h", 28,
+         instance("Column_spec<double>", ::Column_spec<double>::Class_Version(), "LIP/TauAnalysis/interface/Table.h", 28,
                   typeid(::Column_spec<double>), DefineBehavior(ptr, ptr),
                   &Column_speclEdoublegR_Dictionary, isa_proxy, 4,
                   sizeof(::Column_spec<double>) );
@@ -192,7 +192,7 @@ namespace ROOT {
       ::Column_spec<unsigned short> *ptr = 0;
       static ::TVirtualIsAProxy* isa_proxy = new ::TInstrumentedIsAProxy< ::Column_spec<unsigned short> >(0);
       static ::ROOT::TGenericClassInfo 
-         instance("Column_spec<unsigned short>", ::Column_spec<unsigned short>::Class_Version(), "interface/Table.h", 28,
+         instance("Column_spec<unsigned short>", ::Column_spec<unsigned short>::Class_Version(), "LIP/TauAnalysis/interface/Table.h", 28,
                   typeid(::Column_spec<unsigned short>), DefineBehavior(ptr, ptr),
                   &Column_speclEunsignedsPshortgR_Dictionary, isa_proxy, 4,
                   sizeof(::Column_spec<unsigned short>) );
@@ -237,7 +237,7 @@ namespace ROOT {
       ::Column_spec<const char*> *ptr = 0;
       static ::TVirtualIsAProxy* isa_proxy = new ::TInstrumentedIsAProxy< ::Column_spec<const char*> >(0);
       static ::ROOT::TGenericClassInfo 
-         instance("Column_spec<const char*>", ::Column_spec<const char*>::Class_Version(), "interface/Table.h", 28,
+         instance("Column_spec<const char*>", ::Column_spec<const char*>::Class_Version(), "LIP/TauAnalysis/interface/Table.h", 28,
                   typeid(::Column_spec<const char*>), DefineBehavior(ptr, ptr),
                   &Column_speclEconstsPcharmUgR_Dictionary, isa_proxy, 4,
                   sizeof(::Column_spec<const char*>) );
@@ -282,7 +282,7 @@ namespace ROOT {
       ::Column_spec<TString> *ptr = 0;
       static ::TVirtualIsAProxy* isa_proxy = new ::TInstrumentedIsAProxy< ::Column_spec<TString> >(0);
       static ::ROOT::TGenericClassInfo 
-         instance("Column_spec<TString>", ::Column_spec<TString>::Class_Version(), "interface/Table.h", 28,
+         instance("Column_spec<TString>", ::Column_spec<TString>::Class_Version(), "LIP/TauAnalysis/interface/Table.h", 28,
                   typeid(::Column_spec<TString>), DefineBehavior(ptr, ptr),
                   &Column_speclETStringgR_Dictionary, isa_proxy, 4,
                   sizeof(::Column_spec<TString>) );
@@ -325,7 +325,7 @@ namespace ROOT {
       ::Column *ptr = 0;
       static ::TVirtualIsAProxy* isa_proxy = new ::TInstrumentedIsAProxy< ::Column >(0);
       static ::ROOT::TGenericClassInfo 
-         instance("Column", ::Column::Class_Version(), "interface/Table.h", 9,
+         instance("Column", ::Column::Class_Version(), "LIP/TauAnalysis/interface/Table.h", 9,
                   typeid(::Column), DefineBehavior(ptr, ptr),
                   &::Column::Dictionary, isa_proxy, 4,
                   sizeof(::Column) );
@@ -357,7 +357,7 @@ namespace ROOT {
       ::Table *ptr = 0;
       static ::TVirtualIsAProxy* isa_proxy = new ::TInstrumentedIsAProxy< ::Table >(0);
       static ::ROOT::TGenericClassInfo 
-         instance("Table", ::Table::Class_Version(), "interface/Table.h", 72,
+         instance("Table", ::Table::Class_Version(), "LIP/TauAnalysis/interface/Table.h", 72,
                   typeid(::Table), DefineBehavior(ptr, ptr),
                   &::Table::Dictionary, isa_proxy, 4,
                   sizeof(::Table) );
@@ -1364,12 +1364,12 @@ namespace ROOT {
 namespace {
   void TriggerDictionaryInitialization_TableDict_Impl() {
     static const char* headers[] = {
-"interface/Table.h",
+"LIP/TauAnalysis/interface/Table.h",
 0
     };
     static const char* includePaths[] = {
 "/cvmfs/cms.cern.ch/slc6_amd64_gcc491/lcg/root/6.02.00-odfocd2/include",
-"/exper-sw/cmst3/cmssw/users/vveckaln/CMSSW_7_4_2/src/LIP/TauAnalysis/",
+"/afs/cern.ch/work/v/vveckaln/private/CMSSW_7_4_2/src/LIP/TauAnalysis/",
 0
     };
     static const char* fwdDeclCode = 
@@ -1391,7 +1391,7 @@ class __attribute__((annotate("$clingAutoload$interface/Table.h")))  Table;
 #endif
 
 #define _BACKWARD_BACKWARD_WARNING_H
-#include "interface/Table.h"
+#include "LIP/TauAnalysis/interface/Table.h"
 
 #undef  _BACKWARD_BACKWARD_WARNING_H
 )DICTPAYLOAD";

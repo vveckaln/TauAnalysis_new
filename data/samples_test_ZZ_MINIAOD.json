@@ -9,8 +9,7 @@
       "marker":1,
       "comment":"Cross sections from prepreapproval of dilepton. Must check values",
       "data":[
-        { "dtag":"MC13TeV_WW"                             , "split":41, "xsec":118.7       , "br":[ 1.0 ]           , "dset":"/WW_TuneCUETP8M1_13TeV-pythia8/RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/MINIAODSIM"}
-      ]
+{ "dtag":"MC13TeV_ZZ" , "split":41, "xsec":31.8 , "br":[ 1.0 ] , "dset":"/ZZ_TuneCUETP8M1_13TeV-pythia8/RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v2/MINIAODSIM"}      ]
     }
     ]
 }	

@@ -1,6 +1,8 @@
 #include "LIP/TauAnalysis/interface/MacroUtils.h"
+#include "LIP/TauAnalysis/interface/GlobalVariables.hh"
 #include "TH1F.h"
 #include "TSystem.h"
+#include "stdlib.h"
 
 namespace utils
 {
@@ -325,32 +327,47 @@ namespace utils
 
 	// loop on all the lumi blocks for an EDM file in order to count the number of events that are in a sample
 	// this is useful to determine how to normalize the events (compute weight)
-	unsigned long getMergeableCounterValue(const std::vector<std::string>& urls, std::string counter)
-	{
-	   unsigned long Total = 0;
-	   for(unsigned int f=0;f<urls.size();f++){
-	      TFile *file = TFile::Open(urls[f].c_str());      
-	      fwlite::LuminosityBlock ls( file );
-	      for(ls.toBegin(); !ls.atEnd(); ++ls){
-		 fwlite::Handle<edm::MergeableCounter> nEventsTotalCounter;
-		 nEventsTotalCounter.getByLabel(ls,counter.c_str());
-		 if(!nEventsTotalCounter.isValid()){printf("Invalid nEventsTotalCounterH\n");continue;}
-		 Total+= nEventsTotalCounter->value;
-	      }
-	   }
-	   return Total;
-	}
-
-  int getTotalNumberOfEvents(std::vector<std::string>& urls, bool fast)
+  unsigned long getMergeableCounterValue(const std::vector<std::string>& urls, std::string counter)
   {
-    int toReturn = 0;
+    printf("Getting utils::getMergeableCounterValue\n"); 
+    unsigned long Total = 0;
     for(unsigned int f = 0; f < urls.size(); f++)
       {
+	printf("File %s\n", urls[f].c_str());
+	TFile *file = TFile::Open(urls[f].c_str());      
+	fwlite::LuminosityBlock ls( file );
+	for(ls.toBegin(); !ls.atEnd(); ++ls)
+	  {
+	    fwlite::Handle<edm::MergeableCounter> nEventsTotalCounter;
+	    nEventsTotalCounter.getByLabel(ls,counter.c_str());
+	    if(!nEventsTotalCounter.isValid()){printf("Invalid nEventsTotalCounterH\n");continue;}
+	    Total+= nEventsTotalCounter->value;
+	  }
+      }
+    return Total;
+  }
+
+  long getTotalNumberOfEvents(std::vector<std::string>& urls, bool fast)
+  {
+    printf("running utils::getTotalNumberOfEvents\n");
+    TString cmd ("voms-proxy-info --all > /afs/cern.ch/work/v/vveckaln/private/RunII/FARM/outputs/");
+    cmd += gVariables::gdtag + "_" + TString(to_string(gVariables::gsegment)) + ".txt" ;
+    printf("%s\n", cmd.Data());
+    system(cmd.Data() );
+    long toReturn = 0;
+    for(unsigned int f = 0; f < urls.size(); f++)
+      {
+	printf("File %s\n", urls[f].c_str());
+	
 	TFile* file = TFile::Open(urls[f].c_str() );
+	printf("File opened %p \n", file);
 	fwlite::Event ev(file);
+	printf("event got\n");
 	if(fast)
 	  {
-	    toReturn += ev.size();          
+	    printf("Getting size\n");
+	    toReturn += ev.size();      
+	    printf("toReturn %ld\n", toReturn);
 	  }
 	else
 	  {
@@ -368,7 +385,9 @@ namespace utils
 		  }
 	      }
 	  }
-	delete file;
+	printf("Going to delete file \n");
+	delete file ;
+	printf("File deleted\n");
       }
     return toReturn;
   }
@@ -377,9 +396,15 @@ namespace utils
   {
     mcpileup.clear();
     mcpileup.resize(Npu);
+    printf("running getMCPileupDistributionFromMiniAOD\n");
     for(unsigned int f = 0; f < urls.size(); f++)
       {
 	TFile* file = TFile::Open(urls[f].c_str() );
+	printf("opened file %s %p\n", urls[f].c_str(), file);
+	TString cmd ("voms-proxy-info --all > /afs/cern.ch/work/v/vveckaln/private/RunII/FARM/outputs/");
+	cmd += gVariables::gdtag + "_" + TString(to_string(gVariables::gsegment)) + "_PU.txt" ;
+	
+	system(cmd.Data() );
 	fwlite::Event ev(file);
 	for(ev.toBegin(); !ev.atEnd(); ++ev){
 	  fwlite::Handle< std::vector<PileupSummaryInfo> > puInfoH;

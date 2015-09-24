@@ -30,10 +30,6 @@ void GlobalConfiguration::SetConfiguration(const char* configuration_file)
   gwork_directory                        = runProcess.getParameter<string>          ("work_directory");
   gdset                                  = runProcess.getParameter<string>          ("dset");
   gdtag                                  = runProcess.getParameter<string>          ("dtag");
-  for (uint ind = 0; ind < input_file_names.size(); ind++)
-    {
-      printf("%u %s\n", ind, input_file_names[ind].c_str());
-    }
   gnoUncertainties = true;
   
   printf("Configuration succesfully completed\n");

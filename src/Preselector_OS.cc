@@ -25,6 +25,9 @@ void Preselector_OS::Run()
 {
   output_event = input_event;
   print_mode = false;
+  TH1D * h = utilities::GetStatisticsHistogram(number_active_sample);
+  h -> Fill("1#tau", input_event -> weight);
+
   //Run 190688, lumi 99, evId 22420320
   if (input_event -> electrons.size() == 1)
     {
@@ -47,7 +50,6 @@ void Preselector_OS::Run()
     }
 
   selected += input_event -> weight;
-  TH1D * h = utilities::GetStatisticsHistogram(number_active_sample);
   h -> Fill("OS", input_event -> weight);
  
   ProceedToNextStage();

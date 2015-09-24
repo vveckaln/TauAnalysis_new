@@ -1,0 +1,18 @@
+ {
+  "proc":[
+  {
+"tag":"QCD",
+      "isdata":false,
+      "color":591,
+      "lcolor":1,
+      "comment":"It should be totally irrelevant (I will select >3 leptons, typically)",
+      "frommcm":"all filter efficiencies are 1",
+      "data":[
+
+       { "dtag":"QCD_Pt-80to120",    "split":100, "xsec":3000114.3,  "br":[1.0], "dset":"/QCD_Pt-80to120_Tune4C_13TeV_pythia8/Phys14DR-PU20bx25_trkalmb_castor_PHYS14_25_V1-v2/MINIAODSIM" }   
+   
+
+ ]
+}	
+]
+}

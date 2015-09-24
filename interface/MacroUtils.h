@@ -148,7 +148,7 @@ namespace utils
   // loop on all the lumi blocks for an EDM file in order to count the number of events that are in a sample
   // this is useful to determine how to normalize the events (compute weight)
   unsigned long getMergeableCounterValue(const std::vector<std::string>& urls, std::string counter);
-  int getTotalNumberOfEvents(std::vector<std::string>& urls, bool fast = true);
+  long getTotalNumberOfEvents(std::vector<std::string>& urls, bool fast = true);
   void getMCPileupDistributionFromMiniAOD(std::vector<std::string>& urls, unsigned int Npu, std::vector<float>& mcpileup);
   void getMCPileupDistributionFromMiniAOD(fwlite::ChainEvent& ev, unsigned int Npu, std::vector<float>& mcpileup);
   void getMCPileupDistribution(fwlite::ChainEvent& ev, unsigned int Npu, std::vector<float>& mcpileup);

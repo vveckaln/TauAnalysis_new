@@ -20,9 +20,10 @@ class Preselector_Taus : public EventProcessor<event_type, event_type>
   event_type * processed_event;
   EventBuffer<event_type>::iterator it;
   unsigned int PreselectTaus() ;
-  
+  void Order_Taus();
 public:
   Preselector_Taus(EventSink<event_type> *next_processor_stage);
+  
   void Run();
   void Report();
   virtual ~Preselector_Taus();
