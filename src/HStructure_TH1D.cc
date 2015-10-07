@@ -36,33 +36,49 @@ void HStructure_TH1D::PopulateWorkingElements(const char * option)
 
 void HStructure_TH1D::FillBottomUp(const char *option)
 {
-  HStructure_worker::FillBottomUp(option);
-  if (TString(option) != "iter") return;
-  if(TestBit(kIsFilled)) 
-    return;
-  SetBit(kIsStamped, ((HStructure_TH1D*)GetChildren().front()) -> TestBit(kIsStamped));
-  GetRef() = (TH1D*)((HStructure_TH1D*)GetChildren().front()) -> Get() -> Clone();
-  FixStamp();
-  Get() -> Reset();
-  for (unsigned char child_ind = 0; child_ind < GetChildren().size(); child_ind ++)
+  try
     {
-      Get() -> Add(*(HStructure_TH1D*)children[child_ind]);
-      /*  TH1D *h = (*pool)["numb_events_selection_stagesSELECTOR_BASE"];
+      HStructure_worker::FillBottomUp(option);
+      if (TString(option) != "iter") return;
+      if(TestBit(kIsFilled)) 
+	return;
+      SetBit(kIsStamped, ((HStructure_TH1D*)GetChildren().front()) -> TestBit(kIsStamped));
+      printf("Testing children:\n");
+      for (unsigned char child_ind = 0; child_ind < GetChildren().size(); child_ind ++)
+	{
 
-       Table table_h("SELECTER_BASE", "SELECTOR_BASE");
-	table_h.FillFromLabeledHistogram(h);
-	table_h.ls();
-	getchar();*/
-    }
-  Get() -> SetFillColor(fill_color);
+	  printf("%s %p\n", GetChildren()[child_ind] -> TestBit(kIsValid) ? "true" : "false", ((HStructure_TH1D*)GetChildren()[child_ind]) -> Get());
+	  if (((HStructure_TH1D*)GetChildren()[child_ind]) -> Get())
+	    printf("%s\n", ((HStructure_TH1D*)GetChildren()[child_ind]) -> Get() -> GetName());
+	}
+      for (unsigned char child_ind = 0; child_ind < GetChildren().size(); child_ind ++)
+	{
+
+	 
+	  if (GetChildren()[child_ind] -> TestBit(kIsValid) and ((HStructure_TH1D*)GetChildren()[child_ind]) -> Get())
+	    {
+	      GetRef() = (TH1D*)(((HStructure_TH1D*)GetChildren()[child_ind]) -> Get() -> Clone());
+	      break;
+	    }
+	  if (child_ind == GetChildren().size() - 1)
+	    {
+	      printf("no valid children encountered\n");
+	      throw "no valid children encountered\n";
+	    }
+	}
+      FixStamp();
+      Get() -> Reset();
+      for (unsigned char child_ind = 0; child_ind < GetChildren().size(); child_ind ++)
+	{
+	  if (children[child_ind] -> TestBit(kIsValid) and ((HStructure_TH1D*)children[child_ind]) -> Get())
+	    Get() -> Add(*(HStructure_TH1D*)children[child_ind]);
+	}
+      Get() -> SetFillColor(fill_color);
  
-  /*printf("total after filling\n");
-  TH1D *h = (*(HistogramPool*)working_element)["numb_events_selection_stagesSELECTOR_BASE"];
-
-       Table table_h("SELECTER_BASE", "SELECTOR_BASE");
-	table_h.FillFromLabeledHistogram(h);
-	table_h.ls();
-	getchar();*/
+    } catch (const char* e)
+    {
+      cerr<<"exception caught "<< e <<"\n";
+    }
 }
 
 const char * HStructure_TH1D::WhoAmI() const
@@ -87,7 +103,7 @@ unsigned int HStructure_TH1D::GetHistID() const
 
 void HStructure_TH1D::Stamp()
 {
-  if (TestBit(kIsStamped) and not Get()) return;
+  if (TestBit(kIsStamped) or not Get()) return;
   
   char name[128];
   sprintf(name, "%s_%u\n", Get() -> GetName(), GetHistID());
@@ -97,7 +113,7 @@ void HStructure_TH1D::Stamp()
 
 void HStructure_TH1D::RemoveStamp()
 {
-  if (not TestBit(kIsStamped) and not Get()) return;
+  if (not TestBit(kIsStamped) or not Get()) return;
   const char * name = Get() -> GetName();
   
   const char *end;

@@ -60,6 +60,8 @@ HStructure_worker * HStructure_worker::GetHStructure(const char * sample_name, c
       return (HStructure_worker*)HStructure::GetHStructure(sample_name);
     }
   const HStructure_worker * ret = this;
+  if (not ret -> GetPtr()) 
+    return NULL;
   bool found = false; 
   while(not found and ret)
     {

@@ -1,0 +1,14 @@
+{
+  "proc":[
+     {
+      "tag":"VV",
+      "isdata":false,
+      "color":592,
+      "lcolor":1,
+      "marker":1,
+      "data":[
+       { "dtag":"MC8TeV_QCDPt80to170" , "split":2, "xsec":1191000 , "br":[ 0.1539 ] , "dset":"/QCD_Pt_80_170_EMEnriched_TuneZ2star_8TeV_pythia6/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM" }
+      ]
+    }
+  ]
+}

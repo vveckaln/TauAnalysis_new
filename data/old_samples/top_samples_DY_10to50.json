@@ -1,0 +1,12 @@
+{
+  "proc":[
+    {
+
+      "tag":"MC8TeV_DYJetsToLL_10to50",
+      "data":[
+        { "dtag":"MC8TeV_DYJetsToLL_10to50", "split":10, "xsec":860.5, "br":[ 1.0 ], "dset":"/DYJetsToLL_M-10To50filter_8TeV-madgraph/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM"
+	 }
+      ]
+    }
+  ]
+}

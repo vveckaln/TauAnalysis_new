@@ -4,6 +4,7 @@ import json
 import optparse
 import commands
 import LaunchOnCondor
+import subprocess
 import LIP.TauAnalysis.storeTools_cff as storeTools
 
 PROXYDIR = "~/x509_user_proxy"
@@ -28,21 +29,25 @@ def initProxy():
    validCertificate = True
    if(validCertificate and (not os.path.isfile(os.path.expanduser(PROXYDIR + '/x509_proxy')))):
        validCertificate = False
-       print "False step 1"
    if(validCertificate and (time.time() - os.path.getmtime(os.path.expanduser(PROXYDIR + '/x509_proxy'))) > 600): 
        validCertificate = False
-       print "False step 2"
-   if(validCertificate and int(commands.getstatusoutput('(export X509_USER_PROXY=' + PROXYDIR + '/x509_proxy;voms-proxy-init --noregen;voms-proxy-info --all) | grep timeleft | tail -n 1')[1].split(':')[2]) < 8 ):
+   if(validCertificate and int(commands.getoutput('(export X509_USER_PROXY=' + PROXYDIR + '/x509_proxy;voms-proxy-init --noregen 2> /dev/null;voms-proxy-info --all 2> /dev/null) | grep timeleft | tail -n 1').replace("timeleft  : ", "").split(':')[1]) < 8 ):
        validCertificate = False
-       print "False step 3"
-   if(validCertificate):
-       print "Certicate valid"
-
+   
    if(not validCertificate):
       print "You are going to run on a sample over grid using either CRAB or the AAA protocol, it is therefore needed to initialize your grid certificate"
 #      os.system('mkdir -p ~/x509_user_proxy; voms-proxy-init --voms cms -valid 192:00 --out ~/x509_user_proxy/x509_proxy')#all must be done in the same command to avoid environement problems.  Note that the first sourcing is only needed in Louvain
 #      os.system('voms-proxy-init --voms cms -valid 192:00')
-      os.system('mkdir -p ' + PROXYDIR + '; voms-proxy-init --voms cms             -valid 720:00 --out ' + PROXYDIR + '/x509_proxy')
+      while True:
+          cmd = 'mkdir -p ' + PROXYDIR + '; voms-proxy-init --voms cms             -valid 720:00 --out ' + PROXYDIR + '/x509_proxy'
+          subprocess.check_output("ls -l")
+          """
+          cr = subprocess.check_output(cmd , stderr=subprocess.STDOUT)
+          #print "command said"
+          #print cr
+          if cr.find("the password is incorrect or the PEM data is corrupted.") > -1:
+              break
+          """                  
    initialCommand = 'export X509_USER_PROXY=' + PROXYDIR + '/x509_proxy; voms-proxy-init --voms cms --noregen; '
 
 #   initialCommand = 'export X509_USER_PROXY=' + PROXYDIR + '/x509_proxy;voms-proxy-init --voms cms --noregen; '
@@ -51,14 +56,11 @@ def getFileList(procData):
    FileList = [];
    miniAODSamples = getByLabel(procData, 'miniAOD', '')
    isMINIAODDataset = ("/MINIAOD" in getByLabel(procData, 'dset', '')) or  ("amagitte" in getByLabel(procData,'dset',''))
-   print "Is miniAODDataset %s" % isMINIAODDataset
    split = getByLabel(procData, 'split', 1)
 
    if(isMINIAODDataset or len(getByLabel(procData, 'miniAOD', '')) > 0):
       instance = ""
       if(len(getByLabel(procData, 'dbsURL', '')) > 0): instance =  "instance=prod/" + getByLabel(procData, 'dbsURL', '')
-      print "Going to get sites "
-      print "dset %s\n" % getByLabel(procData, 'dset', '')
       listSites = commands.getstatusoutput('das_client.py --query="site dataset=' + getByLabel(procData, 'dset', '') + ' ' + instance + ' | grep site.name,site.dataset_fraction " --limit=0')[1]
       print "Sites got"
       IsOnLocalTier = False
@@ -104,7 +106,6 @@ def getFileList(procData):
       groupList = ''
       i = 0;
       while(i < len(list) ):
-          print "list %s" % list[i]
           groupList += '"' + list[i] + '",\\n';
           if(i > 0 and i % ngroup == 0):
               FileList.append(groupList)
@@ -135,12 +136,12 @@ parser.add_option('-R', '--R'          ,    dest='requirementtoBatch'   , help =
 (opt, args) = parser.parse_args()
 if (opt.run_option == 'hadd') :
     opt.indir += '/output_files/event_analysis'
-print "opt.debug %s" % opt.debug
 (opt, args) = parser.parse_args()
 scriptFile=os.path.expandvars('${CMSSW_BASE}/bin/${SCRAM_ARCH}/wrapLocalAnalysisRun.sh')
 FarmDirectory                      = opt.outdir + "/FARM"
-PROXYDIR                           = FarmDirectory + "/inputs" 
-initProxy()
+PROXYDIR                           = FarmDirectory + "/inputs"
+if (opt.run_option == 'process') :
+    initProxy()
 JobName                            = opt.theExecutable
 LaunchOnCondor.Jobs_RunHere        = 1
 LaunchOnCondor.Jobs_Queue          = opt.queue
@@ -166,14 +167,12 @@ procList = json.load(jsonFile, encoding = 'utf-8').items()
 #run over sample
 for procData in procList :
     #run over processes
-    print "probe A"
     for desc in procData[1] :
         #run over items in process
         isdata      = getByLabel(desc, 'isdata', False)
         mctruthmode = getByLabel(desc, 'mctruthmode', 0)
         data        = desc['data']
         for procData in data :
-            print "probe B"
             origdtag = getByLabel(procData, 'dtag',  '')
             if(origdtag == '') : continue
             dtag = origdtag
@@ -194,16 +193,10 @@ for procData in procList :
                 split = 1
             FileList = ['"' + getByLabel(procData, 'dset', 'UnknownDataset') + '"']
             if(LaunchOnCondor.subTool != 'crab'):
-                if (not opt.debug and not opt.run_option == "hadd"):
+                if (not opt.run_option == "hadd"):
                     FileList = getFileList(procData)
                 elif (opt.run_option == "hadd"):
                     FileList = ["/test/phony_list\",\\n"]
-                else:
-                    f = "\"" + work_directory + "/test/1E7F77F3-0209-E511-958C-0025905A6138.root\",\\n"
-                    FileList = [f] 
-                    print f
-#["\"/exper-sw/cmst3/cmssw/users/vveckaln/CMSSW_7_4_2/src/LIP/TauAnalysis/test/B09C2BE7-0509-E511-B6C7-20CF305B051B.root\",\\n"]
-            print "FileList obtained"
 
             LaunchOnCondor.SendCluster_Create(FarmDirectory, JobName + '_' + dtag)
             print "Filelist length %u" % len(FileList)
@@ -246,7 +239,6 @@ for procData in procList :
 
                 #run the job
                 if opt.queue == "0" :
-                    print "launching"
 #                    os.system(initialCommand + opt.theExecutable + ' ' + cfgfile + ' ' + opt.run_option)  
                     os.system(initialCommand + opt.theExecutable + ' ' + cfgfile + ' ' + opt.run_option)  
   

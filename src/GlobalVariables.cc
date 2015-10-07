@@ -20,6 +20,7 @@ namespace gVariables
   TString        gwork_directory;
   TString        gdset;
   TString        gdtag;
+  TString        site;
   vector<double> dataPileupDistributionDouble; 
   vector<double> singleLepDataPileupDistributionDouble; 
   vector<edm::LuminosityBlockRange> luminosityBlockRange;

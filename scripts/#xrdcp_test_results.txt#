@@ -1,0 +1,8 @@
+#! /bin/bash
+
+for ind in {0..100}
+do
+    cat xrdcp_test$ind.txt
+    echo "read file xrdcp_test"$ind".txt\n\n\n\n\n"
+    read -p "press Enter \n" -n1 -s
+done

@@ -32,6 +32,7 @@ namespace gVariables
   extern TString        gwork_directory;
   extern TString        gdset;
   extern TString        gdtag;
+  extern TString        site;
   extern vector<edm::LuminosityBlockRange> luminosityBlockRange;
 }
 #endif

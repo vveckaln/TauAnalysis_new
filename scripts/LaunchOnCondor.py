@@ -105,8 +105,13 @@ def CreateTheShellFile(argv):
 	global Jobs_FinalCmds
         global absoluteShellPath
         if(subTool=='crab'):return
+        hostname = os.getenv("HOSTNAME", "")
+        Path_Shell=""
+        if "ncg.ingrid.pt" in hostname:
+            Path_Shell = Farm_Directories[1]+Jobs_Name+Jobs_Index+'.sh'
 
-        Path_Shell = Farm_Directories[1]+Jobs_Index+Jobs_Name+Jobs_Index+'.sh'
+        else:
+            Path_Shell = Farm_Directories[1]+Jobs_Index+Jobs_Name+Jobs_Index+'.sh'
         function_argument=''
         hostname = os.getenv("HOSTNAME", "")
         
@@ -117,6 +122,9 @@ def CreateTheShellFile(argv):
 
 	shell_file=open(Path_Shell,'w')
 	shell_file.write('#! /bin/sh\n')
+#        shell_file.write('#PBS -o /exper-sw/cmst3/cmssw/users/vveckaln/CMSSW_7_4_2/src/LIP/TauAnalysis/outtputs/\n')
+#        shell_file.write('#PBS -e /exper-sw/cmst3/cmssw/users/vveckaln/CMSSW_7_4_2/src/LIP/TauAnalysis/outtputs/\n')
+        
 	shell_file.write(CopyRights + '\n')
         shell_file.write('pwd\n')
  
@@ -294,6 +302,11 @@ def AddJobToCmdFile():
         global absoluteShellPath
         global Jobs_EmailReport
         Path_Out   = Farm_Directories[3] + Jobs_Index + Jobs_Name
+#        ofilename = "/exper-sw/cmst3/cmssw/users/vveckaln/CMSSW_7_4_2/src/LIP/TauAnalysis/outputs/" + Jobs_Index + Jobs_Name + "o.txt"
+#        efilename = "/exper-sw/cmst3/cmssw/users/vveckaln/CMSSW_7_4_2/src/LIP/TauAnalysis/outputs/" + Jobs_Index + Jobs_Name + "e.txt"
+        ofilename = Farm_Directories[3] + Jobs_Index + Jobs_Name + "_o.txt"
+        efilename = Farm_Directories[3] + Jobs_Index + Jobs_Name + "_e.txt"
+
         cmd_file=open(Path_Cmd,'a')
 	if subTool=='bsub':
                absoluteShellPath = Path_Shell;
@@ -309,7 +322,7 @@ def AddJobToCmdFile():
 	elif subTool=='qsub':
                 absoluteShellPath = Path_Shell;
                 if(not os.path.isabs(absoluteShellPath)): absoluteShellPath= os.getcwd() + "/" + absoluteShellPath
-                cmd_file.write("qsub " + absoluteShellPath + "\n")
+                cmd_file.write("qsub -N " + Jobs_Name + Jobs_Index + " -o " + ofilename + " -e " + efilename + " " + absoluteShellPath + " \n")
         elif subTool=='crab':
                 crabWorkDirPath = Farm_Directories[1]
                 crabConfigPath  = Farm_Directories[1]+'crabConfig_'+Jobs_Index+Jobs_Name+'_cfg.py'

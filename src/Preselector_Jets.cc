@@ -22,19 +22,9 @@ void Preselector_Jets::Run()
 {
   output_event = input_event;
   unsigned int njets = PreselectJets();
-  unsigned int njets_tau(0);
-  for (unsigned int ind = 0; ind < input_event -> jets.size(); ind ++)
-    {
-      if (input_event -> jets[ind].pt() > 30) 
-	njets_tau ++;
-
-    }
-  if (not (njets > 2 and  njets_tau > 1)) 
+  if (njets < 2)
     return;
   print_mode = false;
-      //Run 190688, lumi 99, evId 22420320
-     //if (processed_event -> Run == 190688 and processed_event -> Lumi == 99 and processed_event -> Event == 22420320) print_mode = true;
-      //if (not print_mode) continue;
        
   if (print_mode)
     {

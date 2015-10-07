@@ -1,0 +1,1844 @@
+# --------------------------------------------------------------
+# Running PROLOG for Analysis_MC13TeV_TTJets_dilepton0061_.sh on Fri Sep 25 00:48:48 WEST 2015 
+# JOB_ID=6036227 from user viesturs on host wn113.ncg.ingrid.pt 
+#
+# --------------------------------------------------------------
+
+/home/cmst3/viesturs/dir_job6036227
+Contacting voms2.cern.ch:15002 [/DC=ch/DC=cern/OU=computers/CN=voms2.cern.ch] "cms"...
+g-voms.cern.ch] "cms"...
+Contacting lcg-voms2.cern.ch:15002 [/DC=ch/DC=cern/OU=computers/CN=lcg-voms2.cern.ch] "cms"...
+117.ncg.ingrid.pt 
+#
+# --------------------------------------------------------------
+
+/home/cmst3/viesturs/dir_job6036228
+Remote VOMS server contacted succesfully.
+
+
+Created proxy in /lustre/ncg.ingrid.pt/cms
+Created proxy in /lustre/ncg.ingrid.pt/cmslocal/viesturs/RunII/FARM/inputs/x509_proxy.
+
+Your proxy is valid until Fri Sep 25 12:37:15 WEST 2015
+running Analysis
+[?1034hConfiguration succesfully completed
+file 0 root://cms-xrd-global.cern.ch//store/mc/RunIISpring15DR74/TT_TuneZ2star_13TeV-powheg-pythia6-tauola/MINIAODSIM/Asympt50ns_MCRUN2_74_V9A-v3/70000/96598418-E40C-E511-858A-90B11C27E14D.root
+
+listing hierarchical structure
+name muon_tau, title no title, color 0, marker style 1 ID 1_1
+this 0x6bf4090 StatusBits 4 IsData false type HStructure_TFile
+parent_info: ID 1 type HStructure_TFile 
+no children
+
+listing hierarchical structure
+name lepton_jets, title no title, color 0, marker style 1 ID 1_2
+this 0x54e2b40 StatusBits 4 IsData false type HStructure_TFile
+parent_info: ID 1 type HStructure_TFile 
+no children
+
+listing hierarchical structure
+name dilepton_muon_electron, title no title, color 0, marker style 1 ID 1_3
+this 0x6bef960 StatusBits 4 IsData false type HStructure_TFile
+parent_info: ID 1 type HStructure_TFile 
+no children
+
+listing hierarchical structure
+name dilepton_muon_muon, title no title, color 0, marker style 1 ID 1_4
+this 0x55ac980 StatusBits 4 IsData false type HStructure_TFile
+parent_info: ID 1 type HStructure_TFile 
+no children
+
+listing hierarchical structure
+name tau_jets, title no title, color 0, marker style 1 ID 1_5
+this 0x6c840e0 StatusBits 4 IsData false type HStructure_TFile
+parent_info: ID 1 type HStructure_TFile 
+no children
+
+listing hierarchical structure
+name tau_tau, title no title, color 0, marker style 1 ID 1_6
+this 0x6bef680 StatusBits 4 IsData false type HStructure_TFile
+parent_info: ID 1 type HStructure_TFile 
+no children
+
+listing hierarchical structure
+name hadronic, title no title, color 0, marker style 1 ID 1_7
+this 0x6c6ccd0 StatusBits 4 IsData false type HStructure_TFile
+parent_info: ID 1 type HStructure_TFile 
+no children
+LISTING WORKER
+
+listing hierarchical structure
+name no_name, title no title, color 0, marker style 1 ID 1
+this 0x6c1b250 StatusBits 0 IsData false type HStructure_worker
+parent_info: no parent
+listing children and structures below each child
+ Is Filled false;
+no worker
+
+listing hierarchical structure
+name no_name, title no title, color 0, marker style 1 ID 1_1
+this 0x6c1b630 StatusBits 0 IsData false type HStructure_worker
+parent_info: ID 1 type HStructure_worker 
+listing children and structures below each child
+ Is Filled false;
+no worker
+
+listing hierarchical structure
+name muon_tau, title no title, color 0, marker style 1 ID 1_1_1
+this 0x6c82e70 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_1 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesSELECTOR_BASE_1
+
+
+listing hierarchical structure
+name lepton_jets, title no title, color 0, marker style 1 ID 1_1_2
+this 0x6c85060 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_1 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesSELECTOR_BASE_3
+
+
+listing hierarchical structure
+name dilepton_muon_electron, title no title, color 0, marker style 1 ID 1_1_3
+this 0x6c856e0 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_1 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesSELECTOR_BASE_5
+
+
+listing hierarchical structure
+name dilepton_muon_muon, title no title, color 0, marker style 1 ID 1_1_4
+this 0x6c8bef0 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_1 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesSELECTOR_BASE_7
+
+
+listing hierarchical structure
+name tau_jets, title no title, color 0, marker style 1 ID 1_1_5
+this 0x6c8c5a0 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_1 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesSELECTOR_BASE_9
+
+
+listing hierarchical structure
+name tau_tau, title no title, color 0, marker style 1 ID 1_1_6
+this 0x6c8cc20 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_1 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesSELECTOR_BASE_11
+
+
+listing hierarchical structure
+name hadronic, title no title, color 0, marker style 1 ID 1_1_7
+this 0x6c8d270 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_1 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesSELECTOR_BASE_13
+
+
+listing hierarchical structure
+name no_name, title no title, color 0, marker style 1 ID 1_2
+this 0x6c8da70 StatusBits 0 IsData false type HStructure_worker
+parent_info: ID 1 type HStructure_worker 
+listing children and structures below each child
+ Is Filled false;
+no worker
+
+listing hierarchical structure
+name muon_tau, title no title, color 0, marker style 1 ID 1_2_1
+this 0x6c8daf0 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_2 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesCHANNELGATE_15
+
+
+listing hierarchical structure
+name lepton_jets, title no title, color 0, marker style 1 ID 1_2_2
+this 0x6c8e190 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_2 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesCHANNELGATE_17
+
+
+listing hierarchical structure
+name dilepton_muon_electron, title no title, color 0, marker style 1 ID 1_2_3
+this 0x6c8e830 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_2 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesCHANNELGATE_19
+
+
+listing hierarchical structure
+name dilepton_muon_muon, title no title, color 0, marker style 1 ID 1_2_4
+this 0x6c8ef30 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_2 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesCHANNELGATE_21
+
+
+listing hierarchical structure
+name tau_jets, title no title, color 0, marker style 1 ID 1_2_5
+this 0x6c8f600 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_2 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesCHANNELGATE_23
+
+
+listing hierarchical structure
+name tau_tau, title no title, color 0, marker style 1 ID 1_2_6
+this 0x6c8fcf0 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_2 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesCHANNELGATE_25
+
+
+listing hierarchical structure
+name hadronic, title no title, color 0, marker style 1 ID 1_2_7
+this 0x6c90360 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_2 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesCHANNELGATE_27
+
+
+listing hierarchical structure
+name no_name, title no title, color 0, marker style 1 ID 1_3
+this 0x6c90b80 StatusBits 0 IsData false type HStructure_worker
+parent_info: ID 1 type HStructure_worker 
+listing children and structures below each child
+ Is Filled false;
+no worker
+
+listing hierarchical structure
+name muon_tau, title no title, color 0, marker style 1 ID 1_3_1
+this 0x6c90c00 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_3 type HStructure_worker 
+no children
+ Is Filled false;
+worker Pt_tau_29
+
+
+listing hierarchical structure
+name lepton_jets, title no title, color 0, marker style 1 ID 1_3_2
+this 0x6c91220 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_3 type HStructure_worker 
+no children
+ Is Filled false;
+worker Pt_tau_31
+
+
+listing hierarchical structure
+name dilepton_muon_electron, title no title, color 0, marker style 1 ID 1_3_3
+this 0x6c259c0 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_3 type HStructure_worker 
+no children
+ Is Filled false;
+worker Pt_tau_33
+
+
+listing hierarchical structure
+name dilepton_muon_muon, title no title, color 0, marker style 1 ID 1_3_4
+this 0x6c25fe0 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_3 type HStructure_worker 
+no children
+ Is Filled false;
+worker Pt_tau_35
+
+
+listing hierarchical structure
+name tau_jets, title no title, color 0, marker style 1 ID 1_3_5
+this 0x6c26630 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_3 type HStructure_worker 
+no children
+ Is Filled false;
+worker Pt_tau_37
+
+
+listing hierarchical strunning Analysis
+[?1034hConfiguration succesfully completed
+file 0 root://cms-xrd-global.cern.ch//store/mc/RunIISpring15DR74/TT_TuneZ2star_13TeV-powheg-pythia6-tauola/MINIAODSIM/Asympt50ns_MCRUN2_74_V9A-v3/70000/9EA5B03D-E40C-E511-834D-E41D2D08E0C0.root
+
+listing hierarchical structure
+name muon_tau, title no title, color 0, marker style 1 ID 1_1
+this 0x5aa4670 StatusBits 4 IsData false type HStructure_TFile
+parent_info: ID 1 type HStructure_TFile 
+no children
+
+listing hierarchical structure
+name lepton_jets, title no title, color 0, marker style 1 ID 1_2
+this 0x707a980 StatusBits 4 IsData false type HStructure_TFile
+parent_info: ID 1 type HStructure_TFile 
+no children
+
+listing hierarchical structure
+name dilepton_muon_electron, title no title, color 0, marker style 1 ID 1_3
+this 0x6f65550 StatusBits 4 IsData false type HStructure_TFile
+parent_info: ID 1 type HStructure_TFile 
+no children
+
+listing hierarchical structure
+name dilepton_muon_muon, title no title, color 0, marker style 1 ID 1_4
+this 0x70f9300 StatusBits 4 IsData false type HStructure_TFile
+parent_info: ID 1 type HStructure_TFile 
+no children
+
+listing hierarchical structure
+name tau_jets, title no title, color 0, marker style 1 ID 1_5
+this 0x5aa3b70 StatusBits 4 IsData false type HStructure_TFile
+parent_info: ID 1 type HStructure_TFile 
+no children
+
+listing hierarchical structure
+name tau_tau, title no title, color 0, marker style 1 ID 1_6
+this 0x593a0f0 StatusBits 4 IsData false type HStructure_TFile
+parent_info: ID 1 type HStructure_TFile 
+no children
+
+listing hierarchical structure
+name hadronic, title no title, color 0, marker style 1 ID 1_7
+this 0x709b6c0 StatusBits 4 IsData false type HStructure_TFile
+parent_info: ID 1 type HStructure_TFile 
+no children
+LISTING WORKER
+
+listing hierarchical structure
+name no_name, title no title, color 0, marker style 1 ID 1
+this 0x70f5a90 StatusBits 0 IsData false type HStructure_worker
+parent_info: no parent
+listing children and structures below each child
+ Is Filled false;
+no worker
+
+listing hierarchical structure
+name no_name, title no title, color 0, marker style 1 ID 1_1
+this 0x70f5bb0 StatusBits 0 IsData false type HStructure_worker
+parent_info: ID 1 type HStructure_worker 
+listing children and structures below each child
+ Is Filled false;
+no worker
+
+listing hierarchical structure
+name muon_tau, title no title, color 0, marker style 1 ID 1_1_1
+this 0x70f53f0 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_1 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesSELECTOR_BASE_1
+
+
+listing hierarchical structure
+name lepton_jets, title no title, color 0, marker style 1 ID 1_1_2
+this 0x7080db0 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_1 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesSELECTOR_BASE_3
+
+
+listing hierarchical structure
+name dilepton_muon_electron, title no title, color 0, marker style 1 ID 1_1_3
+this 0x7081430 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_1 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesSELECTOR_BASE_5
+
+
+listing hierarchical structure
+name dilepton_muon_muon, title no title, color 0, marker style 1 ID 1_1_4
+this 0x7081b10 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_1 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesSELECTOR_BASE_7
+
+
+listing hierarchical structure
+name tau_jets, title no title, color 0, marker style 1 ID 1_1_5
+this 0x70821c0 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_1 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesSELECTOR_BASE_9
+
+
+listing hierarchical structure
+name tau_tau, title no title, color 0, marker style 1 ID 1_1_6
+this 0x7082ca0 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_1 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesSELECTOR_BASE_11
+
+
+listing hierarchical structure
+name hadronic, title no title, color 0, marker style 1 ID 1_1_7
+this 0x70832f0 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_1 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesSELECTOR_BASE_13
+
+
+listing hierarchical structure
+name no_name, title no title, color 0, marker style 1 ID 1_2
+this 0x7083af0 StatusBits 0 IsData false type HStructure_worker
+parent_info: ID 1 type HStructure_worker 
+listing children and structures below each child
+ Is Filled false;
+no worker
+
+listing hierarchical structure
+name muon_tau, title no title, color 0, marker style 1 ID 1_2_1
+this 0x7083b70 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_2 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesCHANNELGATE_15
+
+
+listing hierarchical structure
+name lepton_jets, title no title, color 0, marker style 1 ID 1_2_2
+this 0x7084210 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_2 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesCHANNELGATE_17
+
+
+listing hierarchical structure
+name dilepton_muon_electron, title no title, color 0, marker style 1 ID 1_2_3
+this 0x70848b0 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_2 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesCHANNELGATE_19
+
+
+listing hierarchical structure
+name dilepton_muon_muon, title no title, color 0, marker style 1 ID 1_2_4
+this 0x7084fb0 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_2 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesCHANNELGATE_21
+
+
+listing hierarchical structure
+name tau_jets, title no title, color 0, marker style 1 ID 1_2_5
+this 0x70f9760 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_2 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesCHANNELGATE_23
+
+
+listing hierarchical structure
+name tau_tau, title no title, color 0, marker style 1 ID 1_2_6
+this 0x70f9e10 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_2 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesCHANNELGATE_25
+
+
+listing hierarchical structure
+name hadronic, title no title, color 0, marker style 1 ID 1_2_7
+this 0x70fa480 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_2 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesCHANNELGATE_27
+
+
+listing hierarchical structure
+name no_name, title no title, color 0, marker style 1 ID 1_3
+this 0x70faca0 StatusBits 0 IsData false type HStructure_worker
+parent_info: ID 1 type HStructure_worker 
+listing children and structures below each child
+ Is Filled false;
+no worker
+
+listing hierarchical structure
+name muon_tau, title no title, color 0, marker style 1 ID 1_3_1
+this 0x70fad20 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_3 type HStructure_worker 
+no children
+ Is Filled false;
+worker Pt_tau_29
+
+
+listing hierarchical structure
+name lepton_jets, title no title, color 0, marker style 1 ID 1_3_2
+this 0x70fb340 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_3 type HStructure_worker 
+no children
+ Is Filled false;
+worker Pt_tau_31
+
+
+listing hierarchical structure
+name dilepton_muon_electron, title no title, color 0, marker style 1 ID 1_3_3
+this 0x70fb960 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_3 type HStructure_worker 
+no children
+ Is Filled false;
+worker Pt_tau_33
+
+
+listing hierarchical structure
+name dilepton_muon_muon, title no title, color 0, marker style 1 ID 1_3_4
+this 0x70fbf80 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_3 type HStructure_worker 
+no children
+ Is Filled false;
+worker Pt_tau_35
+
+
+listing hierarchical structure
+name tau_jets, title no title, color 0, marker style 1 ID 1_3_5
+this 0x70fc5d0 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_3 type HStructure_worker 
+no children
+ Is Filled false;
+worker Pt_tau_37
+
+
+listing hierarchical st# --------------------------------------------------------------
+# Running PROLOG for Analysis_MC13TeV_TTJets_dilepton0063_.sh on Fri Sep 25 00:49:01 WEST 2015 
+# JOB_ID=6036229 from user viesturs on host wn102.ncg.ingrid.pt 
+#
+# --------------------------------------------------------------
+
+/home/cmst3/viesturs/dir_job6036229
+Contacting lcg-voms2.cern.ch:15002 [/DC=ch/DC=cern/OU=computers/CN=lcg-voms2.cern.ch] "cms"...
+Contacting voms2.cern.ch:15002 [/DC=ch/DC=cern/OU=computers/CN=voms2.cern.ch] "cms"...
+Contacting voms.cern.ch:15002 [/DC=ch/DC=cern/OU=computers/CN=voms.cern.ch] "cms"...
+Contacting lcg-voms.cern.ch:15002 [/DC=ch/DC=cern/OU=computers/CN=lcg-voms.cern.ch] "cms"...
+running Analysis
+[?1034hConfiguration succesfully completed
+file 0 root://cms-xrd-global.cern.ch//store/mc/RunIISpring15DR74/TT_TuneZ2star_13TeV-powheg-pythia6-tauola/MINIAODSIM/Asympt50ns_MCRUN2_74_V9A-v3/70000/D06C8B5A-E40C-E511-B906-00266CF332B4.root
+
+listing hierarchical structure
+name muon_tau, title no title, color 0, marker style 1 ID 1_1
+this 0x7d68190 StatusBits 4 IsData false type HStructure_TFile
+parent_info: ID 1 type HStructure_TFile 
+no children
+
+listing hierarchical structure
+name lepton_jets, title no title, color 0, marker style 1 ID 1_2
+this 0x7d81440 StatusBits 4 IsData false type HStructure_TFile
+parent_info: ID 1 type HStructure_TFile 
+no children
+
+listing hierarchical structure
+name dilepton_muon_electron, title no title, color 0, marker style 1 ID 1_3
+this 0x7d63780 StatusBits 4 IsData false type HStructure_TFile
+parent_info: ID 1 type HStructure_TFile 
+no children
+
+listing hierarchical structure
+name dilepton_muon_muon, title no title, color 0, marker style 1 ID 1_4
+this 0x7c23b50 StatusBits 4 IsData false type HStructure_TFile
+parent_info: ID 1 type HStructure_TFile 
+no children
+
+listing hierarchical structure
+name tau_jets, title no title, color 0, marker style 1 ID 1_5
+this 0x7d63a60 StatusBits 4 IsData false type HStructure_TFile
+parent_info: ID 1 type HStructure_TFile 
+no children
+
+listing hierarchical structure
+name tau_tau, title no title, color 0, marker style 1 ID 1_6
+this 0x7d62400 StatusBits 4 IsData false type HStructure_TFile
+parent_info: ID 1 type HStructure_TFile 
+no children
+
+listing hierarchical structure
+name hadronic, title no title, color 0, marker style 1 ID 1_7
+this 0x7d6d590 StatusBits 4 IsData false type HStructure_TFile
+parent_info: ID 1 type HStructure_TFile 
+no children
+LISTING WORKER
+
+listing hierarchical structure
+name no_name, title no title, color 0, marker style 1 ID 1
+this 0x7d8f960 StatusBits 0 IsData false type HStructure_worker
+parent_info: no parent
+listing children and structures below each child
+ Is Filled false;
+no worker
+
+listing hierarchical structure
+name no_name, title no title, color 0, marker style 1 ID 1_1
+this 0x7d8fcd0 StatusBits 0 IsData false type HStructure_worker
+parent_info: ID 1 type HStructure_worker 
+listing children and structures below each child
+ Is Filled false;
+no worker
+
+listing hierarchical structure
+name muon_tau, title no title, color 0, marker style 1 ID 1_1_1
+this 0x7de0690 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_1 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesSELECTOR_BASE_1
+
+
+listing hierarchical structure
+name lepton_jets, title no title, color 0, marker style 1 ID 1_1_2
+this 0x7dff0c0 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_1 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesSELECTOR_BASE_3
+
+
+listing hierarchical structure
+name dilepton_muon_electron, title no title, color 0, marker style 1 ID 1_1_3
+this 0x7dff740 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_1 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesSELECTOR_BASE_5
+
+
+listing hierarchical structure
+name dilepton_muon_muon, title no title, color 0, marker style 1 ID 1_1_4
+this 0x7dffe20 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_1 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesSELECTOR_BASE_7
+
+
+listing hierarchical structure
+name tau_jets, title no title, color 0, marker style 1 ID 1_1_5
+this 0x7e004d0 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_1 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesSELECTOR_BASE_9
+
+
+listing hierarchical structure
+name tau_tau, title no title, color 0, marker style 1 ID 1_1_6
+this 0x7e00b50 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_1 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesSELECTOR_BASE_11
+
+
+listing hierarchical structure
+name hadronic, title no title, color 0, marker style 1 ID 1_1_7
+this 0x7e011a0 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_1 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesSELECTOR_BASE_13
+
+
+listing hierarchical structure
+name no_name, title no title, color 0, marker style 1 ID 1_2
+this 0x7e019a0 StatusBits 0 IsData false type HStructure_worker
+parent_info: ID 1 type HStructure_worker 
+listing children and structures below each child
+ Is Filled false;
+no worker
+
+listing hierarchical structure
+name muon_tau, title no title, color 0, marker style 1 ID 1_2_1
+this 0x7e01a20 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_2 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesCHANNELGATE_15
+
+
+listing hierarchical structure
+name lepton_jets, title no title, color 0, marker style 1 ID 1_2_2
+this 0x7e020c0 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_2 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesCHANNELGATE_17
+
+
+listing hierarchical structure
+name dilepton_muon_electron, title no title, color 0, marker style 1 ID 1_2_3
+this 0x7e02760 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_2 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesCHANNELGATE_19
+
+
+listing hierarchical structure
+name dilepton_muon_muon, title no title, color 0, marker style 1 ID 1_2_4
+this 0x7e02e60 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_2 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesCHANNELGATE_21
+
+
+listing hierarchical structure
+name tau_jets, title no title, color 0, marker style 1 ID 1_2_5
+this 0x7e03530 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_2 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesCHANNELGATE_23
+
+
+listing hierarchical structure
+name tau_tau, title no title, color 0, marker style 1 ID 1_2_6
+this 0x7e03c20 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_2 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesCHANNELGATE_25
+
+
+listing hierarchical structure
+name hadronic, title no title, color 0, marker style 1 ID 1_2_7
+this 0x7e04290 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_2 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesCHANNELGATE_27
+
+
+listing hierarchical structure
+name no_name, title no title, color 0, marker style 1 ID 1_3
+this 0x7e04ab0 StatusBits 0 IsData false type HStructure_worker
+parent_info: ID 1 type HStructure_worker 
+listing children and structures below each child
+ Is Filled false;
+no worker
+
+listing hierarchical structure
+name muon_tau, title no title, color 0, marker style 1 ID 1_3_1
+this 0x7e04b30 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_3 type HStructure_worker 
+no children
+ Is Filled false;
+worker Pt_tau_29
+
+
+listing hierarchical structure
+name lepton_jets, title no title, color 0, marker style 1 ID 1_3_2
+this 0x7e05150 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_3 type HStructure_worker 
+no children
+ Is Filled false;
+worker Pt_tau_31
+
+
+listing hierarchical structure
+name dilepton_muon_electron, title no title, color 0, marker style 1 ID 1_3_3
+this 0x7e05770 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_3 type HStructure_worker 
+no children
+ Is Filled false;
+worker Pt_tau_33
+
+
+listing hierarchical structure
+name dilepton_muon_muon, title no title, color 0, marker style 1 ID 1_3_4
+this 0x7e05d90 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_3 type HStructure_worker 
+no children
+ Is Filled false;
+worker Pt_tau_35
+
+
+listing hierarchical structure
+name tau_jets, title no title, color 0, marker style 1 ID 1_3_5
+this 0x7e063e0 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_3 type HStructure_worker 
+no children
+ Is Filled false;
+worker Pt_tau_37
+
+
+listing hierarchical structure
+name tau_tau, title no title, color 0, marker style 1 ID 1_3_6
+this 0x6c92b20 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_3 type HStructure_worker 
+no children
+ Is Filled false;
+worker Pt_tau_39
+
+
+listing hierarchical structure
+name hadronic, title no title, color 0, marker style 1 ID 1_3_7
+this 0x6ructure
+name tau_tau, title no title, color 0, marker style 1 ID 1_3_6
+this 0x70fcc40 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_3 type HStructure_worker 
+no children
+ Is Filled false;
+worker Pt_tau_39
+
+
+listing hierarchical structure
+name hadronic, title no title, color 0, marker style 1 ID 1_3_7
+this 0x70fd230 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_3 type HStructure_worker 
+no children
+ Is Filled false;
+worker Pt_tau_41
+
+
+listing hierarchical structure
+name no_name, title no title, color 0, marker style 1 ID 1_4
+this 0x70fda00 StatusBits 0 IsData false type HStructure_worker
+parent_info: ID 1 type HStructure_worker 
+listing children and structures below each child
+ Is Filled false;
+no worker
+
+listing hierarchical structure
+name muon_tau, title no title, color 0, marker style 1 ID 1_4_1
+this 0x70fda80 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_4 type HStructure_worker 
+no children
+ Is Filled false;
+worker eta_tau_43
+
+
+listing hierarchical structure
+name lepton_jets, title no title, color 0, marker style 1 ID 1_4_2
+this 0x70fe0a0 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_4 type HStructure_worker 
+no children
+ Is Filled false;
+worker eta_tau_45
+
+
+listing hierarchical structure
+name dilepton_muon_electron, title no title, color 0, marker style 1 ID 1_4_3
+this 0x70fe6c0 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_4 type HStructure_worker 
+no children
+ Is Filled false;
+worker eta_tau_47
+
+
+listing hierarchical structure
+name dilepton_muon_muon, title no title, color 0, marker style 1 ID 1_4_4
+this 0x70fece0 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_4 type HStructure_worker 
+no children
+ Is Filled false;
+worker eta_tau_49
+
+
+listing hierarchical structure
+name tau_jets, title no title, color 0, marker style 1 ID 1_4_5
+this 0x70ff330 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_4 type HStructure_worker 
+no children
+ Is Filled false;
+worker eta_tau_51
+
+
+listing hierarchical structure
+name tau_tau, title no title, color 0, marker style 1 ID 1_4_6
+this 0x70ff9a0 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_4 type HStructure_worker 
+no children
+ Is Filled false;
+worker eta_tau_53
+
+
+listing hierarchical structure
+name hadronic, title no title, color 0, marker style 1 ID 1_4_7
+this 0x70fff90 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_4 type HStructure_worker 
+no children
+ Is Filled false;
+worker eta_tau_55
+
+continuing executing
+Debug mode false
+running utils::getTotalNumberOfEvents
+voms-proxy-info --all > /afs/cern.ch/work/v/vveckaln/private/RunII/FARM/outputs/MC13TeV_TTJets_dilepton_61.txt
+File root://cms-xrd-global.cern.ch//store/mc/RunIISpring15DR74/TT_TuneZ2star_13TeV-powheg-pythia6-tauola/MINIAODSIM/Asympt50ns_MCRUN2_74_V9A-v3/70000/9EA5B03D-E40C-E511-834D-E41D2D08E0C0.root
+File opened 0x4b84820 
+event got
+Getting size
+toReturn 19400
+Going to delete file 
+File deleted
+MergeableCounterValue 19400.000000
+running getMCPileupDistributionFromMiniAOD
+opened file root://cms-xrd-global.cern.ch//store/mc/RunIISpring15DR74/TT_TuneZ2star_13TeV-powheg-pythia6-tauola/MINIAODSIM/Asympt50ns_MCRUN2_74_V9A-v3/70000/9EA5B03D-E40C-E511-834D-E41D2D08E0C0.root 0x4b50c20
+ Lumi/Pileup Reweighting: Computed Weights per In-Time Nint 
+   0 0
+   1 0
+   2 2.95246
+   3 3.01556
+   4 2.41775
+   5 2.89277
+   6 2.21662
+   7 2.21628
+   8 2.30548
+   9 2.57533
+   10 2.51539
+   11 2.19783
+   12 2.10209
+   13 2.04428
+   14 1.80743
+   15 1.61056
+   16 1.44893
+   17 1.23619
+   18 1.12187
+   19 0.962947
+   20 0.806039
+   21 0.672314
+   22 0.511892
+   23 0.408481
+   24 0.318268
+   25 0.266217
+   26 0.189564
+   27 0.139811
+   28 0.110401
+   29 0.0740733
+   30 0.056842
+   31 0.0392832
+   32 0.0268051
+   33 0.022034
+   34 0.0155881
+   35 0.0103323
+   36 0.00452038
+   37 0.00731387
+   38 0.00470838
+   39 0.00116238
+   40 0.00193731
+   41 0
+   42 0
+   43 0
+   44 0
+   45 0
+   46 0
+   47 0
+   48 0
+   49 0
+   50 0
+   51 0
+   52 0
+   53 0
+   54 0
+   55 0
+   56 0
+   57 0
+   58 0
+   59 0
+   60 0
+   61 0
+   62 0
+   63 0
+   64 0
+   65 0
+   66 0
+   67 0
+   68 0
+   69 0
+   70 0
+   71 0
+   72 0
+   73 0
+   74 0
+   75 0
+   76 0
+   77 0
+   78 0
+   79 0
+   80 0
+   81 0
+   82 0
+   83 0
+   84 0
+   85 0
+   86 0
+   87 0
+   88 0
+   89 0
+   90 0
+   91 0
+   92 0
+   93 0
+   94 0
+   95 0
+   96 0
+   97 0
+   98 0
+getPUshifts will shift average PU by 0.789339 / -0.71474
+tau_tau, title no title, color 0, marker style 1 ID 1_1_6
+this 0x740bf90 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_1 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesSELECTOR_BASE_11
+
+
+listing hierarchical structure
+name hadronic, title no title, color 0, marker style 1 ID 1_1_7
+this 0x740c5e0 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_1 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesSELECTOR_BASE_13
+
+
+listing hierarchical structure
+name no_name, title no title, color 0, marker style 1 ID 1_2
+this 0x740cde0 StatusBits 0 IsData false type HStructure_worker
+parent_info: ID 1 type HStructure_worker 
+listing children and structures below each child
+ Is Filled false;
+no worker
+
+listing hierarchical structure
+name muon_tau, title no title, color 0, marker style 1 ID 1_2_1
+this 0x740ce60 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_2 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesCHANNELGATE_15
+
+
+listing hierarchical structure
+name lepton_jets, title no title, color 0, marker style 1 ID 1_2_2
+this 0x740d4b0 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_2 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesCHANNELGATE_17
+
+
+listing hierarchical structure
+name dilepton_muon_electron, title no title, color 0, marker style 1 ID 1_2_3
+this 0x740db50 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_2 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesCHANNELGATE_19
+
+
+listing hierarchical structure
+name dilepton_muon_muon, title no title, color 0, marker style 1 ID 1_2_4
+this 0x740e250 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_2 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesCHANNELGATE_21
+
+
+listing hierarchical structure
+name tau_jets, title no title, color 0, marker style 1 ID 1_2_5
+this 0x740e920 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_2 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesCHANNELGATE_23
+
+
+listing hierarchical structure
+name tau_tau, title no title, color 0, marker style 1 ID 1_2_6
+this 0x740f010 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_2 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesCHANNELGATE_25
+
+
+listing hierarchical structure
+name hadronic, title no title, color 0, marker style 1 ID 1_2_7
+this 0x740f680 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_2 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesCHANNELGATE_27
+
+
+listing hierarchical structure
+name no_name, title no title, color 0, marker style 1 ID 1_3
+this 0x740fea0 StatusBits 0 IsData false type HStructure_worker
+parent_info: ID 1 type HStructure_worker 
+listing children and structures below each child
+ Is Filled false;
+no worker
+
+listing hierarchical structure
+name muon_tau, title no title, color 0, marker style 1 ID 1_3_1
+this 0x740ff20 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_3 type HStructure_worker 
+no children
+ Is Filled false;
+worker Pt_tau_29
+
+
+listing hierarchical structure
+name lepton_jets, title no title, color 0, marker style 1 ID 1_3_2
+this 0x7410540 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_3 type HStructure_worker 
+no children
+ Is Filled false;
+worker Pt_tau_31
+
+
+listing hierarchical structure
+name dilepton_muon_electron, title no title, color 0, marker style 1 ID 1_3_3
+this 0x7410b60 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_3 type HStructure_worker 
+no children
+ Is Filled false;
+worker Pt_tau_33
+
+
+listing hierarchical structure
+name dilepton_muon_muon, title no title, color 0, marker style 1 ID 1_3_4
+this 0x7411180 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_3 type HStructure_worker 
+no children
+ Is Filled false;
+worker Pt_tau_35
+
+
+listing hierarchical structure
+name tau_jets, title no title, color 0, marker style 1 ID 1_3_5
+this 0x74117d0 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_3 type HStructure_worker 
+no children
+ Is Filled false;
+worker Pt_tau_37
+
+
+listing hierarchical strunning Analysis
+[?1034hConfiguration succesfully completed
+file 0 root://cms-xrd-global.cern.ch//store/mc/RunIISpring15DR74/TT_TuneZ2star_13TeV-powheg-pythia6-tauola/MINIAODSIM/Asympt50ns_MCRUN2_74_V9A-v3/70000/DA597623-E40C-E511-A032-000F5327373C.root
+
+listing hierarchical structure
+name muon_tau, title no title, color 0, marker style 1 ID 1_1
+this 0x688b150 StatusBits 4 IsData false type HStructure_TFile
+parent_info: ID 1 type HStructure_TFile 
+no children
+
+listing hierarchical structure
+name lepton_jets, title no title, color 0, marker style 1 ID 1_2
+this 0x4397410 StatusBits 4 IsData false type HStructure_TFile
+parent_info: ID 1 type HStructure_TFile 
+no children
+
+listing hierarchical structure
+name dilepton_muon_electron, title no title, color 0, marker style 1 ID 1_3
+this 0x5243a30 StatusBits 4 IsData false type HStructure_TFile
+parent_info: ID 1 type HStructure_TFile 
+no children
+
+listing hierarchical structure
+name dilepton_muon_muon, title no title, color 0, marker style 1 ID 1_4
+this 0x68853c0 StatusBits 4 IsData false type HStructure_TFile
+parent_info: ID 1 type HStructure_TFile 
+no children
+
+listing hierarchical structure
+name tau_jets, title no title, color 0, marker style 1 ID 1_5
+this 0x6746b10 StatusBits 4 IsData false type HStructure_TFile
+parent_info: ID 1 type HStructure_TFile 
+no children
+
+listing hierarchical structure
+name tau_tau, title no title, color 0, marker style 1 ID 1_6
+this 0x6890550 StatusBits 4 IsData false type HStructure_TFile
+parent_info: ID 1 type HStructure_TFile 
+no children
+
+listing hierarchical structure
+name hadronic, title no title, color 0, marker style 1 ID 1_7
+this 0x68a1bc0 StatusBits 4 IsData false type HStructure_TFile
+parent_info: ID 1 type HStructure_TFile 
+no children
+LISTING WORKER
+
+listing hierarchical structure
+name no_name, title no title, color 0, marker style 1 ID 1
+this 0x68b2750 StatusBits 0 IsData false type HStructure_worker
+parent_info: no parent
+listing children and structures below each child
+ Is Filled false;
+no worker
+
+listing hierarchical structure
+name no_name, title no title, color 0, marker style 1 ID 1_1
+this 0x68b2ac0 StatusBits 0 IsData false type HStructure_worker
+parent_info: ID 1 type HStructure_worker 
+listing children and structures below each child
+ Is Filled false;
+no worker
+
+listing hierarchical structure
+name muon_tau, title no title, color 0, marker style 1 ID 1_1_1
+this 0x68b0650 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_1 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesSELECTOR_BASE_1
+
+
+listing hierarchical structure
+name lepton_jets, title no title, color 0, marker style 1 ID 1_1_2
+this 0x6922090 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_1 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesSELECTOR_BASE_3
+
+
+listing hierarchical structure
+name dilepton_muon_electron, title no title, color 0, marker style 1 ID 1_1_3
+this 0x6922710 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_1 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesSELECTOR_BASE_5
+
+
+listing hierarchical structure
+name dilepton_muon_muon, title no title, color 0, marker style 1 ID 1_1_4
+this 0x6922df0 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_1 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesSELECTOR_BASE_7
+
+
+listing hierarchical structure
+name tau_jets, title no title, color 0, marker style 1 ID 1_1_5
+this 0x69234a0 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_1 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesSELECTOR_BASE_9
+
+
+listing hierarchical structure
+name tau_tau, title no title, color 0, marker style 1 ID 1_1_6
+this 0x6923b20 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_1 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesSELECTOR_BASE_11
+
+
+listing hierarchical structure
+name hadronic, title no title, color 0, marker style 1 ID 1_1_7
+this 0x6924170 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_1 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesSELECTOR_BASE_13
+
+
+listing hierarchical structure
+name no_name, title no title, color 0, marker style 1 ID 1_2
+this 0x6924970 StatusBits 0 IsData false type HStructure_worker
+parent_info: ID 1 type HStructure_worker 
+listing children and structures below each child
+ Is Filled false;
+no worker
+
+listing hierarchical structure
+name muon_tau, title no title, color 0, marker style 1 ID 1_2_1
+this 0x69249f0 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_2 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesCHANNELGATE_15
+
+
+listing hierarchical structure
+name lepton_jets, title no title, color 0, marker style 1 ID 1_2_2
+this 0x6925090 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_2 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesCHANNELGATE_17
+
+
+listing hierarchical structure
+name dilepton_muon_electron, title no title, color 0, marker style 1 ID 1_2_3
+this 0x6925730 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_2 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesCHANNELGATE_19
+
+
+listing hierarchical structure
+name dilepton_muon_muon, title no title, color 0, marker style 1 ID 1_2_4
+this 0x6925e30 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_2 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesCHANNELGATE_21
+
+
+listing hierarchical structure
+name tau_jets, title no title, color 0, marker style 1 ID 1_2_5
+this 0x6926500 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_2 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesCHANNELGATE_23
+
+
+listing hierarchical structure
+name tau_tau, title no title, color 0, marker style 1 ID 1_2_6
+this 0x6926bf0 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_2 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesCHANNELGATE_25
+
+
+listing hierarchical structure
+name hadronic, title no title, color 0, marker style 1 ID 1_2_7
+this 0x6927260 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_2 type HStructure_worker 
+no children
+ Is Filled false;
+worker numb_events_selection_stagesCHANNELGATE_27
+
+
+listing hierarchical structure
+name no_name, title no title, color 0, marker style 1 ID 1_3
+this 0x6927a80 StatusBits 0 IsData false type HStructure_worker
+parent_info: ID 1 type HStructure_worker 
+listing children and structures below each child
+ Is Filled false;
+no worker
+
+listing hierarchical structure
+name muon_tau, title no title, color 0, marker style 1 ID 1_3_1
+this 0x6927b00 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_3 type HStructure_worker 
+no children
+ Is Filled false;
+worker Pt_tau_29
+
+
+listing hierarchical structure
+name lepton_jets, title no title, color 0, marker style 1 ID 1_3_2
+this 0x6928120 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_3 type HStructure_worker 
+no children
+ Is Filled false;
+worker Pt_tau_31
+
+
+listing hierarchical structure
+name dilepton_muon_electron, title no title, color 0, marker style 1 ID 1_3_3
+this 0x6928740 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_3 type HStructure_worker 
+no children
+ Is Filled false;
+worker Pt_tau_33
+
+
+listing hierarchical structure
+name dilepton_muon_muon, title no title, color 0, marker style 1 ID 1_3_4
+this 0x6928d60 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_3 type HStructure_worker 
+no children
+ Is Filled false;
+worker Pt_tau_35
+
+
+listing hierarchical structure
+name tau_jets, title no title, color 0, marker style 1 ID 1_3_5
+this 0x69293b0 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_3 type HStructure_worker 
+no children
+ Is Filled false;
+worker Pt_tau_37
+
+
+listing hierarchical structure
+name tau_tau, title no title, color 0, marker style 1 ID 1_3_6
+this 0x6929a20 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_3 type HStructure_worker 
+no children
+ Is Filled false;
+worker Pt_tau_39
+
+
+listing hierarchical structure
+name hadronic, title no title, color 0, marker style 1 ID 1_3_7
+this 0x692a010 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_3 type HStructure_worker 
+no children
+ Is Filled false;
+worker Pt_tau_41
+
+
+listing hierarchical structure
+name no_name, title no title, color 0, marker style 1 ID 1_4
+this 0x692a7e0 StatusBits 0 IsData false type HStructure_worker
+parent_info: ID 1 type HStructure_worker 
+listing children and structures below each child
+ Is Filled false;
+no worker
+
+listing hierarchical structure
+name muon_tau, title no title, color 0, marker style 1 ID 1_4_1
+this 0x692a860 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_4 type HStructure_worker 
+no children
+ Is Filled false;
+worker eta_tau_43
+
+
+listing hierarchical structure
+name lepton_jets, title no title, color 0, marker style 1 ID 1_4_2
+this 0x692ae80 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_4 type HStructure_worker 
+no children
+ Is Filled false;
+worker eta_tau_45
+
+
+listing hierarchical structure
+name dilepton_muon_electron, title no title, color 0, marker style 1 ID 1_4_3
+this 0x692b4a0 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_4 type HStructure_worker 
+no children
+ Is Filled false;
+worker eta_tau_47
+
+
+listing hierarchical structure
+name dilepton_muon_muon, title no title, color 0, marker style 1 ID 1_4_4
+this 0x692bac0 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_4 type HStructure_worker 
+no children
+ Is Filled false;
+worker eta_tau_49
+
+
+listing hierarchical structure
+name tau_jets, title no title, color 0, marker style 1 ID 1_4_5
+this 0x692c110 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_4 type HStructure_worker 
+no children
+ Is Filled false;
+worker eta_tau_51
+
+
+listing hierarchical structure
+name tau_tau, title no title, color 0, marker style 1 ID 1_4_6
+this 0x692c780 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_4 type HStructure_worker 
+no children
+ Is Filled false;
+worker eta_tau_53
+
+
+listing hierarchical structure
+name hadronic, title no title, color 0, marker style 1 ID 1_4_7
+this 0x692cd70 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_4 type HStructure_worker 
+no children
+ Is Filled false;
+worker eta_tau_55
+
+continuing executing
+Debug mode false
+running utils::getTotalNumberOfEvents
+voms-proxy-info --all > /afs/cern.ch/work/v/vveckaln/private/RunII/FARM/outputs/MC13TeV_TTJets_dilepton_64.txt
+File root://cms-xrd-global.cern.ch//store/mc/RunIISpring15DR74/TT_TuneZ2star_13TeV-powheg-pythia6-tauola/MINIAODSIM/Asympt50ns_MCRUN2_74_V9A-v3/70000/DA597623-E40C-E511-A032-000F5327373C.root
+File opened 0x6bb4510 
+event got
+Getting size
+toReturn 3200
+Going to delete file 
+File deleted
+MergeableCounterValue 3200.000000
+running getMCPileupDistributionFromMiniAOD
+opened file root://cms-xrd-global.cern.ch//store/mc/RunIISpring15DR74/TT_TuneZ2star_13TeV-powheg-pythia6-tauola/MINIAODSIM/Asympt50ns_MCRUN2_74_V9A-v3/70000/DA597623-E40C-E511-A032-000F5327373C.root 0x76dceb0
+ Lumi/Pileup Reweighting: Computed Weights per In-Time Nint 
+   0 0
+   1 0
+   2 0
+   3 0
+   4 1.59522
+   5 1.60498
+   6 2.58752
+   7 2.82013
+   8 2.86402
+   9 2.13084
+   10 3.23476
+   11 2.20134
+   12 1.85621
+   13 2.14096
+   14 1.86631
+   15 1.84545
+   16 1.48288
+   17 1.20285
+   18 1.10331
+   19 0.927538
+   20 0.800785
+   21 0.689553
+   22 0.515875
+   23 0.45056
+   24 0.268625
+   25 0.278246
+   26 0.214067
+   27 0.134605
+   28 0.0918617
+   29 0.0655928
+   30 0.0594371
+   31 0.0400684
+   32 0.0310608
+   33 0.0258566
+   34 0.0120222
+   35 0.00965768
+   36 0.00383466
+   37 0.00565108
+   38 0.0040903
+   39 0.00109562
+   40 0.00127822
+   41 0
+   42 0
+   43 0
+   44 0
+   45 0
+   46 0
+   47 0
+   48 0
+   49 0
+   50 0
+   51 0
+   52 0
+   53 0
+   54 0
+   55 0
+   56 0
+   57 0
+   58 0
+   59 0
+   60 0
+   61 0
+   62 0
+   63 0
+   64 0
+   65 0
+   66 0
+   67 0
+   68 0
+   69 0
+   70 0
+   71 0
+   72 0
+   73 0
+   74 0
+   75 0
+   76 0
+   77 0
+   78 0
+   79 0
+   80 0
+   81 0
+   82 0
+   83 0
+   84 0
+   85 0
+   86 0
+   87 0
+   88 0
+   89 0
+   90 0
+   91 0
+   92 0
+   93 0
+   94 0
+   95 0
+   96 0
+   97 0
+   98 0
+getPUshifts will shift average PU by 0.789339 / -0.71474
+9339 / -0.71474
+ructure
+name tau_tau, title no title, color 0, marker style 1 ID 1_3_6
+this 0x6c26ca0 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_3 type HStructure_worker 
+no children
+ Is Filled false;
+worker Pt_tau_39
+
+
+listing hierarchical structure
+name hadronic, title no title, color 0, marker style 1 ID 1_3_7
+this 0x6c27290 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_3 type HStructure_worker 
+no children
+ Is Filled false;
+worker Pt_tau_41
+
+
+listing hierarchical structure
+name no_name, tit# --------------------------------------------------------------
+Bits 0 IsData false type HStructure_worker
+parent_info: ID 1 type HStructure_worker 
+listing childr# --------------------------------------------------------------
+isting hierarchical structure
+nam# # --------------------------------------------------------------
+x6c27ae0 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_4 type HStructure_worker 
+no children
+ Is Filled false;
+worker eta_tau_43
+
+
+listing hierarchical structure
+name lepton_jets, title no title, color 0, marker style 1 ID 1_4_2
+this 0x6c28100 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_4 type HStructure_worker 
+no children
+ Is Filled false;
+worker eta_tau_45
+
+
+listing hierarchical structure
+name dilepton_muon_electron, title no title, color 0, m# --------------------------------------------------------------
+type HStructure_TH1D
+parent_info: ID 1_4 type HStructure_worker 
+no# --------------------------------------------------------------
+# --------------------------------------------------------------
+arker style 1 ID 1_4_4
+this 0x6c2# --------------------------------------------------------------
+ # --------------------------------------------------------------
+e# --------------------------------------------------------------
+Fri Sep 25 00:51:42 WEST 2015 
+#
+# Running EPILOG for Analysis_MC13TeV_TTJets_dilepton0029_.sh on Fri Sep 25 00:51:41 WEST 2015 
+#
+e HStructure_worker 
+no children
+ Is Filled false;
+worker eta_tau_51
+
+
+listing hierarchical structure
+name tau_tau, title no title, color 0, marker style 1 ID 1_4_6
+this 0x6c29a00 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_4 type HStructure_worker 
+no children
+ Is Filled false;
+worker eta_tau_53
+
+
+listing hierarchical structure
+name hadronic, title no title, color 0, marker style 1 ID 1_4_7
+this 0x6c29ff0 StatusBits 64 IsData false type HStructure_TH1D
+parent_info: ID 1_4 type HStructure_worker 
+no children
+ Is Filled false;
+worker eta_tau_55
+
+continuing executing
+Debug mode false
+running utils::getTotalNumberOfEvents
+voms-proxy-info --all > /afs/cern.ch/work/v/vveckaln/private/RunII/FARM/outputs/MC13TeV_TTJets_dilepton_62.txt
+File root://cms-xrd-global.cern.ch//store/mc/RunIISpring15DR74/TT_TuneZ2star_13TeV-powheg-pythia6-tauola/MINIAODSIM/Asympt50ns_MCRUN2_74_V9A-v3/70000/B418FF74-E40C-E511-BACB-1CC1DE1CE026.root
+File opened 0x468ecc0 
+event got
+Getting size
+toReturn 49398
+Going to delete file 
+File deleted
+MergeableCounterValue 49398.000000
+running getMCPileupDistributionFromMiniAOD
+opened file root://cms-xrd-global.cern.ch//store/mc/RunIISpring15DR74/TT_TuneZ2star_13TeV-powheg-pythia6-tauola/MINIAODSIM/Asympt50ns_MCRUN2_74_V9A-v3/70000/B418FF74-E40C-E511-BACB-1CC1DE1CE026.root 0x468ecc0
+ Lumi/Pileup Reweighting: Computed Weights per In-Time Nint 
+   0 0
+   1 20.008
+   2 15.0356
+   3 3.5833
+   4 2.51278
+   5 3.02817
+   6 2.58339
+   7 2.53948
+   8 2.71549
+   9 2.55563
+   10 2.35705
+   11 2.28113
+   12 2.07232
+   13 1.95506
+   14 1.84128
+   15 1.64353
+   16 1.4176
+   17 1.29866
+   18 1.06304
+   19 0.948802
+   20 0.773713
+   21 0.637691
+   22 0.502787
+   23 0.420072
+   24 0.320742
+   25 0.256755
+   26 0.198098
+   27 0.146921
+   28 0.104354
+   29 0.0760412
+   30 0.0565251
+   31 0.0381233
+   32 0.0287115
+   33 0.0232448
+   34 0.0140423
+   35 0.0109086
+   36 0.00558069
+   37 0.00524515
+   38 0.00453169
+   39 0.00148919
+   40 0.00178031
+   41 0
+   42 0
+   43 0
+   44 0
+   45 0
+   46 0
+   47 0
+   48 0
+   49 0
+   50 0
+   51 0
+   52 0
+   53 0
+   54 0
+   55 0
+   56 0
+   57 0
+   58 0
+   59 0
+   60 0
+   61 0
+   62 0
+   63 0
+   64 0
+   65 0
+   66 0
+   67 0
+   68 0
+   69 0
+   70 0
+   71 0
+   72 0
+   73 0
+   74 0
+   75 0
+   76 0
+   77 0
+   78 0
+   79 0
+   80 0
+   81 0
+   82 0
+   83 0
+   84 0
+   85 0
+   86 0
+   87 0
+   88 0
+   89 0
+   90 0
+   91 0
+   92 0
+   93 0
+   94 0
+   95 0
+   96 0
+   97 0
+   98 0
+getPUshifts will shift average PU by 0.789339 / -0.71474
+#
+Running EPILOG for Analysis_MC13TeV_TTJets_dilepton0055_.sh on Fri Sep 25 00:51:41 WEST 2015 
+#
+# Running EPILOG for Analysis_MC13TeV_TTJets_dilepton0038_.sh on Fri Sep 25 00:51:42 WEST 2015 
+#
+13TeV_TTJets_dilepton0057_.sh on Fri Sep 25 00:51:41 WEST 2015 
+#
+# --------------------------------------------------------------
+
+# --------------------------------------------------------------
+Fri Sep 25 00:51:42 WEST 2015 
+#
+# --------------------------------------------------------------
+
+# --------------------------------------------------------------
+
+# Running EPILOG for Analysis_MC13TeV_TTJets_dilepton0016_.sh on Fri Sep 25 00:51:42 WEST 2015 
+#
+# --------------------------------------------------------------
+
+# Running EPILOG for Analysis_MC13TeV_TTJets_dilepton0060_.sh on Fri Sep 25 00:51:42 WEST 2015 
+#
+# --------------------------------------------------------------
+
+# --------------------------------------------------------------
+
+# --------------------------------------------------------------
+# Running EPILOG for Analysis_MC13TeV_TTJets_dilepton0056_.sh on Fri Sep 25 00:51:42 WEST 2015 
+#
+# Running EPILOG for Analysis_MC13TeV_TTJets_dilepton0054_.sh on Fri Sep 25 00:51:42 WEST 2015 
+#
+# --------------------------------------------------------------
+
+# --------------------------------------------------------------
+# Running EPILOG for Analysis_MC13TeV_TTJets_dilepton0037_.sh on Fri Sep 25 00:51:42 WEST 2015 
+#
+
+# --------------------------------------------------------------
+# Running EPILOG for Analysis_MC13TeV_TTJets_dilepton0046_.sh on Fri Sep 25 00:51:42 WEST 2015 
+#
+
+# --------------------------------------------------------------
+# Running EPILOG for Analysis_MC13TeV_TTJets_dilepton0007_.sh on Fri Sep 25 00:51:42 WEST 2015 
+#
+# SGE ERROR -> transfering STDOUT back to ui6-cms01 <- ERROR #
+-
+# --------------------------------------------------------------
+# --------------------------------------------------------------
+# SGE ERROR -> transfering STDERR back to ui6-cms01 <- ERROR #
+# SGE ERROR -> transfering STDOUT back to ui6-cms01 <- ERROR #
+# --------------------------------------------------------------
+# SGE ERROR -> transfering STDERR back to ui6-cms01 <- ERROR #
+# SGE ERROR -> transfering STDOUT back to ui6-cms01 <- ERROR #
+# SGE ERROR -> transfering STDOUT back to ui6-cms01 <- ERROR #
+# SGE ERROR -> transfering STDOUT back to ui6-cms01 <- ERROR #
+# SGE ERROR -> transfering STDOUT back to ui6-cms01 <- ERROR #
+# SGE ERROR -> transfering STDOUT back to ui6-cms01 <- ERROR #
+# SGE ERROR -> transfering STDOUT back to ui6-cms01 <- ERROR #
+# SGE ERROR -> transfering STDOUT back to ui6-cms01 <- ERROR #

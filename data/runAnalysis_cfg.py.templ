@@ -15,6 +15,7 @@ from LIP.TauAnalysis.mvaConfig_cfi import ewkzp2jFull as mySignalMVA
 PhysicsAnalysisParSet = cms.PSet(
     dtag           = cms.string("@dtag"),
     dset           = cms.string("@dset"),
+    site           = cms.string("@site"),
     input          = cms.untracked.vstring("@input"),
     outdir         = cms.string("@outdir"),
     work_directory = cms.string("@work_directory"),

@@ -88,6 +88,7 @@ HStructure_TFile* HStructure_TFile::Open(const char* name, Option_t* option )
   TFile *f = ret -> GetFile();
   if (not f || not f -> IsOpen() || f -> IsZombie() || f -> TestBit(TFile::kRecovered))
     return NULL;
+  ret -> SetBit(kIsValid, true);
   return ret;
 }
 

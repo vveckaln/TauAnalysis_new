@@ -46,20 +46,32 @@ void HistogramPlotter::AddHistograms() const
 	  TFile * file = ((HStructure_TFile*)active_HStructure_TFile -> GetChildren()[file_ind]) -> GetFile();
 	  worker -> GetRef() = file -> Get(hdescr -> at(hind).histogram_name.Data());
 	  worker -> SetBit(kIsFilled, true);
+	  worker -> SetBit(kIsValid, true);
 	  worker -> Stamp();
 	  sum_histogram -> AddChild(worker);
 	  if (not gIsData)
 	    {
-	      mcv[file_ind] = ((rootdouble*)file -> Get("MergeableCounterValue")) -> GetInformation();
-	      mcv_total += mcv[file_ind];
+	      if (file -> Get("MergeableCounterValue"))
+		{
+		  mcv[file_ind] = ((rootdouble*)file -> Get("MergeableCounterValue")) -> GetInformation();
+		  mcv_total += mcv[file_ind];
+		}\
+	      else 
+		{
+		  mcv[file_ind] = -1;
+		  active_HStructure_TFile -> GetChildren()[file_ind] -> SetBit(kIsValid, false);
+		  worker -> SetBit(kIsValid, false);
+		}
 	    }
 	}
       unsigned char step = 0;
       if (not gIsData)
-      for (HStructure_worker::iterator it = sum_histogram -> begin("children"); it != sum_histogram -> end("children"); it.increment("children"), step ++)
-	{
-	  ((TH1D*)it -> GetPtr()) -> Scale(mcv[step]/mcv_total);
-	}
+	for (HStructure_worker::iterator it = sum_histogram -> begin("children"); it != sum_histogram -> end("children"); it.increment("children"), step ++)
+	  {
+	    if (it -> TestBit(kIsValid) and it -> GetPtr())
+	      ((TH1D*)it -> GetPtr()) -> Scale(mcv[step]/mcv_total);
+	    
+	  }
       worker_mother -> AddChild(sum_histogram);
       sum_histogram -> SetName(samples_names[number_active_sample] + "_TOTAL");
     }
@@ -69,10 +81,12 @@ void HistogramPlotter::AddHistograms() const
   worker_mother -> FillBottomUp("children");
   printf("RESULTS %s\n", gSystem -> BaseName(output_file -> GetName()));
   HStructure_TH1D * str = (HStructure_TH1D*) worker_mother -> GetHStructure(samples_names[number_active_sample] + "_TOTAL", "numb_events_selection_stagesSELECTOR_BASE");
+  if (str)
+    {
       Table t;
       t.FillFromLabeledHistogram(str -> Get());
       t.ls();
-   
+    }
   printf("HISTOGRAMS FILLED\n");
   HStructure_TFile * output = new HStructure_TFile;
 output -> SetName((samples_names[number_active_sample] + "_TOTAL").Data());

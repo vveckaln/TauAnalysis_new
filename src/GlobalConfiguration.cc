@@ -31,7 +31,7 @@ void GlobalConfiguration::SetConfiguration(const char* configuration_file)
   gdset                                  = runProcess.getParameter<string>          ("dset");
   gdtag                                  = runProcess.getParameter<string>          ("dtag");
   gnoUncertainties = true;
-  
+  site                                   = runProcess.getParameter<string>          ("site");
   printf("Configuration succesfully completed\n");
 }
 

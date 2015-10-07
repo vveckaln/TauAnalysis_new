@@ -8,7 +8,7 @@ using namespace std;
 class HStructure_worker;
 class HStructure_TFile;
 //class HStructure_TFile::iterator;
-enum EStatusBits{pCanDelete, kOpenForInput, kOpenForOutput, kIsFilled, kIsData, kIsManager, kIsStamped};
+enum EStatusBits{pCanDelete, kOpenForInput, kOpenForOutput, kIsFilled, kIsData, kIsManager, kIsStamped, kIsValid};
 class HStructure: public SampleDescriptor
 {
   static unsigned int unique_id;

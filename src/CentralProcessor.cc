@@ -146,6 +146,7 @@ void CentralProcessor::AddHistograms()
 	  //printf("%s %u\n", samples_names[segment_ind].Data(), file_ind);
 	  //printf("input from file %s\n", name.Data());
 	  HStructure_TFile *file_struct = HStructure_TFile::Open(name, "READ");
+	  
 	  if (file_struct)
 	    files_mother -> AddChild(file_struct);
 	}
@@ -328,7 +329,7 @@ void CentralProcessor::OpenOutputFiles() const
     }  
   //output_file_pool = new TFilePool(output_file_names, "RECREATE");
   files_mother -> SetBit(kOpenForOutput, true, "children");
-  files_mother -> test("children");  
+  //files_mother -> test("children");  
   Parser parser;
   vector<HistogramDescriptor> * hdescr = parser.ParseHistogramSpecifier(gwork_directory + "/data/histogram_specifiers/spec_selector_histograms.xml");
   const unsigned char size = hdescr -> size();
@@ -338,7 +339,7 @@ void CentralProcessor::OpenOutputFiles() const
       worker_mother -> AddChild(files_mother -> GenerateWorker(hdescr -> at(ind)));
     }
   printf("LISTING WORKER\n");
-  worker_mother -> test("all");
+  //  worker_mother -> test("all");
   hstruct_worker = worker_mother;
 
   const char *Xaxis_labels[5] = 
@@ -353,6 +354,7 @@ void CentralProcessor::OpenOutputFiles() const
 
   for (unsigned short sample_ind = 0; sample_ind < *number_of_samples; sample_ind ++)
     {
+      printf("%s\n", samples_names[sample_ind].Data());
       TH1D * h = (TH1D*)hstruct_worker -> GetHStructure(samples_names[sample_ind], "numb_events_selection_stagesSELECTOR_BASE") -> GetRef(); 
        TAxis *xaxis = h -> GetXaxis();
       
