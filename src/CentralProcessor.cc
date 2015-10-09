@@ -79,7 +79,7 @@ void CentralProcessor::Process(const char* option)
   //ReplaceAll(".root", "") + "_out.root";
   SetEnvironment();
   OpenOutputFiles();
-  
+  exit(0);
    IsSingleMuPD     = gIsData and gdtag.Contains("SingleMu");
   
   FileReader * reader = 
@@ -339,7 +339,7 @@ void CentralProcessor::OpenOutputFiles() const
       worker_mother -> AddChild(files_mother -> GenerateWorker(hdescr -> at(ind)));
     }
   printf("LISTING WORKER\n");
-  //  worker_mother -> test("all");
+  worker_mother -> test("all");
   hstruct_worker = worker_mother;
 
   const char *Xaxis_labels[5] = 

@@ -39,16 +39,20 @@ def initProxy():
 #      os.system('mkdir -p ~/x509_user_proxy; voms-proxy-init --voms cms -valid 192:00 --out ~/x509_user_proxy/x509_proxy')#all must be done in the same command to avoid environement problems.  Note that the first sourcing is only needed in Louvain
 #      os.system('voms-proxy-init --voms cms -valid 192:00')
       while True:
-          cmd = 'mkdir -p ' + PROXYDIR + '; voms-proxy-init --voms cms             -valid 720:00 --out ' + PROXYDIR + '/x509_proxy'
-          subprocess.check_output("ls -l")
-          """
-          cr = subprocess.check_output(cmd , stderr=subprocess.STDOUT)
-          #print "command said"
-          #print cr
-          if cr.find("the password is incorrect or the PEM data is corrupted.") > -1:
+          p=subprocess.Popen('mkdir -p ' + PROXYDIR + '; voms-proxy-init --voms cms             -valid 720:00 --out ' + PROXYDIR + '/x509_proxy', shell=True, stderr=subprocess.PIPE)
+          totalerr=''
+          while True:
+              err = p.stderr.read(1)
+              totalerr += err
+              if err == '' and p.poll() != None:
+                  break
+              if err != '':
+                  sys.stderr.write(err)
+            #     print "from here"
+                  sys.stderr.flush()
+          if totalerr.find("No credentials found!") == -1:
               break
-          """                  
-   initialCommand = 'export X509_USER_PROXY=' + PROXYDIR + '/x509_proxy; voms-proxy-init --voms cms --noregen; '
+      initialCommand = 'export X509_USER_PROXY=' + PROXYDIR + '/x509_proxy; voms-proxy-init --voms cms --noregen; '
 
 #   initialCommand = 'export X509_USER_PROXY=' + PROXYDIR + '/x509_proxy;voms-proxy-init --voms cms --noregen; '
 
@@ -240,7 +244,7 @@ for procData in procList :
                 #run the job
                 if opt.queue == "0" :
 #                    os.system(initialCommand + opt.theExecutable + ' ' + cfgfile + ' ' + opt.run_option)  
-                    os.system(initialCommand + opt.theExecutable + ' ' + cfgfile + ' ' + opt.run_option)  
+                    os.system(initialCommand + " valgrind --tool=memcheck --log-file=valgrind.txt --leak-check=yes --track-origins=yes " + opt.theExecutable + ' ' + cfgfile + ' ' + opt.run_option)  
   
                # os.system("valgrind --track-origins=yes --log-file=valgrind.txt --leak-check=full " + opt.theExecutable + ' ' + cfgfile + ' ' + str(opt.run_option))
                 else:
