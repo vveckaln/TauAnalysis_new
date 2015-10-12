@@ -9,26 +9,26 @@ HStructure_TH1D::HStructure_TH1D()
 {
   histID = TH1D_inst;
   TH1D_inst ++;
-  printf("probe A\n");
+  
 }
 
 HStructure_TH1D::HStructure_TH1D(const  HStructure &structure) : HStructure_worker(structure)
 {
   histID = TH1D_inst;
   TH1D_inst ++;
-  printf("probe B\n");
+  
 }
 
 HStructure_TH1D::HStructure_TH1D(const SampleDescriptor &other) : HStructure_worker(other)
 {
   histID = TH1D_inst;
   TH1D_inst++;
-  printf("probe C\n");
+  
 }
 
 void * HStructure_TH1D::operator new (size_t size)
 {
-  return ::new HStructure_TH1D;
+  return ::operator new(size);
 }
 
 void HStructure_TH1D::PopulateWorkingElements(const char * option)

@@ -206,10 +206,7 @@ HStructure_worker * HStructure_TFile::GenerateWorker(const HistogramDescriptor &
     }
   else
     {
-      printf("wrap 1\n");
-      const SampleDescriptor test =  *(const SampleDescriptor*)this;
-      ret = new HStructure_TH1D(test/**(const SampleDescriptor*)this*/);
-      printf("wrap 2\n");
+      ret = new HStructure_TH1D(*(const SampleDescriptor*)this);
       ret -> GetRef() = new TH1D( desc . histogram_name.Data(), desc . histogram_title.Data(), desc . nbinsx, desc . xlow, desc . xup);
       ((HStructure_TH1D*)ret) -> Stamp();
       ((HStructure_TH1D*)ret) -> Get() -> GetXaxis() -> SetTitle(desc . Xaxis_title.Data());

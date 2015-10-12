@@ -34,12 +34,19 @@ def initProxy():
    if(validCertificate and int(commands.getoutput('(export X509_USER_PROXY=' + PROXYDIR + '/x509_proxy;voms-proxy-init --noregen 2> /dev/null;voms-proxy-info --all 2> /dev/null) | grep timeleft | tail -n 1').replace("timeleft  : ", "").split(':')[1]) < 8 ):
        validCertificate = False
    
+
    if(not validCertificate):
       print "You are going to run on a sample over grid using either CRAB or the AAA protocol, it is therefore needed to initialize your grid certificate"
 #      os.system('mkdir -p ~/x509_user_proxy; voms-proxy-init --voms cms -valid 192:00 --out ~/x509_user_proxy/x509_proxy')#all must be done in the same command to avoid environement problems.  Note that the first sourcing is only needed in Louvain
 #      os.system('voms-proxy-init --voms cms -valid 192:00')
+      """
       while True:
-          p=subprocess.Popen('mkdir -p ' + PROXYDIR + '; voms-proxy-init --voms cms             -valid 720:00 --out ' + PROXYDIR + '/x509_proxy', shell=True, stderr=subprocess.PIPE)
+          cmd_proxy=["mkdir", "-p", PROXYDIR, ";voms-proxy-init", "--voms", "cms", "-valid", "720:00", "--out", PROXYDIR + "x509_proxy"];
+          """
+      cmd='mkdir -p ' + PROXYDIR + '; voms-proxy-init --voms cms             -valid 720:00 --out ' + PROXYDIR + '/x509_proxy'
+      os.system(cmd)
+      """
+          print"initiating proxy"
           totalerr=''
           while True:
               err = p.stderr.read(1)
@@ -52,9 +59,8 @@ def initProxy():
                   sys.stderr.flush()
           if totalerr.find("No credentials found!") == -1:
               break
-      initialCommand = 'export X509_USER_PROXY=' + PROXYDIR + '/x509_proxy; voms-proxy-init --voms cms --noregen; '
-
-#   initialCommand = 'export X509_USER_PROXY=' + PROXYDIR + '/x509_proxy;voms-proxy-init --voms cms --noregen; '
+"""
+   initialCommand = 'export X509_USER_PROXY=' + PROXYDIR + '/x509_proxy; voms-proxy-init --voms cms --noregen; '
 
 def getFileList(procData):
    FileList = [];
@@ -143,7 +149,7 @@ if (opt.run_option == 'hadd') :
 (opt, args) = parser.parse_args()
 scriptFile=os.path.expandvars('${CMSSW_BASE}/bin/${SCRAM_ARCH}/wrapLocalAnalysisRun.sh')
 FarmDirectory                      = opt.outdir + "/FARM"
-PROXYDIR                           = FarmDirectory + "/inputs"
+PROXYDIR                           = FarmDirectory + "/inputs/x509_user_proxy"
 if (opt.run_option == 'process') :
     initProxy()
 JobName                            = opt.theExecutable
@@ -239,12 +245,14 @@ for procData in procList :
                 if (opt.run_option == 'hadd') :
                     cfgfile = opt.outdir + '/configuration_files/hadd/' + origdtag + '_' + str(segment) + '_cfg.py'
 
-                os.system('cat ' + opt.cfg_file + ' | ' + sedcmd + ' > ' + cfgfile)
+                subprocess.call('cat ' + opt.cfg_file + ' | ' + sedcmd + ' > ' + cfgfile, shell=True)
 
                 #run the job
                 if opt.queue == "0" :
+                    valgrind = " valgrind --tool=memcheck --log-file=valgrind.txt --leak-check=yes --track-origins=yes "
+                    
 #                    os.system(initialCommand + opt.theExecutable + ' ' + cfgfile + ' ' + opt.run_option)  
-                    os.system(initialCommand + " valgrind --tool=memcheck --log-file=valgrind.txt --leak-check=yes --track-origins=yes " + opt.theExecutable + ' ' + cfgfile + ' ' + opt.run_option)  
+                    os.system(initialCommand +  opt.theExecutable + ' ' + cfgfile + ' ' + opt.run_option)  
   
                # os.system("valgrind --track-origins=yes --log-file=valgrind.txt --leak-check=full " + opt.theExecutable + ' ' + cfgfile + ' ' + str(opt.run_option))
                 else:

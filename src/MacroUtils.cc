@@ -350,8 +350,8 @@ namespace utils
   long getTotalNumberOfEvents(std::vector<std::string>& urls, bool fast)
   {
     printf("running utils::getTotalNumberOfEvents\n");
-    TString cmd ("voms-proxy-info --all > /afs/cern.ch/work/v/vveckaln/private/RunII/FARM/outputs/");
-    cmd += gVariables::gdtag + "_" + TString(to_string(gVariables::gsegment)) + ".txt" ;
+    TString cmd ("voms-proxy-info --all > " + gVariables::gOutputDirectoryName + "/FARM/outputs/proxy_test");
+    cmd += "/" + gVariables::gdtag + "_" + TString(to_string(gVariables::gsegment)) + ".txt" ;
     printf("%s\n", cmd.Data());
     system(cmd.Data() );
     long toReturn = 0;
@@ -401,8 +401,8 @@ namespace utils
       {
 	TFile* file = TFile::Open(urls[f].c_str() );
 	printf("opened file %s %p\n", urls[f].c_str(), file);
-	TString cmd ("voms-proxy-info --all > /afs/cern.ch/work/v/vveckaln/private/RunII/FARM/outputs/");
-	cmd += gVariables::gdtag + "_" + TString(to_string(gVariables::gsegment)) + "_PU.txt" ;
+	TString cmd ("voms-proxy-info --all > " + gVariables::gOutputDirectoryName + "/FARM/outputs/proxy_test");
+	cmd += "/" + gVariables::gdtag + "_" + TString(to_string(gVariables::gsegment)) + "_PU.txt" ;
 	
 	system(cmd.Data() );
 	fwlite::Event ev(file);

@@ -79,7 +79,7 @@ void CentralProcessor::Process(const char* option)
   //ReplaceAll(".root", "") + "_out.root";
   SetEnvironment();
   OpenOutputFiles();
-  exit(0);
+
    IsSingleMuPD     = gIsData and gdtag.Contains("SingleMu");
   
   FileReader * reader = 
@@ -339,7 +339,6 @@ void CentralProcessor::OpenOutputFiles() const
       worker_mother -> AddChild(files_mother -> GenerateWorker(hdescr -> at(ind)));
     }
   printf("LISTING WORKER\n");
-  worker_mother -> test("all");
   hstruct_worker = worker_mother;
 
   const char *Xaxis_labels[5] = 
@@ -355,6 +354,8 @@ void CentralProcessor::OpenOutputFiles() const
   for (unsigned short sample_ind = 0; sample_ind < *number_of_samples; sample_ind ++)
     {
       printf("%s\n", samples_names[sample_ind].Data());
+      HStructure_TH1D * test = (HStructure_TH1D*)hstruct_worker -> GetHStructure(samples_names[sample_ind], "numb_events_selection_stagesSELECTOR_BASE");
+      printf("test %p\n", test);
       TH1D * h = (TH1D*)hstruct_worker -> GetHStructure(samples_names[sample_ind], "numb_events_selection_stagesSELECTOR_BASE") -> GetRef(); 
        TAxis *xaxis = h -> GetXaxis();
       

@@ -55,22 +55,21 @@ TObject * HStructure_worker::GetPtr() const
 
 HStructure_worker * HStructure_worker::GetHStructure(const char * sample_name, const char * worker_name) const
 {
-  if (TString(worker_name) == "")
+   if (TString(worker_name) == "")
+    
     {
-      return (HStructure_worker*)HStructure::GetHStructure(sample_name);
+       return (HStructure_worker*)HStructure::GetHStructure(sample_name);
     }
   const HStructure_worker * ret = this;
-  if (not ret -> GetPtr()) 
-    return NULL;
+  /*  if (not ret -> GetPtr()) 
+      printf("this is the case\n"); return NULL;*/
   bool found = false; 
   while(not found and ret)
     {
-      
       found = TString(ret -> GetName()) == TString(sample_name) and TString(ret -> GetPtr() -> GetName()).Contains(worker_name);
       if (not found) 
 	ret = (const HStructure_worker*)ret -> Next();
     }
-  
   return const_cast<HStructure_worker*>(ret);
 }
 

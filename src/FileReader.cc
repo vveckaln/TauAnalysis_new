@@ -38,7 +38,7 @@ void FileReader::Run()
       printf ("Opening file %s\n", input_file_names[f].c_str());
 
       TFile* file = TFile::Open(input_file_names[f].c_str() );
-      printf ("Reading file %s\n", input_file_names[f].c_str());
+      printf ("FileReader: Reading file %s\n", input_file_names[f].c_str());
       //getchar();
       fwlite::Event event(file);
       for(event.toBegin(); !event.atEnd(); ++event)
@@ -69,11 +69,11 @@ void FileReader::Run()
 	    continue;
 	  fwlite::Handle< reco::VertexCollection > vtxHandle;
 	  vtxHandle.getByLabel(event, "offlineSlimmedPrimaryVertices");
-	  read_event -> vertices = *vtxHandle;
+	  if (vtxHandle.isValid())read_event -> vertices = *vtxHandle;
 
 	  fwlite::Handle< reco::GenParticleCollection > genHandle;
 	  genHandle.getByLabel(event, "prunedGenParticles");
-	  read_event -> gen = *genHandle;
+	  if (genHandle.isValid()) read_event -> gen = *genHandle;
 
 	  fwlite::Handle< pat::MuonCollection > muonsHandle;
 	  muonsHandle.getByLabel(event, "slimmedMuons");
@@ -102,7 +102,7 @@ void FileReader::Run()
       
 	  fwlite::Handle< vector<PileupSummaryInfo> > puInfoH;
 	  puInfoH.getByLabel(event, "addPileupInfo");
-	  read_event  -> PU = *puInfoH;
+	  if (puInfoH.isValid()) read_event  -> PU = *puInfoH;
 
 	  fwlite::Handle< GenEventInfoProduct > genEventInfoHandle;
 	  genEventInfoHandle.getByLabel(event, "generator");
