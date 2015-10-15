@@ -27,11 +27,11 @@ elif [ `hostname | cut -d "." -f2-3` == "cern.ch" ] ; then
 	    if [ $i -ne 0 ] ; then
 		arr=($line)
 		var=${arr[2]}
-
+		#echo "dtag "$dtag
 		if [ "$var" == "RUN" ] ; then
-		    ((R++))
+			((R++))
 		elif [ "$var" == "PEND" ] ; then
-		    ((P++))
+			((P++))
 		fi
 		
 	    fi

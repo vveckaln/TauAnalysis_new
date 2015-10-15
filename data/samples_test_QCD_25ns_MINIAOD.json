@@ -1,0 +1,27 @@
+
+{
+  "proc":[
+  {
+"tag":"QCD",
+      "isdata":false,
+      "color":591,
+      "lcolor":1,
+      "comment":"It should be totally irrelevant (I will select >3 leptons, typically)",
+      "frommcm":"all filter efficiencies are 1",
+      "data":[
+{ "dtag":"MC13TeV_QCD_Pt-15to30_25ns",     "split":100, "xsec":2237000000, "br":[1.0], "dset":"/QCD_Pt_15to30_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v2/MINIAODSIM" },           
+        { "dtag":"MC13TeV_QCD_Pt-30to50_25ns",     "split":100, "xsec":161500000,  "br":[1.0], "dset":"/QCD_Pt_30to50_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v2/MINIAODSIM" },    
+        { "dtag":"MC13TeV_QCD_Pt-50to80_25ns",     "split":100, "xsec":22110000,   "br":[1.0], "dset":"/QCD_Pt_50to80_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v2/MINIAODSIM" },    
+        { "dtag":"MC13TeV_QCD_Pt-80to120_25ns",    "split":100, "xsec":3000114.3,  "br":[1.0], "dset":"/QCD_Pt_80to120_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v1/MINIAODSIM" },   
+        { "dtag":"MC13TeV_QCD_Pt-120to170_25ns",   "split":100, "xsec":493200,     "br":[1.0], "dset":"/QCD_Pt_120to170_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v1/MINIAODSIM" },  
+        { "dtag":"MC13TeV_QCD_Pt-170to300_25ns",   "split":100, "xsec":120300,     "br":[1.0], "dset":"/QCD_Pt_170to300_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v2/MINIAODSIM" },  
+        { "dtag":"MC13TeV_QCD_Pt-300to470_25ns",   "split":100, "xsec":7475,       "br":[1.0], "dset":"/QCD_Pt_300to470_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v1/MINIAODSIM" },  
+        { "dtag":"MC13TeV_QCD_Pt-470to600_25ns",   "split":100, "xsec":587.1,      "br":[1.0], "dset":"/QCD_Pt_470to600_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v2/MINIAODSIM" },  
+        { "dtag":"MC13TeV_QCD_Pt-600to800_25ns",   "split":100, "xsec":167,        "br":[1.0], "dset":"/QCD_Pt_600to800_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v3/MINIAODSIM" },  
+        { "dtag":"MC13TeV_QCD_Pt-800to1000_25ns",  "split":100, "xsec":28.25,      "br":[1.0], "dset":"/QCD_Pt_800to1000_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v2/MINIAODSIM" }, 
+        { "dtag":"MC13TeV_QCD_Pt-1000to1400_25ns", "split":100, "xsec":8.195,      "br":[1.0], "dset":"/QCD_Pt_1000to1400_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v1/MINIAODSIM" },
+        { "dtag":"MC13TeV_QCD_Pt-1400to1800_25ns", "split":100, "xsec":0.7346,     "br":[1.0], "dset":"/QCD_Pt_1400to1800_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v1/MINIAODSIM" } 
+      ]
+   }	
+  ]
+}

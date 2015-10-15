@@ -11,6 +11,7 @@ namespace gVariables
   unsigned char  gfile_split;
   unsigned char  gsegment;
   vector<int>    gjacknifeCfg; 
+  TString        grunmode;
   TString        gInputFileName; 
   TString        gOutputFileName;
   TString        gBaseDirectoryName; 

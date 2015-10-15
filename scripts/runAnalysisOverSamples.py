@@ -10,7 +10,7 @@ import LIP.TauAnalysis.storeTools_cff as storeTools
 PROXYDIR = "~/x509_user_proxy"
 DatasetFileDB = "DAS"  #DEFAULT: will use das_client.py command line interface
 #DatasetFileDB = "DBS" #OPTION:  will use curl to parse https GET request on DBSserver
-
+lumimask_directory = ""
 
 
 """
@@ -44,22 +44,21 @@ def initProxy():
           cmd_proxy=["mkdir", "-p", PROXYDIR, ";voms-proxy-init", "--voms", "cms", "-valid", "720:00", "--out", PROXYDIR + "x509_proxy"];
           """
       cmd='mkdir -p ' + PROXYDIR + '; voms-proxy-init --voms cms             -valid 720:00 --out ' + PROXYDIR + '/x509_proxy'
-      os.system(cmd)
-      """
-          print"initiating proxy"
-          totalerr=''
-          while True:
-              err = p.stderr.read(1)
-              totalerr += err
-              if err == '' and p.poll() != None:
-                  break
-              if err != '':
-                  sys.stderr.write(err)
-            #     print "from here"
-                  sys.stderr.flush()
+      p = subprocess.Popen(cmd, shell=True, stderr=subprocess.PIPE)
+      
+      print"initiating proxy"
+      totalerr=''
+      while True:
+          err = p.stderr.read(1)
+          totalerr += err
+          if err == '' and p.poll() != None:
+              break
+          if err != '':
+              sys.stderr.write(err)
+              sys.stderr.flush()
           if totalerr.find("No credentials found!") == -1:
               break
-"""
+
    initialCommand = 'export X509_USER_PROXY=' + PROXYDIR + '/x509_proxy; voms-proxy-init --voms cms --noregen; '
 
 def getFileList(procData):
@@ -108,7 +107,7 @@ def getFileList(procData):
          print "Processing an unknown type of sample (assuming it's a private local sample): " + getByLabel(procData, 'miniAOD', '')
          list = storeTools.fillFromStore(getByLabel(procData, 'miniAOD', ''), 0, -1, True);
 
-      list = storeTools.keepOnlyFilesFromGoodRun(list, getByLabel(procData, 'lumiMask', ''))    
+      list = storeTools.keepOnlyFilesFromGoodRun(list, lumimask_directory + getByLabel(procData, 'lumiMask', ''))    
       
       ngroup = len(list)/split
       if (ngroup * split != len(list) ):
@@ -131,6 +130,11 @@ def getFileList(procData):
          FileList.append('"' + eventsFile + '"')
    return FileList
 
+def CreateDirectories(outdir, dtag):
+    if os.path.isdir(outdir + "/output/event_analysis/" + dtag) == False:
+        subprocess.call("mkdir -p " + outdir + "/output/event_analysis/" + dtag, shell=True)
+    if os.path.isdir(outdir + "/configuration/event_analysis/" + dtag) == False:
+        subprocess.call("mkdir -p " + outdir + "/configuration/event_analysis/" + dtag, shell=True)
 #configure
 usage = 'usage: %prog [options]'
 parser = optparse.OptionParser(usage)
@@ -145,14 +149,15 @@ parser.add_option('-r', '--run'        ,    dest = 'run_option'         , help =
 parser.add_option('-R', '--R'          ,    dest='requirementtoBatch'   , help = 'requirement for batch queue'           , default = 'pool>30000')
 (opt, args) = parser.parse_args()
 if (opt.run_option == 'hadd') :
-    opt.indir += '/output_files/event_analysis'
+    opt.indir += '/output/event_analysis'
 (opt, args) = parser.parse_args()
 scriptFile=os.path.expandvars('${CMSSW_BASE}/bin/${SCRAM_ARCH}/wrapLocalAnalysisRun.sh')
 FarmDirectory                      = opt.outdir + "/FARM"
 PROXYDIR                           = FarmDirectory + "/inputs/x509_user_proxy"
 if (opt.run_option == 'process') :
     initProxy()
-JobName                            = opt.theExecutable
+    
+ExecutableName                     = opt.theExecutable
 LaunchOnCondor.Jobs_RunHere        = 1
 LaunchOnCondor.Jobs_Queue          = opt.queue
 LaunchOnCondor.Jobs_LSFRequirement = '"' + opt.requirementtoBatch + '"'
@@ -183,9 +188,10 @@ for procData in procList :
         mctruthmode = getByLabel(desc, 'mctruthmode', 0)
         data        = desc['data']
         for procData in data :
-            origdtag = getByLabel(procData, 'dtag',  '')
-            if(origdtag == '') : continue
-            dtag = origdtag
+            dtag = getByLabel(procData, 'dtag',  '')
+            if (opt.run_option == "process"):
+                CreateDirectories(opt.outdir, dtag)
+            LaunchOnCondor.dtag = dtag
             dset     = getByLabel(procData, 'dset',  '')
             xsec     = getByLabel(procData, 'xsec',  -1)
             br       = getByLabel(procData, 'br',    [])
@@ -202,13 +208,19 @@ for procData in procList :
             if (opt.run_option == 'hadd') :
                 split = 1
             FileList = ['"' + getByLabel(procData, 'dset', 'UnknownDataset') + '"']
+            if isdata:
+                if(hostname.find("cern.ch") != -1)  : 
+                    lumimask_directory = work_directory + "/data/lumimasks/"
+                if(hostname.find("ncg.ingrid.pt") != -1)  :
+                    lumimask_directory = "/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions15/13TeV/"
+
             if(LaunchOnCondor.subTool != 'crab'):
                 if (not opt.run_option == "hadd"):
                     FileList = getFileList(procData)
                 elif (opt.run_option == "hadd"):
                     FileList = ["/test/phony_list\",\\n"]
 
-            LaunchOnCondor.SendCluster_Create(FarmDirectory, JobName + '_' + dtag)
+            LaunchOnCondor.SendCluster_Create(FarmDirectory, ExecutableName + '_' + dtag)
             print "Filelist length %u" % len(FileList)
             ind = 1
             if (not opt.run_option == "hadd" and opt.queue != "0"):
@@ -237,13 +249,13 @@ for procData in procList :
                 sedcmd += 's%@mctruthmode%'    + str(mctruthmode)                     + '%;'
                 sedcmd += 's%@file_split%'     + str(split_store)                     + '%;'
                 sedcmd += 's%@segment%'        + str(segment)                         + '%;'
-                sedcmd += 's%@lumiMask%"'      + getByLabel(procData, 'lumiMask', '') + '"%;'
+                sedcmd += 's%@lumiMask%"'      + lumimask_directory + getByLabel(procData, 'lumiMask', '') + '"%;'
                 sedcmd += '\''
                
                 if (opt.run_option == 'process') :
-                    cfgfile = opt.outdir +'/configuration_files/event_analysis/' + origdtag + '_' + str(segment) + '_cfg.py'
+                    cfgfile = opt.outdir +'/configuration/event_analysis/' + dtag + "/" + dtag + '_' + str(segment) + '_cfg.py'
                 if (opt.run_option == 'hadd') :
-                    cfgfile = opt.outdir + '/configuration_files/hadd/' + origdtag + '_' + str(segment) + '_cfg.py'
+                    cfgfile = opt.outdir + '/configuration/hadd/' + dtag + '_' + str(segment) + '_cfg.py'
 
                 subprocess.call('cat ' + opt.cfg_file + ' | ' + sedcmd + ' > ' + cfgfile, shell=True)
 

@@ -1,0 +1,15 @@
+{
+  "proc":[
+
+	{
+	"tag":"data",
+      	"isdata":true,
+      	"color":1,
+      	"fill":0,
+      	"comment":"real split 17",        
+       	"data":[        
+ { "dtag":"Data13TeV_SingleMuon2015CPromptReco", "split":50, "xsec":1.0, "br":[ 1.0 ] , "dset":"/SingleMuon/Run2015C-PromptReco-v1/MINIAOD", "lumiMask":"Cert_246908-255031_13TeV_PromptReco_Collisions15_25ns_JSON_v2.txt" }
+      			]      
+      			}	    
+	]
+}

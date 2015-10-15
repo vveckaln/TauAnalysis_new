@@ -38,14 +38,30 @@ void Preselector_Leptons::Run()
     }
   for (size_t ind = 0; ind < input_event -> muons.size(); ind ++) 
     muons_ptr -> push_back(&input_event -> muons[ind]);
-  unsigned int nselected_electrons = PreselectElectrons();
+  unsigned int nselected_electrons;
+  try
+    {
+      nselected_electrons = PreselectElectrons();
+    } catch (const char* e)
+    {
+      printf("caught %s\n", e);
+      return;
+    }
   unsigned int nselected_muons     = PreselectMuons();
   if (nselected_electrons + nselected_muons > 1 or nselected_electrons + nselected_muons == 0) 
     {
       //input_buffer -> erase(it);
       return;
     }
-  unsigned int nVeto_electrons = VetoLooseElectrons();
+  unsigned int nVeto_electrons;
+  try
+    {
+      nVeto_electrons = VetoLooseElectrons();
+    } catch (const char* e)
+    {
+      printf("caught %s\n", e);
+      return;
+    }
   unsigned int nVeto_muons     = VetoLooseMuons();
   if (nVeto_electrons + nVeto_muons > 0) 
     {
@@ -102,6 +118,8 @@ unsigned int Preselector_Leptons::PreselectElectrons()
       pat::Electron * electron = *el_it;
       //veto nearby photon (loose electrons are many times photons...)
       //kinematics
+      if (not electron -> superCluster())
+	throw "no superCluster";
       const float leta = electron -> superCluster() -> eta();
       if(leta > 2.5)                     
 	passKin = false;
@@ -176,6 +194,8 @@ unsigned int Preselector_Leptons::VetoLooseElectrons()
 
       //if (IsSingleMuPD and lepton -> title == "electron") return false;
       const GeV    Pt                       = electron -> pt();
+      if (not electron -> superCluster())
+	throw "no superCluster";
       const float AbsEta = fabs(electron -> superCluster() -> eta());
 
       if(Pt < ref_Pt) 

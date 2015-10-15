@@ -15,10 +15,16 @@ void GlobalConfiguration::SetConfiguration(const char* configuration_file)
   gSystem->Load( "libFWCoreFWLite.so" );
   gSystem->Load( "libLIPTauAnalysis.so" );
   AutoLibraryLoader::enable();
+  printf("probe A\n");
   const edm::ParameterSet &runProcess = edm::readPSetsFrom(configuration_file) 
 -> getParameter<edm::ParameterSet>("PhysicsAnalysisParSet");
   input_file_names                       = runProcess.getUntrackedParameter<vector<std::string> >("input");
-  vector<edm::LuminosityBlockRange> luminosityBlockRange =  runProcess.getUntrackedParameter<vector<edm::LuminosityBlockRange> >("lumisToProcess", vector<edm::LuminosityBlockRange>());
+  printf("runmode %s\n", grunmode.Data());
+     
+  if (gVariables::grunmode != "hadd")
+    {
+      vector<edm::LuminosityBlockRange> luminosityBlockRange =  runProcess.getUntrackedParameter<vector<edm::LuminosityBlockRange> >("lumisToProcess", vector<edm::LuminosityBlockRange>());
+    }
   input_file_name                        = input_file_names[0];
   gOutputDirectoryName                   = runProcess.getParameter<string>          ("outdir");
   gXSection                              = runProcess.getParameter<double>          ("XSection"); 

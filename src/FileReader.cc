@@ -27,6 +27,7 @@ EventProcessor<event_type, event_type>(next_processor_stage)
 {
   goodLumiFilter  = new lumiUtils::GoodLumiFilter(luminosityBlockRange);
   read = 0;
+  muon_trigger = 0;
 }
 
 void FileReader::Run()
@@ -35,7 +36,7 @@ void FileReader::Run()
 
   for(unsigned int f = 0; f < input_file_names.size(); f++)
     {
-      printf ("Opening file %s\n", input_file_names[f].c_str());
+      printf ("FileReader: Opening file %s\n", input_file_names[f].c_str());
 
       TFile* file = TFile::Open(input_file_names[f].c_str() );
       printf ("FileReader: Reading file %s\n", input_file_names[f].c_str());
@@ -63,6 +64,9 @@ void FileReader::Run()
 
 	  read_event -> eeTrigger          = utils::passTriggerPatterns(tr, "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v*","HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v*");
 	  read_event -> muTrigger          = utils::passTriggerPatterns(tr, "HLT_Mu34_TrkIsoVVL_v*");
+	  if (read_event -> muTrigger)
+	    muon_trigger ++;
+	  //printf("muTrigger %s\n", read_event -> muTrigger ? "true" : "false");*/
 	  read_event -> mumuTrigger        = utils::passTriggerPatterns(tr, "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v*", "HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v*"); 
 	  read_event -> emuTrigger         = utils::passTriggerPatterns(tr, "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v*", "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v*");
 	  if(!goodLumiFilter -> isGoodLumi(read_event -> Run, read_event -> Lumi))
@@ -129,6 +133,7 @@ void FileReader::Run()
 void FileReader::Report()
 {
   printf("Read %lu events\n", read);
+  printf("muon trigger %lu \n", muon_trigger);
   ContinueReportToNextStage();
 }
 

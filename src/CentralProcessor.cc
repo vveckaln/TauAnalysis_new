@@ -125,10 +125,11 @@ void CentralProcessor::AddHistograms()
 {
   SetEnvironment();
   printf("gfile_split %u\n", gfile_split);
-  input_file_name = gOutputDirectoryName + "/output_files/event_analysis/" + gdtag;
+  input_file_name = gOutputDirectoryName + "/output/event_analysis/" + gdtag + "/" + gdtag;
   printf("input_file_name stub %s\n", input_file_name.Data());
   for (unsigned short segment_ind = 0; segment_ind < *number_of_samples; segment_ind ++)
     {
+      	
       number_active_sample = segment_ind;
       HStructure_TFile * files_mother = new HStructure_TFile;
       files_mother -> cd();
@@ -155,9 +156,9 @@ void CentralProcessor::AddHistograms()
     
       //getchar();
       if (samples_names[segment_ind] != "generic_name") 
-	  output_file_name = gOutputDirectoryName + "/output_files/hadd/" + gdtag + "_" + samples_names[segment_ind] + "_TOTAL_out.root";
+	  output_file_name = gOutputDirectoryName + "/output/hadd/" + gdtag + "_" + samples_names[segment_ind] + "_TOTAL_out.root";
       else
-	  output_file_name = gOutputDirectoryName + "/output_files/hadd/" + gdtag + "_TOTAL_out.root";
+	  output_file_name = gOutputDirectoryName + "/output/hadd/" + gdtag + "_TOTAL_out.root";
       output_file = new TFile(output_file_name, "recreate");
       printf("output_file_name %s\n", output_file_name.Data());
       //getchar();
@@ -312,16 +313,33 @@ void CentralProcessor::OpenOutputFiles() const
     {
       if (number_of_samples == &generic_samples_count)
 	output_file_name = gOutputDirectoryName 
-	  + "/output_files/event_analysis/" 
+	  + "/output/event_analysis/" + gdtag + "/" 
 	  + gdtag + "_" + TString(to_string(gsegment)) 
 	  + "_out.root";
       else
 	{
-	    output_file_name  = gOutputDirectoryName 
-	      + "/output_files/event_analysis/" 
-	      + gdtag 
-	      + "_" + samples_names[sample_ind] + "_" +  TString(to_string(gsegment))
-	      + "_out.root";
+	  FILE *in;
+	  char buff[512];
+	  TString cmd("if [ -d "); cmd += gOutputDirectoryName + "/output/event_analysis/" + gdtag + "/" + samples_names[sample_ind] + " ]; \nthen\necho \"true\"\nelse\necho \"false\"\nfi";
+	  // "if [ -d \"/afs/cern.ch/work/v/vveckaln/private/CMSSW_7_4_2/src/LIP/TauAnalysis1\" ]; \nthen\necho \"true\"\nelse\necho \"false\"\nfi"
+	  if(!(in = popen(cmd, "r")))
+	    {
+	      return ;
+	    }
+	  while(fgets(buff, sizeof(buff), in) != NULL)
+	    {
+	      if (string(buff).compare(string("true\n")) != 0)
+		{
+		  TString cmd1("mkdir "); cmd1 += gOutputDirectoryName + "/output/event_analysis/" + gdtag + "/" + samples_names[sample_ind];
+		  system(cmd1);
+		}
+	    }
+	  pclose(in);
+	  output_file_name  = gOutputDirectoryName 
+	    + "/output/event_analysis/" + gdtag + "/" + samples_names[sample_ind] + "/"
+	    + gdtag 
+	    + "_" + samples_names[sample_ind] + "_" +  TString(to_string(gsegment))
+	    + "_out.root";
 	}
       HStructure_TFile *str_f = HStructure_TFile::Open(output_file_name, "RECREATE");
       str_f -> SetName(samples_names[sample_ind]);

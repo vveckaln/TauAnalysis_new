@@ -2,6 +2,7 @@ import getopt
 import urllib
 import string
 import os
+import subprocess
 import sys
 import glob
 import fnmatch
@@ -17,6 +18,7 @@ CopyRights += '####################################\n'
 subTool = '' #will be automatically determined, if empty
 
 Farm_Directories  = []
+dtag              = ''
 Path_Cmd          = ''
 Path_Shell        = ''
 Path_Log          = ''
@@ -304,8 +306,8 @@ def AddJobToCmdFile():
         Path_Out   = Farm_Directories[3] + Jobs_Index + Jobs_Name
 #        ofilename = "/exper-sw/cmst3/cmssw/users/vveckaln/CMSSW_7_4_2/src/LIP/TauAnalysis/outputs/" + Jobs_Index + Jobs_Name + "o.txt"
 #        efilename = "/exper-sw/cmst3/cmssw/users/vveckaln/CMSSW_7_4_2/src/LIP/TauAnalysis/outputs/" + Jobs_Index + Jobs_Name + "e.txt"
-        ofilename = Farm_Directories[3] + Jobs_Index + Jobs_Name + "_o.txt"
-        efilename = Farm_Directories[3] + Jobs_Index + Jobs_Name + "_e.txt"
+        ofilename = Farm_Directories[3] + dtag + "/" + Jobs_Index + Jobs_Name + "_o.txt"
+        efilename = Farm_Directories[3] + dtag + "/" + Jobs_Index + Jobs_Name + "_e.txt"
 
         cmd_file=open(Path_Cmd,'a')
 	if subTool=='bsub':
@@ -316,7 +318,7 @@ def AddJobToCmdFile():
 	         absoluteOutPath = Path_Out
 	         if(not os.path.isabs(absoluteOutPath)):
 	           absoluteOutPath = os.getcwd() + "/" + Path_Out
-	         temp = temp + " -oo " + absoluteOutPath + ".cout"
+	         temp = temp + " -oo " + ofilename + " -eo " + efilename
 	       temp = temp + " '" + absoluteShellPath + "'\n"
 	       cmd_file.write(temp)
 	elif subTool=='qsub':
@@ -342,10 +344,13 @@ def AddJobToCmdFile():
 def CreateDirectoryStructure(FarmDirectory):
         global Jobs_Name
         global Farm_Directories
+        global dtag
 	Farm_Directories = [FarmDirectory+'/', FarmDirectory+'/inputs/', FarmDirectory+'/logs/', FarmDirectory+'/outputs/']
         for i in range(0,len(Farm_Directories)):
 		if os.path.isdir(Farm_Directories[i]) == False:
 	        	os.system('mkdir -p ' + Farm_Directories[i])
+                elif os.path.isdir(Farm_Directories[i] + dtag) == False:
+                        os.system('mkdir -p ' + Farm_Directories[i] + dtag)
 
 def SendCluster_LoadInputFiles(path, NJobs):
         global Jobs_Inputs

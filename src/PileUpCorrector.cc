@@ -76,11 +76,12 @@ PileUpCorrector::PileUpCorrector(EventSink<event_type> *next_processor_stage): E
 void PileUpCorrector ::Run()
 {
   output_event = input_event;
- 
+  printf("isData %s\n", gIsData ? "true": "false");
   if (gIsData)
     {
       input_event -> weight = 1;
       ProceedToNextStage();
+      return;
     }
   int ngenITpu = 0;
   for(vector<PileupSummaryInfo>::const_iterator it = input_event -> PU.begin(); it != input_event -> PU.end(); it++)
@@ -140,7 +141,7 @@ void PileUpCorrector::ApplyLeptonEfficiencySF() const
 
 void PileUpCorrector::ApplyIntegratedLuminosity() const
 {
-  const double iLumi = 1000/*40.100/*19700*/;
+  const double iLumi = 40.100/*19700*/;
   input_event -> weight *= iLumi;
 
 }
