@@ -106,14 +106,15 @@ def CreateTheShellFile(argv):
 	global Jobs_InitCmds
 	global Jobs_FinalCmds
         global absoluteShellPath
+        global dtag
         if(subTool=='crab'):return
         hostname = os.getenv("HOSTNAME", "")
         Path_Shell=""
         if "ncg.ingrid.pt" in hostname:
-            Path_Shell = Farm_Directories[1]+Jobs_Name+Jobs_Index+'.sh'
+            Path_Shell = Farm_Directories[1] + dtag + "/" + Jobs_Name + Jobs_Index + '.sh'
 
         else:
-            Path_Shell = Farm_Directories[1]+Jobs_Index+Jobs_Name+Jobs_Index+'.sh'
+            Path_Shell = Farm_Directories[1] + dtag + "/" + Jobs_Index + Jobs_Name + Jobs_Index + '.sh'
         function_argument=''
         hostname = os.getenv("HOSTNAME", "")
         
@@ -279,8 +280,9 @@ def CreateTheCmdFile():
         global subTool
         global Path_Cmd
         global CopyRights
-        Path_Cmd   = Farm_Directories[1]+Jobs_Name+'.cmd'
-	cmd_file=open(Path_Cmd,'w')
+        global dtag
+        Path_Cmd   = Farm_Directories[1] + dtag + "/" + Jobs_Name + '.cmd'
+	cmd_file=open(Path_Cmd, 'w')
 	if subTool=='condor':
            cmd_file.write('Universe                = vanilla\n')
 	   cmd_file.write('Environment             = CONDORJOBID=$(Process)\n')
@@ -303,6 +305,7 @@ def AddJobToCmdFile():
 	global Path_Log
         global absoluteShellPath
         global Jobs_EmailReport
+        global dtag
         Path_Out   = Farm_Directories[3] + Jobs_Index + Jobs_Name
 #        ofilename = "/exper-sw/cmst3/cmssw/users/vveckaln/CMSSW_7_4_2/src/LIP/TauAnalysis/outputs/" + Jobs_Index + Jobs_Name + "o.txt"
 #        efilename = "/exper-sw/cmst3/cmssw/users/vveckaln/CMSSW_7_4_2/src/LIP/TauAnalysis/outputs/" + Jobs_Index + Jobs_Name + "e.txt"

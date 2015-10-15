@@ -76,7 +76,6 @@ PileUpCorrector::PileUpCorrector(EventSink<event_type> *next_processor_stage): E
 void PileUpCorrector ::Run()
 {
   output_event = input_event;
-  printf("isData %s\n", gIsData ? "true": "false");
   if (gIsData)
     {
       input_event -> weight = 1;
