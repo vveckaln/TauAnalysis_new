@@ -12,6 +12,7 @@ namespace gVariables
 {
   typedef double GeV; 
   //******************** CONFIGURATION VARIABLES **********  
+  extern TString        grunmode;
   extern bool           gnoUncertainties;
   extern bool           geChONmuChOFF;
   extern bool           gIsData;
