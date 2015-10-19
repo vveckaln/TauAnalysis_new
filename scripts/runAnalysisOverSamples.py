@@ -210,9 +210,9 @@ for procData in procList :
             FileList = ['"' + getByLabel(procData, 'dset', 'UnknownDataset') + '"']
             if isdata:
                 if(hostname.find("cern.ch") != -1)  : 
-                    lumimask_directory = work_directory + "/data/lumimasks/"
-                if(hostname.find("ncg.ingrid.pt") != -1)  :
                     lumimask_directory = "/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions15/13TeV/"
+                if(hostname.find("ncg.ingrid.pt") != -1)  :
+                    lumimask_directory = work_directory + "/data/lumimasks/"
 
             if(LaunchOnCondor.subTool != 'crab'):
                 if (not opt.run_option == "hadd"):

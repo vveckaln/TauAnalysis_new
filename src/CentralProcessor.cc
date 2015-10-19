@@ -125,7 +125,7 @@ void CentralProcessor::AddHistograms()
 {
   SetEnvironment();
   printf("gfile_split %u\n", gfile_split);
-  input_file_name = gOutputDirectoryName + "/output/event_analysis/" + gdtag + "/" + gdtag;
+  input_file_name = gOutputDirectoryName + "/output/event_analysis/" + gdtag + "/" ;
   printf("input_file_name stub %s\n", input_file_name.Data());
   for (unsigned short segment_ind = 0; segment_ind < *number_of_samples; segment_ind ++)
     {
@@ -138,11 +138,11 @@ void CentralProcessor::AddHistograms()
 	  TString name;
 	  if (number_of_samples == & generic_samples_count)
 	    {
-		name = input_file_name + "_" + TString(to_string(file_ind)) + "_out.root";
+		name = input_file_name + gdtag + "_" + TString(to_string(file_ind)) + "_out.root";
 	    }
 	  else
 	    {
-		name = input_file_name + "_" + samples_names[segment_ind] + "_" + TString(to_string(file_ind)) + "_out.root";
+		name = input_file_name + samples_names[segment_ind] + "/" +  gdtag +  "_" + samples_names[segment_ind] + "_" + TString(to_string(file_ind)) + "_out.root";
 	    }
 	  //printf("%s %u\n", samples_names[segment_ind].Data(), file_ind);
 	  //printf("input from file %s\n", name.Data());
