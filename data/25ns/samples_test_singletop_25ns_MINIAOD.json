@@ -1,0 +1,16 @@
+
+{
+  "proc":[
+{
+
+"tag":"Single top",
+      "isdata":false,
+      "color":824,
+      "lcolor":1,
+      "data":[
+        { "dtag":"MC13TeV_SingleT_tW_5FS"                   , "split":10, "xsec":35.6        , "br":[ 1.0 ]                 , "dset":"/ST_tW_top_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v1/MINIAODSIM"          },
+        { "dtag":"MC13TeV_SingleTbar_tW_5FS"                , "split":10, "xsec":35.6        , "br":[ 1.0 ]                 , "dset":"/ST_tW_antitop_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v1/MINIAODSIM"      }
+        ]
+    }
+    ]
+}	
