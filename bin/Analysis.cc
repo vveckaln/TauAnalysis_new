@@ -7,7 +7,7 @@
 using namespace std;
 int main(int argc, char* argv[])
 {
-  printf("running Analysis\n");
+  fprintf(stderr, "running Analysis\n");
   if (string(argv[1]).compare(string("none")) != 0)
     gConfiguration -> SetConfiguration(argv[1]);
   CentralProcessor * central_processor = new CentralProcessor();

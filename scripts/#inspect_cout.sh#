@@ -2,7 +2,8 @@
 
 folder=$FILES"/RunII/FARM/outputs"
 
-ind=0 
+ind=0
+ 
 
 while true;
 do

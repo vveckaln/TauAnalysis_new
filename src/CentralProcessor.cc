@@ -81,7 +81,7 @@ void CentralProcessor::Process(const char* option)
   OpenOutputFiles();
 
    IsSingleMuPD     = gIsData and gdtag.Contains("SingleMu");
-  
+   fprintf(stderr, "Starting\n");
   FileReader * reader = 
     new FileReader(
     new MuScleFitCorrectorApplicator(

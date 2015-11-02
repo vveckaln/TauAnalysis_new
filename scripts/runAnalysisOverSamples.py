@@ -256,8 +256,9 @@ for procData in procList :
                     cfgfile = opt.outdir +'/configuration/event_analysis/' + dtag + "/" + dtag + '_' + str(segment) + '_cfg.py'
                 if (opt.run_option == 'hadd') :
                     cfgfile = opt.outdir + '/configuration/hadd/' + dtag + '_' + str(segment) + '_cfg.py'
-
-                subprocess.call('cat ' + opt.cfg_file + ' | ' + sedcmd + ' > ' + cfgfile, shell=True)
+                cmd2 = 'cat ' + opt.cfg_file + ' | ' + sedcmd + ' > ' + cfgfile
+                #print cmd2
+                os.system(cmd2)
 
                 #run the job
                 if opt.queue == "0" :

@@ -120,7 +120,7 @@ unsigned int Preselector_Leptons::PreselectElectrons()
       //kinematics
       if (not electron -> superCluster())
 	throw "no superCluster";
-      const float leta = electron -> superCluster() -> eta();
+      const float leta = fabs(electron -> superCluster() -> eta());
       if(leta > 2.5)                     
 	passKin = false;
       if(leta > 1.4442 && leta < 1.5660) 
@@ -156,7 +156,7 @@ unsigned int Preselector_Leptons::PreselectMuons()
 
 
       //kinematics
-      const float leta = muon -> eta();
+      const float leta = fabs(muon -> eta());
       if(leta > 2.1)            passKin = false;
       if(muon -> pt() < 30)     passKin = false;
 

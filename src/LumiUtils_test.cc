@@ -76,26 +76,48 @@ namespace lumiUtils
    }
 
 
-   void GoodLumiFilter::DumpToJson(string FileName){
-      FILE* json = fopen(FileName.c_str(),"w");
-      if(!json)printf("Could Not open file: %s\n", FileName.c_str());
+
+
+
+
+
+
+
+   void GoodLumiFilter::DumpToJson(string FileName)
+   {
+
+
+     printf("GoodLumiFilfter opening json file %s\n", FileName.c_str());
+
+
+      FILE* json = fopen(FileName.c_str(), "w");
+      printf("json %p\n", json);
+      if(!json)
+	{
+	  printf("Could Not open file: %s\n", FileName.c_str());
+	  return;
+	}
       fprintf(json,"{");
-      for(unsigned int r=0;r<RunMap.size();r++){
+      for(unsigned int r = 0; r < RunMap.size(); r++)
+	{
          stRun* tmp =  RunMap[r];
-         fprintf(json,"\"%i\": [",tmp->runId);
-         unsigned int l=0;
-         while(l<tmp->lumiId.size()){
+         fprintf(json,"\"%i\": [", tmp -> runId);
+         unsigned int l = 0;
+         while(l < tmp -> lumiId.size())
+	   {
             unsigned int FirstLumi = tmp->lumiId[l];
-            unsigned Size=0; 
-            for(unsigned int l2=l;l2<tmp->lumiId.size() && FirstLumi+l2-l==tmp->lumiId[l2]; l2++){Size++;}
-            fprintf(json,"[%i, %i]",FirstLumi,FirstLumi+Size-1);
-            l+=Size;
-            if(l<tmp->lumiId.size()) fprintf(json,",");
+            unsigned Size = 0; 
+            for(unsigned int l2 = l; l2 < tmp->lumiId.size() && FirstLumi+l2-l==tmp->lumiId[l2]; l2++){Size++;}
+            fprintf(json,"[%i, %i]", FirstLumi, FirstLumi + Size - 1);
+            l += Size;
+            if(l < tmp -> lumiId.size()) 
+	      fprintf(json, ",");
          }
          fprintf(json,"] ");
-         if(r<RunMap.size()-1)fprintf(json,",");
+         if(r < RunMap.size()-1)
+	   fprintf(json,",");
       }  
-      fprintf(json,"}");   
+      fprintf(json, "}");   
       fclose(json);
    }
 

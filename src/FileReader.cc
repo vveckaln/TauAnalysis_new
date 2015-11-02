@@ -32,6 +32,7 @@ EventProcessor<event_type, event_type>(next_processor_stage)
 
 void FileReader::Run()
 {
+  fprintf(stderr, "Starting FileReader::Run\n");
   unsigned long entry_ind = 0;
 
   for(unsigned int f = 0; f < input_file_names.size(); f++)
@@ -42,7 +43,7 @@ void FileReader::Run()
       printf ("FileReader: Reading file %s\n", input_file_names[f].c_str());
       //getchar();
       fwlite::Event event(file);
-      for(event.toBegin(); !event.atEnd(); ++event)
+      for(event.toBegin(); entry_ind<1000; /*!event.atEnd();*/ ++event)
 	{
 	  entry_ind++;
 	  ReadEvent_llvv Event; 
@@ -127,6 +128,31 @@ void FileReader::Run()
       read += entry_ind;
       file -> Close();
       delete file;
+    }
+  if(gIsData)
+    {
+      FILE *in;
+      char buff[512];
+      cerr<<"here"<<endl;
+      TString cmd("if [ -d "); cmd += gOutputDirectoryName + "/output/event_analysis/" + gdtag + "/luminosities" + " ]; \nthen\necho \"true\"\nelse\necho \"false\"\nfi";
+ // "if [ -d \"/afs/cern.ch/work/v/vveckaln/private/CMSSW_7_4_2/src/LIP/TauAnalysis1\" ]; \nthen\necho \"true\"\nelse\necho \"false\"\nfi"
+      if(!(in = popen(cmd, "r")))
+	{
+	  return ;
+	}
+      while(fgets(buff, sizeof(buff), in) != NULL)
+	{
+	  cerr<<"buffer"<<buff<<endl;
+	  if (string(buff).compare(string("true\n")) != 0)
+	    {
+	      TString cmd1("mkdir "); cmd1 += gOutputDirectoryName + "/output/event_analysis/" + gdtag + "/luminosities";
+	      system(cmd1);
+	    }
+	}
+      pclose(in);
+
+      goodLumiFilter -> FindLumiInFiles(input_file_names);
+      //      goodLumiFilter -> DumpToJson((gOutputDirectoryName + "/output/event_analysis/" + gdtag + "/luminosities/" + gdtag + "_luminosities_" + TString(to_string(gsegment)) + ".json").Data());
     }
 }
  
