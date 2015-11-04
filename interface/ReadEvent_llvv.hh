@@ -27,6 +27,7 @@ public:
   bool eeTrigger;
   bool mumuTrigger;
   bool muTrigger;
+  bool eTrigger;
   bool emuTrigger;
   reco::VertexCollection      vertices;
   reco::GenParticleCollection gen;

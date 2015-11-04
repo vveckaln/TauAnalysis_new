@@ -28,6 +28,7 @@ EventProcessor<event_type, event_type>(next_processor_stage)
   goodLumiFilter  = new lumiUtils::GoodLumiFilter(luminosityBlockRange);
   read = 0;
   muon_trigger = 0;
+  goodLumiFilter_continue = 0;
 }
 
 void FileReader::Run()
@@ -43,7 +44,7 @@ void FileReader::Run()
       printf ("FileReader: Reading file %s\n", input_file_names[f].c_str());
       //getchar();
       fwlite::Event event(file);
-      for(event.toBegin(); entry_ind<1000; /*!event.atEnd();*/ ++event)
+      for(event.toBegin(); !event.atEnd(); ++event)
 	{
 	  entry_ind++;
 	  ReadEvent_llvv Event; 
@@ -57,12 +58,30 @@ void FileReader::Run()
 
 	  //Skip bad lumi
 	  if(!goodLumiFilter -> isGoodLumi(event.eventAuxiliary().run(), event.eventAuxiliary().luminosityBlock()))
-	    continue;
+	    {
+	      goodLumiFilter_continue ++;
+	      continue;	      
+	    }
 	  read_event -> Run         = event.eventAuxiliary().run();
 	  read_event -> Lumi        = event.eventAuxiliary().luminosityBlock();
 	  read_event -> Event       = event.eventAuxiliary().event();
 	  edm::TriggerResultsByName tr = event.triggerResultsByName("HLT");
-
+	  
+	  /*	  read_event -> eTrigger    =
+                          gIsData ? 
+			  utils::passTriggerPatterns (tr, "HLT_Ele23_WPLoose_Gsf_v*") :
+                          utils::passTriggerPatterns (tr, "HLT_Ele23_CaloIdL_TrackIdL_IsoVL_v*");
+	  read_event -> muTrigger  =
+                          gIsData ? 
+	                  utils::passTriggerPatterns (tr, "HLT_IsoMu18_v*") :
+                          utils::passTriggerPatterns (tr, "HLT_IsoMu17_eta2p1_v*");*/
+	  read_event ->  eTrigger = 
+                          gIsData ? 
+	                  utils::passTriggerPatterns (tr, "HLT_Ele27_WPLoose_Gsf_v*", "HLT_Ele27_eta2p1_WPLoose_Gsf_v1" )  
+	                  :
+	                  utils::passTriggerPatterns (tr, "HLT_Ele27_eta2p1_WP75_Gsf_v*");
+                          
+	  read_event -> muTrigger = utils::passTriggerPatterns (tr, "HLT_IsoMu20_eta2p1_v*");
 	  read_event -> eeTrigger          = utils::passTriggerPatterns(tr, "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v*","HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v*");
 	  read_event -> muTrigger          = utils::passTriggerPatterns(tr, "HLT_Mu34_TrkIsoVVL_v*");
 	  if (read_event -> muTrigger)
@@ -148,18 +167,19 @@ void FileReader::Run()
 	      TString cmd1("mkdir "); cmd1 += gOutputDirectoryName + "/output/event_analysis/" + gdtag + "/luminosities";
 	      system(cmd1);
 	    }
+
 	}
       pclose(in);
 
       goodLumiFilter -> FindLumiInFiles(input_file_names);
-      //      goodLumiFilter -> DumpToJson((gOutputDirectoryName + "/output/event_analysis/" + gdtag + "/luminosities/" + gdtag + "_luminosities_" + TString(to_string(gsegment)) + ".json").Data());
+      goodLumiFilter -> DumpToJson((gOutputDirectoryName + "/output/event_analysis/" + gdtag + "/luminosities/" + gdtag + "_luminosities_" + TString(to_string(gsegment)) + ".json").Data());
     }
 }
  
 void FileReader::Report()
 {
   printf("Read %lu events\n", read);
-  printf("muon trigger %lu \n", muon_trigger);
+  printf("muon trigger %lu goodLumiFilter continued %lu\n", muon_trigger, goodLumiFilter_continue);
   ContinueReportToNextStage();
 }
 

@@ -38,8 +38,8 @@ class PileUpCorrector : public EventProcessor<event_type, event_type>
 
   unsigned long getMergeableCounterValue(const vector<string>& urls, const string counter) const;
   double                        XSectionWeight;
-  edm::LumiReWeighting*         LumiWeights[2];
-  double                        PUNorm[2][3];
+  edm::LumiReWeighting*         LumiWeights;
+  double                        PUNorm[3];
   void ApplyLeptonEfficiencySF() const;
   void ApplyIntegratedLuminosity() const;
   void ApplyTopPtWeighter() const;

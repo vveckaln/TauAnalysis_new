@@ -12,65 +12,47 @@
 using namespace gVariables;
 PileUpCorrector::PileUpCorrector(EventSink<event_type> *next_processor_stage): EventProcessor<event_type, event_type>(next_processor_stage)
 {
-  LumiWeights[0] = NULL;
-  LumiWeights[1] = NULL;
+  LumiWeights = NULL;
+  
   print_mode     = false;
   fwlite::ChainEvent & fwlite_ChainEvent = *fwlite_ChainEvent_ptr;
  
   if (gIsData)
     {
-      printf("isData, returning\n");
       return;
     }
-  printf("continuing executing\n");
-  if (false/*gVariables::gDebug*/)
-    ;//  XSectionWeight = gXSection/ 1100000;*/
-  else
+  const double MergeableCounterValue = /*gVariables::gDebug ? 45000 :  */utils::getTotalNumberOfEvents(input_file_names, true); //getMergeableCounterValue(input_file_names, "startCounter");
+  XSectionWeight = gXSection/ MergeableCounterValue;
+  rootdouble mcv("MergeableCounterValue", "MergeableCounterValue");
+  mcv.SetInformation(MergeableCounterValue);
+  for (unsigned char sample_ind = 0; sample_ind < *number_of_samples; sample_ind ++)
     {
-      printf("Debug mode %s\n", gVariables::gDebug ? "true" : "false");
-      const double MergeableCounterValue = /*gVariables::gDebug ? 45000 :  */utils::getTotalNumberOfEvents(input_file_names, true); //getMergeableCounterValue(input_file_names, "startCounter");
-      printf("MergeableCounterValue %f\n", MergeableCounterValue);
-      XSectionWeight = gXSection/ MergeableCounterValue;
-      rootdouble mcv("MergeableCounterValue", "MergeableCounterValue");
-      mcv.SetInformation(MergeableCounterValue);
-      for (unsigned char sample_ind = 0; sample_ind < *number_of_samples; sample_ind ++)
-	{
-	  ((HStructure_TFile*)active_HStructure_TFile -> GetHStructure(samples_names[sample_ind])) -> GetFile() -> cd();
-	  mcv.Write();
-	}
-    }
-  LumiWeights[0] = NULL; LumiWeights[1] = NULL;
-    vector<float> MCPileUp[2]; 
-  FILE *pfile[] = 
-    {
-      fopen("data/PileUp/dataPileupDistributionDouble.txt", "r"),
-      fopen("data/PileUp/dataPU2015B_40pb_singleMu.txt"/*"data/PileUp/singleLepDataPileupDistributionDouble.txt"*/, "r")
-    };
-  vector<float> DataPileUp[2];
-  PuShifter_t PuShifters[2];
-
-  for (unsigned char ind = /*0*/1; ind < 2; ind++)
-    {
-      while (not feof(pfile[ind]))
-	{
-	  float read_value;
-	  fscanf(pfile[ind], "%e ", &read_value);
-	  DataPileUp[ind].push_back(read_value);
-	}
-      fclose(pfile[ind]);
-      utils::getMCPileupDistributionFromMiniAOD(input_file_names, DataPileUp[ind].size(), MCPileUp[ind]);
-      while(MCPileUp[ind] . size() < DataPileUp[ind].size()) 
-	MCPileUp[ind] . push_back(0.0);
-      while(MCPileUp[ind] . size() > DataPileUp[ind].size())
-	DataPileUp[ind].push_back(0.0);
-
-      LumiWeights[ind] = new edm::LumiReWeighting(MCPileUp[ind], DataPileUp[ind]);
-      PuShifters[ind] = utils::cmssw::getPUshifters(DataPileUp[ind], 0.05);
-      utils::getPileupNormalization(MCPileUp[ind], PUNorm[ind], LumiWeights[ind], PuShifters[ind]);
-     
+      ((HStructure_TFile*)active_HStructure_TFile -> GetHStructure(samples_names[sample_ind])) -> GetFile() -> cd();
+      mcv.Write();
     }
 
-  gLumiWeights[0] = LumiWeights[0]; gLumiWeights[1] = LumiWeights[1];
+  vector<float> MCPileUp; 
+  FILE * pfile = fopen("data/PileUp/datapileup_200pb_2015bcd_ll_Preliminary.txt", "r");
+  vector<float> DataPileUp;
+  PuShifter_t PuShifters;
+
+  while (not feof(pfile))
+    {
+      float read_value;
+      fscanf(pfile, "%e ", &read_value);
+      DataPileUp.push_back(read_value);
+    }
+  fclose(pfile);
+  utils::getMCPileupDistributionFromMiniAOD(input_file_names, DataPileUp.size(), MCPileUp);
+  while(MCPileUp . size() < DataPileUp.size()) 
+    MCPileUp . push_back(0.0);
+  while(MCPileUp . size() > DataPileUp.size())
+    DataPileUp.push_back(0.0);
+
+  LumiWeights = new edm::LumiReWeighting(MCPileUp, DataPileUp);
+  PuShifters = utils::cmssw::getPUshifters(DataPileUp, 0.05);
+  utils::getPileupNormalization(MCPileUp, PUNorm, LumiWeights, PuShifters);
+  gLumiWeights[0] = LumiWeights; 
 }
 
 void PileUpCorrector ::Run()
@@ -90,11 +72,11 @@ void PileUpCorrector ::Run()
 	  ngenITpu += it -> getPU_NumInteractions(); 
 	}
     }
-  const double puWeight = LumiWeights[1] -> weight(ngenITpu) * PUNorm[1][0];
+  const double puWeight = LumiWeights -> weight(ngenITpu) * PUNorm[0];
   if (print_mode)
     {
       printf("EVENT IDENTITY %u %u %llu\n", input_event -> Run, input_event -> Lumi, input_event -> Event);
-      printf("LumiWeights = %f, PUNorm = %f, puWeight = %f\n", LumiWeights[1] -> weight(ngenITpu), PUNorm[1][0], puWeight);
+      printf("LumiWeights = %f, PUNorm = %f, puWeight = %f\n", LumiWeights -> weight(ngenITpu), PUNorm[0], puWeight);
     }
   float shapeWeight = 1.0;
   if(input_event -> genEventInfo.weight() < 0)
@@ -140,7 +122,7 @@ void PileUpCorrector::ApplyLeptonEfficiencySF() const
 
 void PileUpCorrector::ApplyIntegratedLuminosity() const
 {
-  const double iLumi = 40.100/*19700*/;
+  const double iLumi = 14.6/*19700*/;
   input_event -> weight *= iLumi;
 
 }
@@ -282,12 +264,10 @@ void PileUpCorrector::getPileUpNormalization(
 PileUpCorrector::~PileUpCorrector()
 {
   
-  for (short ind = 0; ind < 2; ind ++)
+  if (LumiWeights)
     {
-      if (LumiWeights[ind])
-	{
-	  delete LumiWeights[ind];
-	  LumiWeights[ind] = NULL;
-	}
+      delete LumiWeights;
+      LumiWeights = NULL;
     }
+  
 }
