@@ -28,6 +28,7 @@ public:
   void SetEnvironment_DY() const;
   void SetEnvironment_tW() const;
   void OpenOutputFiles() const;
+  void FormatHistograms() const;
   void ProduceTauFakes() const;
   void CloseRegisters();
   virtual ~CentralProcessor();

@@ -15,11 +15,9 @@ void GlobalConfiguration::SetConfiguration(const char* configuration_file)
   gSystem->Load( "libFWCoreFWLite.so" );
   gSystem->Load( "libLIPTauAnalysis.so" );
   AutoLibraryLoader::enable();
-  printf("probe A\n");
   const edm::ParameterSet &runProcess = edm::readPSetsFrom(configuration_file) 
 -> getParameter<edm::ParameterSet>("PhysicsAnalysisParSet");
   input_file_names                       = runProcess.getUntrackedParameter<vector<std::string> >("input");
-  printf("runmode %s\n", grunmode.Data());
      
   if (gVariables::grunmode != "hadd")
     {
@@ -38,6 +36,7 @@ void GlobalConfiguration::SetConfiguration(const char* configuration_file)
   gdtag                                  = runProcess.getParameter<string>          ("dtag");
   gnoUncertainties = true;
   site                                   = runProcess.getParameter<string>          ("site");
+  grun                                   = gdtag.Contains("Run2015B") or gdtag.Contains("Asympt_50ns") ? 0 : 1;
   printf("Configuration succesfully completed\n");
 }
 

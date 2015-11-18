@@ -34,6 +34,7 @@ namespace gVariables
   extern TString        gdset;
   extern TString        gdtag;
   extern TString        site;
+  extern unsigned char  grun;
   extern vector<edm::LuminosityBlockRange> luminosityBlockRange;
 }
 #endif

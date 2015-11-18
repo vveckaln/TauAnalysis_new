@@ -2,22 +2,154 @@
 
 namespace patUtils
 {
-  bool passId(pat::Electron& el,  reco::Vertex& vtx, int IdLevel){
+  bool passId(pat::Electron * el,  reco::Vertex * vtx, cost unsigned char IdLevel)
+{
     
     //for electron Id look here: https://twiki.cern.ch/twiki/bin/viewauth/CMS/CutBasedElectronIdentificationRun2
     //for the meaning of the different cuts here: https://twiki.cern.ch/twiki/bin/viewauth/CMS/EgammaCutBasedIdentification
-    float dEtaln         = fabs(el.deltaEtaSuperClusterTrackAtVtx());
-    float dPhiln         = fabs(el.deltaPhiSuperClusterTrackAtVtx());
-    float sigmaletaleta  = el.sigmaIetaIeta();
-    float hem            = el.hadronicOverEm();
-    double resol         = fabs((1/el.ecalEnergy())-(el.eSuperClusterOverP()/el.ecalEnergy()));
-    double dxy           = fabs(el.gsfTrack()->dxy(vtx.position()));
-    double dz            = fabs(el.gsfTrack()->dz(vtx.position())); 
-    double mHits         = el.gsfTrack()->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS);
+    const float dEtaln         = fabs(el -> deltaEtaSuperClusterTrackAtVtx());
+    const float dPhiln         = fabs(el -> deltaPhiSuperClusterTrackAtVtx());
+    const float sigmaletaleta  = el -> sigmaIetaIeta();
+    const float hem            = el -> hadronicOverEm();
+    const double resol         = fabs(1/el -> ecalEnergy() - 1/el -> trackMomentumAtVtx().p());
+    const double dxy           = fabs(el -> gsfTrack() -> dxy(vtx -> position()));
+    const double dz            = fabs(el -> gsfTrack() -> dz(vtx -> position())); 
+    const double mHits         = el -> gsfTrack() -> hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS);
     
-    bool barrel = (fabs(el.superCluster()->eta()) <= 1.479);
-    bool endcap = (!barrel && fabs(el.superCluster()->eta()) < 2.5);
-    
+    const bool barrel = (fabs(el -> superCluster() -> eta()) <= 1.479);
+    const bool endcap = (!barrel && fabs(el -> superCluster() -> eta()) < 2.5);
+
+    //Veto Loose Medium Tight
+    static const float full5x5_sigmaIetaIeta_ref[2][2][4] = 
+      {
+	{
+	  {0.012,  0.0105, 0.0101, 0.0101},
+	  {0.0339, 0.0318, 0.0287, 0.0287}
+	},
+	{
+	  {0.0114, 0.0103, 0.0101, 0.0101},
+	  {0.0352, 0.0301, 0.0283, 0.0279}
+	}
+      };
+
+    static const float abs_dEtaIn_ref[2][2][4] =
+      {
+	{
+	  {0.0126, 0.00976, 0.0094, 0.00864},
+	  {0.0109, 0.00952, 0.00773, 0.00762}
+	},
+	{
+	  {0.0152, 0.0105, 0.0103, 0.00926 },
+	  {0.0113, 0.00814, 0.00733, 0.00724}
+	}
+      };
+     	static const float abs_dPhiIn_ref[2][2][4] =
+	{
+	  {
+	    {0.107, 0.0929, 0.0296, 0.0286},
+	      {0.219, 0.181, 0.148, 0.0439 }
+	  },
+	    {
+	      {0.216, 0.115, 0.0336, 0.0336 },
+		{0.237, 0.182, 0.114, 0.0918}
+	    }
+	};
+	
+	static const float hOverE_ref[2][2][4] =
+	  {
+	    {
+	      {0.186, 0.0765, 0.0372, 0.0342 },
+	      {0.0962, 0.0824, 0.0546, 0.0544}
+	    },
+	    {
+	      {0.181, 0.104, 0.0876, 0.0597  },
+	      {0.116, 0.0897, 0.0678, 0.0615 }
+	    }
+	  };
+	static const float relIsoWithEA_ref[2][2][4] =
+	  {
+	    {
+	      {0.161, 0.118, 0.0987, 0.0591 },
+	      {0.193, 0.118, 0.0902, 0.0759  }
+	    },
+	    {
+	      {0.126, 0.0893, 0.0766, 0.0354  },
+	      {0.144, 0.121, 0.0678, 0.0646  }
+	    }
+	  };
+  
+	static const float ooEmooP_ref[2][2][4] =
+	  {
+	    {
+	      {0.239, 0.184, 0.118, 0.0116 },
+	      {0.141, 0.125, 0.104, 0.01  }
+	    },
+	    {
+	      {0.207, 0.102, 0.0174, 0.012  },
+	      {0.174, 0.126, 0.0898, 0.00999  }
+	    }
+	  };
+  
+      static const float abs_d0_ref[][2][4] =
+	  {
+	    {
+	      {0.0621, 0.0227, 0.0151, 0.0103 },
+	      {0.279, 0.242, 0.0535, 0.0377  }
+	    },
+	    {
+	      {0.279, 0.242, 0.0535, 0.0377  },
+	      {0.222, 0.118, 0.0739, 0.0351 }
+	    }
+	  };
+
+            static const float abs_dz_ref[2][2][4] =
+	  {
+	    {
+	      {0.613, 0.379, 0.238, 0.170 },
+	      {0.947, 0.921, 0.572, 0.571 }
+	    },
+	    {
+	      {0.472, 0.41, 0.373, 0.0466  },
+	      {0.921, 0.822, 0.602, 0.417 }
+	    }
+	  };
+
+	    static const unsigned char expectedMissingInngerHits[2][2][4] =
+	  {
+	    {
+	      {2, 2, 2, 2  },
+	      {3, 1, 1, 1  }
+	    },
+	    {
+	      {2, 2, 2, 2  },
+	      {3, 1, 1, 1 }
+	    }
+	  };
+
+static const unsigned char expectedMissingInngerHits[2][2][4] =
+	  {
+	    {
+	      {2, 2, 2, 2  },
+	      {3, 1, 1, 1  }
+	    },
+	    {
+	      {2, 2, 2, 2  },
+	      {3, 1, 1, 1 }
+	    }
+	  };
+
+static const bool pass_conv_veto_ref[2][2][4] = 
+{
+	    {
+	      {true, true, true, true},
+	      {true, true, true, true}
+	    },
+	    {
+	      {true, true, true, true},
+	      {true, true, true, true}
+	    }
+	  };
+  
     // PHYS14 selection 
     switch(IdLevel){
     case llvvElecId::Veto :

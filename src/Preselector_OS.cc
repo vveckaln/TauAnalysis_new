@@ -25,9 +25,7 @@ void Preselector_OS::Run()
 {
   output_event = input_event;
   print_mode = false;
-  TH1D * h = utilities::GetStatisticsHistogram(number_active_sample);
-  h -> Fill("1#tau", input_event -> weight);
-
+  
   //Run 190688, lumi 99, evId 22420320
   if (input_event -> electrons.size() == 1)
     {
@@ -50,6 +48,7 @@ void Preselector_OS::Run()
     }
 
   selected += input_event -> weight;
+  TH1D * h = utilities::GetStatisticsHistogram(number_active_sample);
   h -> Fill("OS", input_event -> weight);
  
   ProceedToNextStage();
@@ -58,15 +57,22 @@ void Preselector_OS::Run()
 
 void Preselector_OS::Report()
 {
-  //printf("OS selected %f \n", selected);
-  for (uint ind = 0; ind < *number_of_samples; ind ++)
+  TH1D *h = utilities::GetSelectorHistogram();
+  Table table("Channel selection");
+  table.FillFromLabeledHistogram(h);
+  table.ls();
+//printf("OS selected %f \n", selected);
+  for (char ind = 0; ind < *number_of_samples; ind ++)
     {
+      if (number_of_samples != &generic_samples_count and ind == * number_of_samples -1)
+	continue;
       TH1D * h = utilities::GetStatisticsHistogram(ind);
       printf("REPORT sample %s\n", samples_names[ind].Data());
       Table table("Selector_report_SELECTOR_BASE");
       table.FillFromLabeledHistogram(h);
       table.ls();
     }
+  
   ContinueReportToNextStage();
 }
 

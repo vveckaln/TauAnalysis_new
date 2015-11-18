@@ -27,7 +27,7 @@ void Preselector_MET::Run()
   output_event = input_event;
   selected += input_event -> weight;;   
   TH1D * const h = utilities::GetStatisticsHistogram(number_active_sample);
-  h -> Fill("1 lept, #geq 3 jets", input_event -> weight); 
+  h -> Fill("1 lepton, 2 jets, 1 #tau", input_event -> weight); 
   print_mode = false;
   //Run 190688, lumi 99, evId 22420320
   if (input_event -> MET[0].pt() < 40)

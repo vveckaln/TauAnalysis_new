@@ -39,6 +39,7 @@
 
 #include "LIP/TauAnalysis/interface/Register.hh"
 #include "LIP/TauAnalysis/interface/Parser.hh"
+#include "LIP/TauAnalysis/interface/Utilities.hh"
 #include "TLegend.h"
 #include "TROOT.h"
 #include "TCanvas.h"
@@ -79,26 +80,27 @@ void CentralProcessor::Process(const char* option)
   //ReplaceAll(".root", "") + "_out.root";
   SetEnvironment();
   OpenOutputFiles();
-
+  
+  
+  FormatHistograms();
    IsSingleMuPD     = gIsData and gdtag.Contains("SingleMu");
-   fprintf(stderr, "Starting\n");
-  FileReader * reader = 
+      FileReader * reader = 
     new FileReader(
-    new MuScleFitCorrectorApplicator(
+    new PileUpCorrector(
     new Preselector_Leptons(
+
     new Preselector_Taus(
     new Preselector_Jets(
+    new ChannelGate(
 								//new Purge(
 								//new UncertaintiesNode(*/
 								// new Fork(
 								//new UncertaintiesApplicator(				       
-    new ChannelGate(
-    new Fork_Subsample(
-		       new PileUpCorrector(	  
-    new Preselector_MET(
+   new Fork_Subsample(
+		         new Preselector_MET(
     new BTagger(	     
     
-			 new Preselector_OS(NULL)))))))))));
+			 new Preselector_OS(NULL))))))))));
   reader -> Run();
   reader -> Report();
   /* output_file -> cd();
@@ -114,9 +116,8 @@ void CentralProcessor::Process(const char* option)
   input_file -> Close();
   delete input_file;
   delete output_file;*/
-  delete reader;
-  printf("Going to write\n");
-  hstruct_worker -> Write("all");
+  //delete reader;
+    hstruct_worker -> Write("all");
   
   active_HStructure_TFile -> Close("all");
 }
@@ -124,9 +125,7 @@ void CentralProcessor::Process(const char* option)
 void CentralProcessor::AddHistograms()
 {
   SetEnvironment();
-  printf("gfile_split %u\n", gfile_split);
   input_file_name = gOutputDirectoryName + "/output/event_analysis/" + gdtag + "/" ;
-  printf("input_file_name stub %s\n", input_file_name.Data());
   for (unsigned short segment_ind = 0; segment_ind < *number_of_samples; segment_ind ++)
     {
       	
@@ -144,24 +143,18 @@ void CentralProcessor::AddHistograms()
 	    {
 		name = input_file_name + samples_names[segment_ind] + "/" +  gdtag +  "_" + samples_names[segment_ind] + "_" + TString(to_string(file_ind)) + "_out.root";
 	    }
-	  //printf("%s %u\n", samples_names[segment_ind].Data(), file_ind);
-	  //printf("input from file %s\n", name.Data());
 	  HStructure_TFile *file_struct = HStructure_TFile::Open(name, "READ");
 	  
 	  if (file_struct)
 	    files_mother -> AddChild(file_struct);
 	}
-      //files_mother -> test("all");
       
     
-      //getchar();
       if (samples_names[segment_ind] != "generic_name") 
 	  output_file_name = gOutputDirectoryName + "/output/hadd/" + gdtag + "_" + samples_names[segment_ind] + "_TOTAL_out.root";
       else
 	  output_file_name = gOutputDirectoryName + "/output/hadd/" + gdtag + "_TOTAL_out.root";
       output_file = new TFile(output_file_name, "recreate");
-      printf("output_file_name %s\n", output_file_name.Data());
-      //getchar();
       HistogramPlotter * histogram_plotter = new HistogramPlotter();
 
       histogram_plotter -> AddHistograms(); 
@@ -186,7 +179,7 @@ void CentralProcessor::RunInTestMode()
 {
   /* printf("Central Processor running in test mode\n");
   Parser *parser = new Parser();
-  parser -> LoadColors();
+0s  parser -> LoadColors();
   delete parser;
   printf("Test finished\n");*/
 }
@@ -344,44 +337,76 @@ void CentralProcessor::OpenOutputFiles() const
       HStructure_TFile *str_f = HStructure_TFile::Open(output_file_name, "RECREATE");
       str_f -> SetName(samples_names[sample_ind]);
       files_mother-> AddChild(str_f);
+      str_f -> SetBit(kOpenForOutput, true, "children");
     }  
-  //output_file_pool = new TFilePool(output_file_names, "RECREATE");
-  files_mother -> SetBit(kOpenForOutput, true, "children");
-  //files_mother -> test("children");  
-  Parser parser;
-  vector<HistogramDescriptor> * hdescr = parser.ParseHistogramSpecifier(gwork_directory + "/data/histogram_specifiers/spec_selector_histograms.xml");
-  const unsigned char size = hdescr -> size();
-  HStructure_worker * worker_mother = new HStructure_worker;
-  for (unsigned char ind = 0; ind < size; ind ++)
-    {
-      worker_mother -> AddChild(files_mother -> GenerateWorker(hdescr -> at(ind)));
-    }
-  printf("LISTING WORKER\n");
-  hstruct_worker = worker_mother;
 
-  const char *Xaxis_labels[5] = 
+
+  }
+
+void CentralProcessor::FormatHistograms() const
+{
+  HStructure_TFile * files_mother = active_HStructure_TFile;
+  HStructure_worker * worker_mother = new HStructure_worker;
+
+  const char * Selector_labels[4] =
     {
-      "1 lept, #geq 3 jets", 
+      "1 lepton, 2 jets, 1 #tau",
       "E^{miss}_{T}", 
       "#geq 1btag", 
-      "1#tau", 
       "OS"
     };
-
-
-  for (unsigned short sample_ind = 0; sample_ind < *number_of_samples; sample_ind ++)
+  const char * ChannelGate_labels[6] =
     {
-      printf("%s\n", samples_names[sample_ind].Data());
-      HStructure_TH1D * test = (HStructure_TH1D*)hstruct_worker -> GetHStructure(samples_names[sample_ind], "numb_events_selection_stagesSELECTOR_BASE");
-      printf("test %p\n", test);
-      TH1D * h = (TH1D*)hstruct_worker -> GetHStructure(samples_names[sample_ind], "numb_events_selection_stagesSELECTOR_BASE") -> GetRef(); 
-       TAxis *xaxis = h -> GetXaxis();
-      
-      for (int binind = 1; binind <= xaxis -> GetNbins(); binind ++)
+      "read",
+      "1 lepton",
+      "no loose leptons", 
+      "1 #tau",
+      "2 jets",
+      "trigger fired"
+    };
+  const char * histo_name[2] = {"numb_events_selection_stagesSELECTOR_BASE", "numb_events_selection_stagesCHANNELGATE"};
+  const char **Xaxis_labels[2] = {Selector_labels, ChannelGate_labels}; 
+  Parser parser;
+  vector<HistogramDescriptor> * hdescr[2] = 
+    {
+      parser.ParseHistogramSpecifier(gwork_directory + "/data/histogram_specifiers/spec_selector_histograms.xml"),
+      parser.ParseHistogramSpecifier(gwork_directory + "/data/histogram_specifiers/spec_general_histograms.xml")
+    };    	
+  for (unsigned char type = 0; type < 2; type ++)
+    {
+      for (unsigned char sample_ind = 0; sample_ind < *number_of_samples; sample_ind ++)
 	{
-	  xaxis -> SetBinLabel(binind, Xaxis_labels[binind - 1]);
+	  if (number_of_samples != &generic_samples_count)
+	    if (sample_ind != *number_of_samples - 1)
+	      {
+		if (type == 1) continue;
+	      }
+	    else 
+	      {
+		if (type == 0) continue;
+	      }
+	  
+			       
+	  const unsigned char size = hdescr[type] -> size();
+	  HStructure_TFile * str_f = ((HStructure_TFile*)files_mother -> GetChildren()[sample_ind]);
+	  for (unsigned char ind = 0; ind < size; ind ++)
+	    {
+	      worker_mother -> AddChild(str_f -> GenerateWorker(hdescr[type] -> at(ind)));
+	    }
+  
+      
+	  TH1D * h =  (TH1D*)worker_mother -> GetHStructure(samples_names[sample_ind], histo_name[type]) -> GetRef(); 
+	  TAxis *xaxis = h -> GetXaxis();
+      
+	  for (int binind = 1; binind <= xaxis -> GetNbins(); binind ++)
+	    {
+	      xaxis -> SetBinLabel(binind, Xaxis_labels[type][binind - 1]);
+	    }
 	}
     }
+  
+  hstruct_worker = worker_mother;
+
 }
 
 void CentralProcessor::SetEnvironment_TTbarMC() const

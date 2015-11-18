@@ -5,6 +5,7 @@
 #include "DataFormats/Common/interface/MergeableCounter.h"
 #include "LIP/TauAnalysis/interface/rootdouble.h"
 #include "LIP/TauAnalysis/interface/MacroUtils.h"
+#include "LIP/TauAnalysis/interface/Utilities.hh"
 
 #include "TROOT.h"
 #include <math.h>
@@ -57,11 +58,14 @@ PileUpCorrector::PileUpCorrector(EventSink<event_type> *next_processor_stage): E
 
 void PileUpCorrector ::Run()
 {
+  
   output_event = input_event;
   if (gIsData)
     {
       input_event -> weight = 1;
       ProceedToNextStage();
+      TH1D *h = utilities::GetSelectorHistogram();
+      h -> Fill("read", input_event -> weight);
       return;
     }
   int ngenITpu = 0;
@@ -85,7 +89,7 @@ void PileUpCorrector ::Run()
     }
   input_event -> weight = XSectionWeight*puWeight*shapeWeight;
     
-  ApplyLeptonEfficiencySF();
+  //ApplyLeptonEfficiencySF();
   ApplyIntegratedLuminosity();
   ApplyTopPtWeighter();
   if (print_mode)
@@ -96,12 +100,15 @@ void PileUpCorrector ::Run()
     }
   //getchar();
   //processed_event -> pileup_corr_weight = 1.0;
+  TH1D *h = utilities::GetSelectorHistogram();
+  h -> Fill("read", input_event -> weight);
   
   ProceedToNextStage();
 }
 
 void PileUpCorrector::ApplyLeptonEfficiencySF() const
 {
+  
   const reco::LeafCandidate * const lepton = input_event -> electrons.size() == 1 ?( reco::LeafCandidate*)&input_event -> electrons[0] : 
     (reco::LeafCandidate*)&input_event -> muons[0];
   const uint absid = fabs(lepton -> pdgId());

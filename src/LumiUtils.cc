@@ -22,7 +22,6 @@ namespace lumiUtils
 
    void GoodLumiFilter::FindLumiInFiles(vector<string>& fileNames)
    {
-      printf("Running\n");
       for(unsigned int f=0;f<fileNames.size();f++){
         std::cout << fileNames[f].c_str() << std::endl;
         //TFile file(fileNames[f].c_str() );
@@ -87,11 +86,7 @@ namespace lumiUtils
    {
 
 
-     printf("GoodLumiFilfter opening json file %s\n", FileName.c_str());
-
-
       FILE* json = fopen(FileName.c_str(), "w");
-      printf("json %p\n", json);
       if(!json)
 	{
 	  printf("Could Not open file: %s\n", FileName.c_str());

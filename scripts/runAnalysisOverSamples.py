@@ -46,7 +46,6 @@ def initProxy():
       cmd='mkdir -p ' + PROXYDIR + '; voms-proxy-init --voms cms             -valid 720:00 --out ' + PROXYDIR + '/x509_proxy'
       p = subprocess.Popen(cmd, shell=True, stderr=subprocess.PIPE)
       
-      print"initiating proxy"
       totalerr=''
       while True:
           err = p.stderr.read(1)
@@ -59,7 +58,7 @@ def initProxy():
           if totalerr.find("No credentials found!") == -1:
               break
 
-   initialCommand = 'export X509_USER_PROXY=' + PROXYDIR + '/x509_proxy; voms-proxy-init --voms cms --noregen; '
+   initialCommand = 'date | tee /dev/stderr; export X509_USER_PROXY=' + PROXYDIR + '/x509_proxy; voms-proxy-init --voms cms --noregen; '
 
 def getFileList(procData):
    FileList = [];
@@ -71,10 +70,8 @@ def getFileList(procData):
       instance = ""
       if(len(getByLabel(procData, 'dbsURL', '')) > 0): instance =  "instance=prod/" + getByLabel(procData, 'dbsURL', '')
       listSites = commands.getstatusoutput('das_client.py --query="site dataset=' + getByLabel(procData, 'dset', '') + ' ' + instance + ' | grep site.name,site.dataset_fraction " --limit=0')[1]
-      print "Sites got"
       IsOnLocalTier = False
       for site in listSites.split('\n'):
-          print "site %s" % site
           if(localTier != "" and localTier in site and '100.00%' in site):
               IsOnLocalTier =True
               print ("Sample is found to be on the local grid tier (%s): %s") %(localTier, site)

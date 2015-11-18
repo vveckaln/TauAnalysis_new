@@ -24,5 +24,6 @@ namespace gVariables
   TString        site;
   vector<double> dataPileupDistributionDouble; 
   vector<double> singleLepDataPileupDistributionDouble; 
+  unsigned char  grun;
   vector<edm::LuminosityBlockRange> luminosityBlockRange;
 } 

@@ -329,7 +329,6 @@ namespace utils
 	// this is useful to determine how to normalize the events (compute weight)
   unsigned long getMergeableCounterValue(const std::vector<std::string>& urls, std::string counter)
   {
-    printf("Getting utils::getMergeableCounterValue\n"); 
     unsigned long Total = 0;
     for(unsigned int f = 0; f < urls.size(); f++)
       {
@@ -349,7 +348,6 @@ namespace utils
 
   long getTotalNumberOfEvents(std::vector<std::string>& urls, bool fast)
   {
-    printf("running utils::getTotalNumberOfEvents\n");
     TString cmd ("voms-proxy-info --all > " + gVariables::gOutputDirectoryName + "/FARM/outputs/proxy_test");
     cmd += "/" + gVariables::gdtag + "_" + TString(to_string(gVariables::gsegment)) + ".txt" ;
     printf("%s\n", cmd.Data());
@@ -357,17 +355,11 @@ namespace utils
     long toReturn = 0;
     for(unsigned int f = 0; f < urls.size(); f++)
       {
-	printf("File %s\n", urls[f].c_str());
-	
 	TFile* file = TFile::Open(urls[f].c_str() );
-	printf("File opened %p \n", file);
 	fwlite::Event ev(file);
-	printf("event got\n");
 	if(fast)
 	  {
-	    printf("Getting size\n");
 	    toReturn += ev.size();      
-	    printf("toReturn %ld\n", toReturn);
 	  }
 	else
 	  {
@@ -385,9 +377,7 @@ namespace utils
 		  }
 	      }
 	  }
-	printf("Going to delete file \n");
 	delete file ;
-	printf("File deleted\n");
       }
     return toReturn;
   }
@@ -396,11 +386,9 @@ namespace utils
   {
     mcpileup.clear();
     mcpileup.resize(Npu);
-    printf("running getMCPileupDistributionFromMiniAOD\n");
     for(unsigned int f = 0; f < urls.size(); f++)
       {
 	TFile* file = TFile::Open(urls[f].c_str() );
-	printf("opened file %s %p\n", urls[f].c_str(), file);
 	TString cmd ("voms-proxy-info --all > " + gVariables::gOutputDirectoryName + "/FARM/outputs/proxy_test");
 	cmd += "/" + gVariables::gdtag + "_" + TString(to_string(gVariables::gsegment)) + "_PU.txt" ;
 	
@@ -480,7 +468,6 @@ namespace utils
      }
      return false;
   }
-
 
 
 }

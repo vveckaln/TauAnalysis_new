@@ -2,6 +2,7 @@
 #include "LIP/TauAnalysis/interface/GlobalVariables.hh"
 #include "LIP/TauAnalysis/interface/HStructure_worker.hh"
 #include "LIP/TauAnalysis/interface/Register.hh"
+#include "LIP/TauAnalysis/interface/Utilities.hh"
 
 #include "LIP/TauAnalysis/interface/llvvObjects.h"
 #include "LIP/TauAnalysis/interface/Table.h"
@@ -30,6 +31,8 @@ void Preselector_Taus::Run()
   unsigned int ntaus = PreselectTaus(); 
   if (ntaus != 1) 
     return;
+  TH1D *h = utilities::GetSelectorHistogram();
+  h -> Fill("1 #tau", input_event -> weight);
   //if (processed_event -> Run == 190688 and processed_event -> Lumi == 99 and processed_event -> Event == 22420320) print_mode = true;
   //if (not print_mode) continue;
        
@@ -59,20 +62,44 @@ unsigned int Preselector_Taus::PreselectTaus()
       //kinematics
       if(tau -> pt() < 20. || fabs(tau -> eta()) > 2.3) passKin = false;
 	
-	//	bool overlapWithLepton(false);
-	//	for(int l1=0; l1<(int)selLeptons.size();++l1){
-	//	  if(deltaR(tau, selLeptons[l1])<0.1){overlapWithLepton=true; break;}
-	//	}
-	//	if(overlapWithLepton) continue;
+      bool overlapWithLepton(false);
+      for(int l = 0; l < (int)input_event -> electrons.size(); ++l)
+	{
+	  if(reco::deltaR(*tau, input_event -> electrons[l]) < 0.4)
+	    {
+	      overlapWithLepton = true; 
+	      break;
+	    }
+	}	
+
+      for(int l = 0; l < (int)input_event -> muons.size(); ++l)
+	{
+	  if(reco::deltaR(*tau, input_event -> muons[l]) < 0.4)
+	    {
+	      overlapWithLepton = true; 
+	      break;
+	    }
+	}	
+
+      //	if(!tau.isPFTau()) continue; // Only PFTaus
+      //	if(tau.emFraction() >=2.) continue;
+      if(tau -> tauID("decayModeFindingNewDMs") < 0.5)                      passId = false;	
+      if(tau -> tauID("byMediumCombinedIsolationDeltaBetaCorr3Hits") < 0.5) passId = false;
+      if(tau -> tauID("againstMuonTight3") < 0.5)                           passId = false;  
+      if(tau -> tauID("againstElectronMediumMVA5") < 0.5)                   passId = false; 
+
 	
-	//	if(!tau.isPFTau()) continue; // Only PFTaus
-	//	if(tau.emFraction() >=2.) continue;
-	
-	if(!tau -> tauID("byMediumCombinedIsolationDeltaBetaCorr3Hits")) passId = false;
-	if(!tau -> tauID("againstMuonTight3"))                           passId = false;  
-	if(!tau -> tauID("againstElectronMediumMVA5"))                   passId = false; 
-	
-      if(!passId || !passKin) 
+      int nChHadPixelHits = 0;
+      reco::CandidatePtrVector chCands = tau -> signalChargedHadrCands();
+      for(reco::CandidatePtrVector::const_iterator iter = chCands.begin(); iter != chCands.end(); iter++)
+	{
+	  pat::PackedCandidate const* packedCand = dynamic_cast<pat::PackedCandidate const*>(iter -> get());
+	  int pixelHits = packedCand -> numberOfPixelHits();
+	  if(pixelHits > nChHadPixelHits) 
+	    nChHadPixelHits = pixelHits;
+	}
+      	
+      if(!passId || !passKin || overlapWithLepton || nChHadPixelHits == 0) 
 	input_event -> taus.erase(taus_it);
       else
 	taus_it ++;

@@ -7,7 +7,7 @@ const TString generic_samples_names[generic_samples_count] =
     "generic_name"
   };
 
-const unsigned short ttbar_samples_count = 7;
+const unsigned short ttbar_samples_count = 8;
 
 const TString ttbar_samples_names[ttbar_samples_count] = 
   {
@@ -17,13 +17,15 @@ const TString ttbar_samples_names[ttbar_samples_count] =
     "dilepton_muon_muon",
     "tau_jets",
     "tau_tau",
-    "hadronic"
+    "hadronic",
+    generic_samples_names[0]
   };
 
-const unsigned short DY_samples_count = 2;
+const unsigned short DY_samples_count = 3;
 
 const TString DY_samples_names[DY_samples_count] = 
   {
     "lepton_lepton_jets",
-    "tau_tau_jets"
+    "tau_tau_jets",
+    generic_samples_names[0]
   };

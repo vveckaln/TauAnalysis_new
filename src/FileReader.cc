@@ -17,6 +17,7 @@
 #include "DataFormats/PatCandidates/interface/GenericParticle.h"
 #include "LIP/TauAnalysis/interface/GlobalVariables.hh"
 #include "LIP/TauAnalysis/interface/PatUtils.h"
+#include "LIP/TauAnalysis/interface/Utilities.hh"
 
 #include <iostream>
 using namespace cpregister;
@@ -33,7 +34,6 @@ EventProcessor<event_type, event_type>(next_processor_stage)
 
 void FileReader::Run()
 {
-  fprintf(stderr, "Starting FileReader::Run\n");
   unsigned long entry_ind = 0;
 
   for(unsigned int f = 0; f < input_file_names.size(); f++)
@@ -42,11 +42,12 @@ void FileReader::Run()
 
       TFile* file = TFile::Open(input_file_names[f].c_str() );
       printf ("FileReader: Reading file %s\n", input_file_names[f].c_str());
-      //getchar();
       fwlite::Event event(file);
-      for(event.toBegin(); !event.atEnd(); ++event)
+      for(event.toBegin(); /*entry_ind < 1000 */!event.atEnd(); ++event)
 	{
+	  
 	  entry_ind++;
+	  
 	  ReadEvent_llvv Event; 
 	  event_type read_event= &Event; //output_buffer -> GetWriteSlot(); 
 	  output_event = read_event;
@@ -75,20 +76,27 @@ void FileReader::Run()
                           gIsData ? 
 	                  utils::passTriggerPatterns (tr, "HLT_IsoMu18_v*") :
                           utils::passTriggerPatterns (tr, "HLT_IsoMu17_eta2p1_v*");*/
+	                  
+	  read_event -> muTrigger = utils::passTriggerPatterns (tr, "HLT_IsoMu20_v*"/*"HLT_IsoMu20_eta2p1_v*"*/);
+
 	  read_event ->  eTrigger = 
-                          gIsData ? 
-	                  utils::passTriggerPatterns (tr, "HLT_Ele27_WPLoose_Gsf_v*", "HLT_Ele27_eta2p1_WPLoose_Gsf_v1" )  
-	                  :
-	                  utils::passTriggerPatterns (tr, "HLT_Ele27_eta2p1_WP75_Gsf_v*");
-                          
-	  read_event -> muTrigger = utils::passTriggerPatterns (tr, "HLT_IsoMu20_eta2p1_v*");
-	  read_event -> eeTrigger          = utils::passTriggerPatterns(tr, "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v*","HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v*");
-	  read_event -> muTrigger          = utils::passTriggerPatterns(tr, "HLT_Mu34_TrkIsoVVL_v*");
-	  if (read_event -> muTrigger)
-	    muon_trigger ++;
-	  //printf("muTrigger %s\n", read_event -> muTrigger ? "true" : "false");*/
-	  read_event -> mumuTrigger        = utils::passTriggerPatterns(tr, "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v*", "HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ_v*"); 
-	  read_event -> emuTrigger         = utils::passTriggerPatterns(tr, "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v*", "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v*");
+                         gIsData ? 
+	    utils::passTriggerPatterns (tr, "HLT_Ele23_WPLoose_Gsf_v*")	    
+  	                  :
+	    utils::passTriggerPatterns (tr, "HLT_Ele23_WP75_Gsf_v*")
+	    ;
+          
+	  read_event -> emuTrigger         = utils::passTriggerPatterns(tr, "HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v*", "HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL_v*");
+	  
+	  read_event -> mumuTrigger          = utils::passTriggerPatterns(tr, "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v*");
+	  
+
+	  read_event -> eeTrigger          = utils::passTriggerPatterns(tr, "HLT_Ele17_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v*");
+
+
+	  
+	  
+
 	  if(!goodLumiFilter -> isGoodLumi(read_event -> Run, read_event -> Lumi))
 	    continue;
 	  fwlite::Handle< reco::VertexCollection > vtxHandle;
@@ -135,14 +143,15 @@ void FileReader::Run()
 	  fwlite::Handle< pat::PhotonCollection > photonsHandle;
 	  photonsHandle.getByLabel(event, "slimmedPhotons");
 	  if(photonsHandle.isValid()){ read_event -> photons = *photonsHandle;}
-
+	  
 	  ProceedToNextStage();
    
 	  
 	  // output_buffer = NULL;
 	  //output_buffer = new EventBuffer<event_type>(10, "independent");
 	  //}
-
+	   
+	  
 	} 
       read += entry_ind;
       file -> Close();
@@ -152,7 +161,6 @@ void FileReader::Run()
     {
       FILE *in;
       char buff[512];
-      cerr<<"here"<<endl;
       TString cmd("if [ -d "); cmd += gOutputDirectoryName + "/output/event_analysis/" + gdtag + "/luminosities" + " ]; \nthen\necho \"true\"\nelse\necho \"false\"\nfi";
  // "if [ -d \"/afs/cern.ch/work/v/vveckaln/private/CMSSW_7_4_2/src/LIP/TauAnalysis1\" ]; \nthen\necho \"true\"\nelse\necho \"false\"\nfi"
       if(!(in = popen(cmd, "r")))
@@ -161,7 +169,6 @@ void FileReader::Run()
 	}
       while(fgets(buff, sizeof(buff), in) != NULL)
 	{
-	  cerr<<"buffer"<<buff<<endl;
 	  if (string(buff).compare(string("true\n")) != 0)
 	    {
 	      TString cmd1("mkdir "); cmd1 += gOutputDirectoryName + "/output/event_analysis/" + gdtag + "/luminosities";
@@ -171,9 +178,10 @@ void FileReader::Run()
 	}
       pclose(in);
 
-      goodLumiFilter -> FindLumiInFiles(input_file_names);
-      goodLumiFilter -> DumpToJson((gOutputDirectoryName + "/output/event_analysis/" + gdtag + "/luminosities/" + gdtag + "_luminosities_" + TString(to_string(gsegment)) + ".json").Data());
     }
+  goodLumiFilter -> FindLumiInFiles(input_file_names);
+  goodLumiFilter -> DumpToJson((gOutputDirectoryName + "/output/event_analysis/" + gdtag + "/luminosities/" + gdtag + "_luminosities_" + TString(to_string(gsegment)) + ".json").Data());
+
 }
  
 void FileReader::Report()

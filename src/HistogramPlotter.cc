@@ -13,6 +13,7 @@
 #include "LIP/TauAnalysis/interface/Parser.hh"
 #include "LIP/TauAnalysis/interface/rootdouble.h"
 #include "LIP/TauAnalysis/interface/Table.h"
+#include "LIP/TauAnalysis/interface/Utilities.hh"
 
 #include "TLegend.h"
 #include "TROOT.h"
@@ -29,8 +30,27 @@ void HistogramPlotter::AddHistograms() const
 {
   
   HStructure_worker *worker_mother = new HStructure_worker;
+  vector<HistogramDescriptor> *hdescr = NULL;
   Parser parser;
-  vector<HistogramDescriptor> * hdescr = parser.ParseHistogramSpecifier(gwork_directory + "/data/histogram_specifiers/spec_selector_histograms.xml");
+  vector<HistogramDescriptor> * hdescr_comp[2] = 
+    {
+      parser.ParseHistogramSpecifier(gwork_directory + "/data/histogram_specifiers/spec_selector_histograms.xml"), 
+      parser.ParseHistogramSpecifier(gwork_directory + "/data/histogram_specifiers/spec_general_histograms.xml")
+    };
+  if (number_of_samples != & generic_samples_count)
+    {
+      if(number_active_sample < *number_of_samples -1)
+	hdescr = hdescr_comp[0];
+      if (number_active_sample == *number_of_samples -1)
+	hdescr = hdescr_comp[1];
+    }
+  else
+    {
+      hdescr = new vector<HistogramDescriptor> ;
+      hdescr -> reserve(hdescr_comp[0] -> size() + hdescr_comp[1] -> size());
+      hdescr -> insert(hdescr -> end(), hdescr_comp[0] -> begin(), hdescr_comp[0] -> end());
+      hdescr -> insert(hdescr -> end(), hdescr_comp[1] -> begin(), hdescr_comp[1] -> end());
+    }
   const unsigned char split = active_HStructure_TFile -> GetChildren() . size();
   const unsigned char nhistograms = hdescr -> size(); 
   for (unsigned char hind = 0; hind < nhistograms; hind ++)
@@ -45,6 +65,8 @@ void HistogramPlotter::AddHistograms() const
 	  HStructure_TH1D * worker = new HStructure_TH1D;
 	  TFile * file = ((HStructure_TFile*)active_HStructure_TFile -> GetChildren()[file_ind]) -> GetFile();
 	  worker -> GetRef() = file -> Get(hdescr -> at(hind).histogram_name.Data());
+	  if (worker -> GetRef())
+	    worker -> SetName(worker -> GetRef() -> GetName());
 	  worker -> SetBit(kIsFilled, true);
 	  worker -> SetBit(kIsValid, true);
 	  worker -> Stamp();
@@ -80,12 +102,29 @@ void HistogramPlotter::AddHistograms() const
   //getchar();
   worker_mother -> FillBottomUp("children");
   printf("RESULTS %s\n", gSystem -> BaseName(output_file -> GetName()));
-  HStructure_TH1D * str = (HStructure_TH1D*) worker_mother -> GetHStructure(samples_names[number_active_sample] + "_TOTAL", "numb_events_selection_stagesSELECTOR_BASE");
-  if (str)
+  if (number_of_samples != & generic_samples_count and number_active_sample < *number_of_samples -1 or number_of_samples == &generic_samples_count)
     {
-      Table t;
-      t.FillFromLabeledHistogram(str -> Get());
-      t.ls();
+    
+      HStructure_TH1D * str = (HStructure_TH1D*) worker_mother -> GetHStructure(samples_names[number_active_sample] + "_TOTAL", "numb_events_selection_stagesSELECTOR_BASE");
+      if (str)
+	{
+	  Table t;
+	  t.FillFromLabeledHistogram(str -> Get());
+	  t.ls();
+	}
+    }
+  if (number_of_samples != & generic_samples_count and number_active_sample == *number_of_samples -1 or number_of_samples == &generic_samples_count)
+    {
+      printf("test\n");
+      HStructure_TH1D * h = (HStructure_TH1D*) worker_mother -> GetHStructure(TString("generic_name") + "_TOTAL", "numb_events_selection_stagesCHANNELGATE");
+      
+      if (h)
+	{
+	  Table t;
+	  t.FillFromLabeledHistogram(h -> Get());
+	  t.ls();
+	}
+
     }
   printf("HISTOGRAMS FILLED\n");
   HStructure_TFile * output = new HStructure_TFile;

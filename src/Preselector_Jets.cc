@@ -2,6 +2,7 @@
 #include "LIP/TauAnalysis/interface/GlobalVariables.hh"
 #include "LIP/TauAnalysis/interface/HStructure_worker.hh"
 #include "LIP/TauAnalysis/interface/Register.hh"
+#include "LIP/TauAnalysis/interface/Utilities.hh"
 
 #include "LIP/TauAnalysis/interface/llvvObjects.h"
 #include "LIP/TauAnalysis/interface/Table.h"
@@ -24,6 +25,8 @@ void Preselector_Jets::Run()
   unsigned int njets = PreselectJets();
   if (njets < 2)
     return;
+  TH1D *h = utilities::GetSelectorHistogram();
+  h -> Fill("2 jets", input_event -> weight);
   print_mode = false;
        
   if (print_mode)

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<samples>
+
+    <histogram title="number events selection stages CHANNEL SELECTION" Xaxis_title="Selection level" Yaxis_title="Events" nbinsx="6" xlow="0" xup="20" >numb_events_selection_stagesCHANNELGATE</histogram>
+    
+
+</samples>
+ 

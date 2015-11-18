@@ -22,7 +22,7 @@ class Fork_Subsample : public EventProcessor<event_type, event_type>
   double passed;
   bool valid_TTbarMC;
   unsigned char ngen_electron, ngen_muon, ngen_tau, ngen_quark;
-  
+  bool hasTop;
   EventBuffer<event_type>::iterator it;
   bool (Fork_Subsample::**sample_check_ptr)() const;
   bool CheckTTbarMC_muon_tau() const;
@@ -46,6 +46,12 @@ class Fork_Subsample : public EventProcessor<event_type, event_type>
   void CountLeptons_TTbarMC();
   void CountLeptons_WJets();
   void CountLeptons_DY();
+  void CountPythia8();
+  bool hasLeptonAsDaughter(const reco::GenParticle p);
+  
+  bool hasWasMother(const reco::GenParticle  p);
+  bool hasTauAsMother(const reco::GenParticle  p);
+
   void CollectStatistics();
 public:
   Fork_Subsample(EventSink<event_type> *next_processor_stage);

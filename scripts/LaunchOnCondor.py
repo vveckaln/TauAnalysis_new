@@ -19,6 +19,8 @@ subTool = '' #will be automatically determined, if empty
 
 Farm_Directories  = []
 dtag              = ''
+ofilename         = ''
+efilename         = ''
 Path_Cmd          = ''
 Path_Shell        = ''
 Path_Log          = ''
@@ -109,12 +111,7 @@ def CreateTheShellFile(argv):
         global dtag
         if(subTool=='crab'):return
         hostname = os.getenv("HOSTNAME", "")
-        Path_Shell=""
-        if "ncg.ingrid.pt" in hostname:
-            Path_Shell = Farm_Directories[1] + dtag + "/" + Jobs_Name + Jobs_Index + '.sh'
-
-        else:
-            Path_Shell = Farm_Directories[1] + dtag + "/" + Jobs_Index + Jobs_Name + Jobs_Index + '.sh'
+        Path_Shell = Farm_Directories[1] + dtag + "/" + Jobs_Name + Jobs_Index + '.sh'
         function_argument=''
         hostname = os.getenv("HOSTNAME", "")
         
@@ -125,8 +122,6 @@ def CreateTheShellFile(argv):
 
 	shell_file=open(Path_Shell,'w')
 	shell_file.write('#! /bin/sh\n')
-#        shell_file.write('#PBS -o /exper-sw/cmst3/cmssw/users/vveckaln/CMSSW_7_4_2/src/LIP/TauAnalysis/outtputs/\n')
-#        shell_file.write('#PBS -e /exper-sw/cmst3/cmssw/users/vveckaln/CMSSW_7_4_2/src/LIP/TauAnalysis/outtputs/\n')
         
 	shell_file.write(CopyRights + '\n')
         shell_file.write('pwd\n')
@@ -306,12 +301,12 @@ def AddJobToCmdFile():
         global absoluteShellPath
         global Jobs_EmailReport
         global dtag
+        global ofilename
+        global efilename
         Path_Out   = Farm_Directories[3] + Jobs_Index + Jobs_Name
-#        ofilename = "/exper-sw/cmst3/cmssw/users/vveckaln/CMSSW_7_4_2/src/LIP/TauAnalysis/outputs/" + Jobs_Index + Jobs_Name + "o.txt"
-#        efilename = "/exper-sw/cmst3/cmssw/users/vveckaln/CMSSW_7_4_2/src/LIP/TauAnalysis/outputs/" + Jobs_Index + Jobs_Name + "e.txt"
         ofilename = Farm_Directories[3] + dtag + "/" + Jobs_Index + Jobs_Name + "_o.txt"
         efilename = Farm_Directories[3] + dtag + "/" + Jobs_Index + Jobs_Name + "_e.txt"
-
+        
         cmd_file=open(Path_Cmd,'a')
 	if subTool=='bsub':
                absoluteShellPath = Path_Shell;
@@ -327,6 +322,14 @@ def AddJobToCmdFile():
 	elif subTool=='qsub':
                 absoluteShellPath = Path_Shell;
                 if(not os.path.isabs(absoluteShellPath)): absoluteShellPath= os.getcwd() + "/" + absoluteShellPath
+                cmd_file.write("if [ -f " + ofilename + " ]; then \n")
+                cmd_file.write("\trm " + ofilename + "\n")
+                cmd_file.write("fi\n")
+                cmd_file.write("if [ -f " + efilename + " ]; then \n")
+                cmd_file.write("\trm " + efilename + "\n")
+                cmd_file.write("fi\n")
+                
+
                 cmd_file.write("qsub -N " + Jobs_Name + Jobs_Index + " -o " + ofilename + " -e " + efilename + " " + absoluteShellPath + " \n")
         elif subTool=='crab':
                 crabWorkDirPath = Farm_Directories[1]
@@ -348,13 +351,14 @@ def CreateDirectoryStructure(FarmDirectory):
         global Jobs_Name
         global Farm_Directories
         global dtag
+        
 	Farm_Directories = [FarmDirectory+'/', FarmDirectory+'/inputs/', FarmDirectory+'/logs/', FarmDirectory+'/outputs/']
         for i in range(0,len(Farm_Directories)):
 		if os.path.isdir(Farm_Directories[i]) == False:
 	        	os.system('mkdir -p ' + Farm_Directories[i])
                 elif os.path.isdir(Farm_Directories[i] + dtag) == False:
                         os.system('mkdir -p ' + Farm_Directories[i] + dtag)
-
+        
 def SendCluster_LoadInputFiles(path, NJobs):
         global Jobs_Inputs
 	input_file  = open(path,'r')

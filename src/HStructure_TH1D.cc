@@ -46,13 +46,12 @@ void HStructure_TH1D::FillBottomUp(const char *option)
       if(TestBit(kIsFilled)) 
 	return;
       SetBit(kIsStamped, ((HStructure_TH1D*)GetChildren().front()) -> TestBit(kIsStamped));
-      printf("Testing children:\n");
+      unsigned char invalid_children(0), empty_children(0);
       for (unsigned char child_ind = 0; child_ind < GetChildren().size(); child_ind ++)
 	{
 
-	  printf("%s %p\n", GetChildren()[child_ind] -> TestBit(kIsValid) ? "true" : "false", ((HStructure_TH1D*)GetChildren()[child_ind]) -> Get());
-	  if (((HStructure_TH1D*)GetChildren()[child_ind]) -> Get())
-	    printf("%s\n", ((HStructure_TH1D*)GetChildren()[child_ind]) -> Get() -> GetName());
+	  if (not GetChildren()[child_ind] -> TestBit(kIsValid)) invalid_children ++; 
+	  if (not ((HStructure_TH1D*)GetChildren()[child_ind]) -> Get()) empty_children ++;
 	}
       for (unsigned char child_ind = 0; child_ind < GetChildren().size(); child_ind ++)
 	{
@@ -69,6 +68,7 @@ void HStructure_TH1D::FillBottomUp(const char *option)
 	      throw "no valid children encountered\n";
 	    }
 	}
+      printf("name %s, children %lu, invalid %u, empty %u\n", GetName(), GetChildren().size(), invalid_children, empty_children);
       FixStamp();
       Get() -> Reset();
       for (unsigned char child_ind = 0; child_ind < GetChildren().size(); child_ind ++)

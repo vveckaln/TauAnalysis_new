@@ -2,6 +2,7 @@
 #include "LIP/TauAnalysis/interface/GlobalVariables.hh"
 #include "LIP/TauAnalysis/interface/HStructure_worker.hh"
 #include "LIP/TauAnalysis/interface/Register.hh"
+#include "LIP/TauAnalysis/interface/Utilities.hh"
 
 #include "LIP/TauAnalysis/interface/llvvObjects.h"
 #include "LIP/TauAnalysis/interface/Table.h"
@@ -48,11 +49,15 @@ void Preselector_Leptons::Run()
       return;
     }
   unsigned int nselected_muons     = PreselectMuons();
-  if (nselected_electrons + nselected_muons > 1 or nselected_electrons + nselected_muons == 0) 
+  //printf("after lepton preselection %lu %lu\n", electrons_ptr -> size(), muons_ptr -> size());
+  if (nselected_electrons + nselected_muons != 1) 
     {
       //input_buffer -> erase(it);
       return;
     }
+  TH1D *h = utilities::GetSelectorHistogram();
+  
+  h -> Fill("1 lepton", input_event -> weight);
   unsigned int nVeto_electrons;
   try
     {
@@ -68,11 +73,13 @@ void Preselector_Leptons::Run()
       //input_buffer -> erase(it);
       return;
     }
+  h -> Fill("no loose leptons", input_event -> weight);
   if (nselected_electrons == 1)
     {
       vector<pat::Electron> vect;
       vect.push_back(*electrons_ptr -> at(0));
       input_event -> electrons = vect;
+      input_event -> muons.clear();
     }
 
   if (nselected_muons == 1)
@@ -80,6 +87,7 @@ void Preselector_Leptons::Run()
       vector<pat::Muon> vect;
       vect.push_back(*muons_ptr -> at(0));
       input_event -> muons = vect;
+      input_event -> electrons.clear();
     }
   print_mode = false;
   //Run 190688, lumi 99, evId 22420320
@@ -97,6 +105,7 @@ void Preselector_Leptons::Run()
       
   // if (output_buffer -> IsFull())
   selected ++;
+  //printf("electrons size %lu, muons size %lu\n", input_event -> electrons.size(), input_event -> muons.size());
   ProceedToNextStage();
 	  
 	  //  }

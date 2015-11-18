@@ -147,29 +147,18 @@ void HStructure_worker::Write(const char * option)
 	}
       TFile * file = ((HStructure_TFile*)cpregister::active_HStructure_TFile -> GetHStructure(it -> GetName())) -> GetFile();
       file -> cd();
-      //printf("%s\n", it -> WhoAmI());
       if (TString(it -> WhoAmI()) == "HStructure_TH1D")
 	{
 	  ((HStructure_TH1D*)&*it) -> RemoveStamp();
 	  it -> GetPtr() -> Write();
 	  ((HStructure_TH1D*)&*it) -> Stamp();
-	  	  
-
-	 
-	    
 	}
       else if (TString(it -> WhoAmI()) == "HStructure_CombinedTHStackTH1D")
 	{
 	  HStructure_CombinedTHStackTH1D * str = ((HStructure_CombinedTHStackTH1D*)&*it);
-	  //printf("Writing combined%s\n", str -> GetChild_data() -> GetName());
 	  str -> GetChild_data() -> RemoveStamp();
-	  //printf("After removing stamp %s\n", str -> GetChild_data() -> GetName());
 	  it -> GetPtr() -> Write();
 	  str -> GetChild_data() -> Stamp();
-	  // printf("After restamping %s\n", str -> GetChild_data() -> GetName());
-
-	  //getchar();
-	    
 	}
       else
 	{
