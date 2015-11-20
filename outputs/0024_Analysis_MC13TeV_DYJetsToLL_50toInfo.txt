@@ -1,0 +1,141 @@
+# --------------------------------------------------------------
+# Running PROLOG for Analysis_MC13TeV_DYJetsToLL_50toInf0024_ on Sun Oct  4 12:06:16 WEST 2015 
+# JOB_ID=6111902 from user viesturs on host wn147.ncg.ingrid.pt 
+#
+# --------------------------------------------------------------
+
+/home/cmst3/viesturs/dir_job6111902
+Contacting voms.cern.ch:15002 [/DC=ch/DC=cern/OU=computers/CN=voms.cern.ch] "cms"...
+Contacting voms2.cern.ch:15002 [/DC=ch/DC=cern/OU=computers/CN=voms2.cern.ch] "cms"...
+Remote VOMS server contacted succesfully.
+
+
+Created proxy in /lustre/ncg.ingrid.pt/cmslocal/viesturs/RunII/FARM/inputs/x509_proxy.
+
+Your proxy is valid until Sun Oct 04 23:59:36 WEST 2015
+running Analysis
+[?1034hConfiguration succesfully completed
+file 0 root://cms-xrd-global.cern.ch//store/mc/Phys14DR/DYJetsToLL_M-50_13TeV-madgraph-pythia8/MINIAODSIM/PU20bx25_PHYS14_25_V1-v1/00000/CAD84EE9-7C6C-E411-912C-003048D437A0.root
+LISTING WORKER
+continuing executing
+Debug mode false
+running utils::getTotalNumberOfEvents
+voms-proxy-info --all > /afs/cern.ch/work/v/vveckaln/private/RunII/FARM/outputs/MC13TeV_DYJetsToLL_50toInf_24.txt
+File root://cms-xrd-global.cern.ch//store/mc/Phys14DR/DYJetsToLL_M-50_13TeV-madgraph-pythia8/MINIAODSIM/PU20bx25_PHYS14_25_V1-v1/00000/CAD84EE9-7C6C-E411-912C-003048D437A0.root
+File opened 0x56525b0 
+event got
+Getting size
+toReturn 49728
+Going to delete file 
+File deleted
+MergeableCounterValue 49728.000000
+running getMCPileupDistributionFromMiniAOD
+opened file root://cms-xrd-global.cern.ch//store/mc/Phys14DR/DYJetsToLL_M-50_13TeV-madgraph-pythia8/MINIAODSIM/PU20bx25_PHYS14_25_V1-v1/00000/CAD84EE9-7C6C-E411-912C-003048D437A0.root 0x94d1430
+ Lumi/Pileup Reweighting: Computed Weights per In-Time Nint 
+   0 0
+   1 0
+   2 0
+   3 0
+   4 0
+   5 68.589
+   6 74.6758
+   7 36.8128
+   8 24.1393
+   9 13.6868
+   10 10.1666
+   11 6.59692
+   12 4.60558
+   13 3.06439
+   14 2.25993
+   15 1.60933
+   16 1.26623
+   17 0.961564
+   18 0.764496
+   19 0.593049
+   20 0.492224
+   21 0.415624
+   22 0.32631
+   23 0.272983
+   24 0.224935
+   25 0.211454
+   26 0.174983
+   27 0.16452
+   28 0.144357
+   29 0.120666
+   30 0.131615
+   31 0.117801
+   32 0.13791
+   33 0.133937
+   34 0.121273
+   35 0.12663
+   36 0.104284
+   37 0.166854
+   38 0.136207
+   39 0.119182
+   40 0.0794544
+   41 0
+   42 0
+   43 0
+   44 0
+   45 0
+   46 0
+   47 0
+   48 0
+   49 0
+   50 0
+   51 0
+   52 0
+   53 0
+   54 0
+   55 0
+   56 0
+   57 0
+   58 0
+   59 0
+   60 0
+   61 0
+   62 0
+   63 0
+   64 0
+   65 0
+   66 0
+   67 0
+   68 0
+   69 0
+   70 0
+   71 0
+   72 0
+   73 0
+   74 0
+   75 0
+   76 0
+   77 0
+   78 0
+   79 0
+   80 0
+   81 0
+   82 0
+   83 0
+   84 0
+   85 0
+   86 0
+   87 0
+   88 0
+   89 0
+   90 0
+   91 0
+   92 0
+   93 0
+   94 0
+   95 0
+   96 0
+   97 0
+   98 0
+getPUshifts will shift average PU by 0.789339 / -0.71474
+Opening file root://cms-xrd-global.cern.ch//store/mc/Phys14DR/DYJetsToLL_M-50_13TeV-madgraph-pythia8/MINIAODSIM/PU20bx25_PHYS14_25_V1-v1/00000/CAD84EE9-7C6C-E411-912C-003048D437A0.root
+Reading file root://cms-xrd-global.cern.ch//store/mc/Phys14DR/DYJetsToLL_M-50_13TeV-madgraph-pythia8/MINIAODSIM/PU20bx25_PHYS14_25_V1-v1/00000/CAD84EE9-7C6C-E411-912C-003048D437A0.root
+
+# --------------------------------------------------------------
+# Running EPILOG for Analysis_MC13TeV_DYJetsToLL_50toInf0024_ on Sun Oct  4 12:07:08 WEST 2015 
+#
+# --------------------------------------------------------------

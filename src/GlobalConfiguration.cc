@@ -36,7 +36,7 @@ void GlobalConfiguration::SetConfiguration(const char* configuration_file)
   gdtag                                  = runProcess.getParameter<string>          ("dtag");
   gnoUncertainties = true;
   site                                   = runProcess.getParameter<string>          ("site");
-  grun                                   = gdtag.Contains("Run2015B") or gdtag.Contains("Asympt_50ns") ? 0 : 1;
+  grun                                   = gdtag.Contains("Run2015B") or gdtag.Contains("Asympt_50ns") ? Run2015B : Run2015C;
   printf("Configuration succesfully completed\n");
 }
 

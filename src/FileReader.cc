@@ -18,7 +18,7 @@
 #include "LIP/TauAnalysis/interface/GlobalVariables.hh"
 #include "LIP/TauAnalysis/interface/PatUtils.h"
 #include "LIP/TauAnalysis/interface/Utilities.hh"
-
+#include "RecoEgamma/EgammaTools/interface/ConversionTools.h"
 #include <iostream>
 using namespace cpregister;
 using namespace gVariables;
@@ -99,6 +99,15 @@ void FileReader::Run()
 
 	  if(!goodLumiFilter -> isGoodLumi(read_event -> Run, read_event -> Lumi))
 	    continue;
+
+	  fwlite::Handle<reco::BeamSpot> bsHandle;
+	  bsHandle.getByLabel(event, "offlineBeamSpot");
+	  if (bsHandle.isValid()) input_event -> beamspot = *bsHandle.product();
+
+	  fwlite::Handle<reco::ConversionCollection> hConversionsHandle;
+	  hConversionsHandle.getByLabel(event, "allConversions" );
+	  if (hConversionsHandle.isValid()) input_event -> ConversionCollection = * hConversionsHandle;
+	  
 	  fwlite::Handle< reco::VertexCollection > vtxHandle;
 	  vtxHandle.getByLabel(event, "offlineSlimmedPrimaryVertices");
 	  if (vtxHandle.isValid())read_event -> vertices = *vtxHandle;

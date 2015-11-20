@@ -18,14 +18,19 @@ class Preselector_Leptons : public EventProcessor<event_type, event_type>
 {
   bool print_mode;
   double selected;
-  vector<pat::Muon*>         *muons_ptr;
-  vector<pat::Electron*>     *electrons_ptr;
+  vector<pat::Muon*>         muons_ptr;
+  vector<pat::Electron*>     electrons_ptr;
+  pat::Electron * electron;
+  reco::Vertex  * vtx;
   EventBuffer<event_type>::iterator it;
+
   unsigned int PreselectMuons() ;
   unsigned int PreselectElectrons() ;
 
   unsigned int VetoLooseElectrons();
   unsigned int VetoLooseMuons();
+  bool passIdElectron(const unsigned char IdLevel) const;
+
   void FinalSelection() const;
   
 public:
@@ -35,4 +40,6 @@ public:
   virtual ~Preselector_Leptons();
 
 };
+
+
 #endif

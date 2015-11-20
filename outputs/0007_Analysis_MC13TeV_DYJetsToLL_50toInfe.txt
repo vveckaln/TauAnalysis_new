@@ -1,0 +1,24 @@
+Picked up JAVA_TOOL_OPTIONS: -Xmx512m
+Error contacting voms2.cern.ch:15002 for VO cms: Read timed out
+Error contacting voms2.cern.ch:15002 for VO cms: peer not authenticated
+Error contacting voms2.cern.ch:15002 for VO cms: REST and legacy VOMS endpoints failed.
+Error contacting voms.cern.ch:15002 for VO cms: voms.cern.ch
+Error contacting voms.cern.ch:15002 for VO cms: voms.cern.ch
+Error contacting voms.cern.ch:15002 for VO cms: REST and legacy VOMS endpoints failed.
+Error contacting lcg-voms.cern.ch:15002 for VO cms: lcg-voms.cern.ch
+Error contacting lcg-voms.cern.ch:15002 for VO cms: lcg-voms.cern.ch
+Error contacting lcg-voms.cern.ch:15002 for VO cms: REST and legacy VOMS endpoints failed.
+WARNING: proxy lifetime limited to issuing credential lifetime.
+Error in <TGClient::TGClient>: can't open display "localhost:11.0", switching to batch mode...
+ In case you run from a remote ssh session, reconnect with ssh -Y
+sh: /afs/cern.ch/work/v/vveckaln/private/RunII/FARM/outputs/MC13TeV_DYJetsToLL_50toInf_7.txt: No such file or directory
+Warning in <TClass::Init>: no dictionary for class edm::AtomicPtrCache<vector<edm::Ptr<CaloTower> > > is available
+Error in <TNetXNGFile::Open>: [ERROR] Server responded with an error: [3005] Server error: No user mapping
+
+sh: /afs/cern.ch/work/v/vveckaln/private/RunII/FARM/outputs/MC13TeV_DYJetsToLL_50toInf_7_PU.txt: No such file or directory
+terminate called after throwing an instance of 'cms::Exception'
+  what():  An exception of category 'NoFile' occurred.
+Exception Message:
+The TFile pointer is null
+
+/opt/sge/default/spool/wn126/job_scripts/6111885: line 18: 16173 Aborted                 Analysis /lustre/ncg.ingrid.pt/cmslocal/viesturs/RunII/configuration_files/event_analysis/MC13TeV_DYJetsToLL_50toInf_7_cfg.py process

@@ -1,0 +1,34 @@
+# --------------------------------------------------------------
+# Running PROLOG for Analysis_MC13TeV_DYJetsToLL_50toInf0048_ on Sun Oct  4 12:11:51 WEST 2015 
+# JOB_ID=6111926 from user viesturs on host wn116.ncg.ingrid.pt 
+#
+# --------------------------------------------------------------
+
+/home/cmst3/viesturs/dir_job6111926
+Contacting lcg-voms.cern.ch:15002 [/DC=ch/DC=cern/OU=computers/CN=lcg-voms.cern.ch] "cms"...
+Contacting voms.cern.ch:15002 [/DC=ch/DC=cern/OU=computers/CN=voms.cern.ch] "cms"...
+Contacting voms2.cern.ch:15002 [/DC=ch/DC=cern/OU=computers/CN=voms2.cern.ch] "cms"...
+Contacting lcg-voms2.cern.ch:15002 [/DC=ch/DC=cern/OU=computers/CN=lcg-voms2.cern.ch] "cms"...
+running Analysis
+[?1034hConfiguration succesfully completed
+file 0 root://cms-xrd-global.cern.ch//store/mc/Phys14DR/DYJetsToLL_M-50_13TeV-madgraph-pythia8/MINIAODSIM/PU20bx25_PHYS14_25_V1-v1/10000/94F31760-5D6C-E411-A9BF-0025907DCA0C.root
+LISTING WORKER
+continuing executing
+Debug mode false
+running utils::getTotalNumberOfEvents
+voms-proxy-info --all > /afs/cern.ch/work/v/vveckaln/private/RunII/FARM/outputs/MC13TeV_DYJetsToLL_50toInf_48.txt
+File root://cms-xrd-global.cern.ch//store/mc/Phys14DR/DYJetsToLL_M-50_13TeV-madgraph-pythia8/MINIAODSIM/PU20bx25_PHYS14_25_V1-v1/10000/94F31760-5D6C-E411-A9BF-0025907DCA0C.root
+File opened 0x78a3200 
+event got
+Getting size
+toReturn 49854
+Going to delete file 
+File deleted
+MergeableCounterValue 49854.000000
+running getMCPileupDistributionFromMiniAOD
+opened file root://cms-xrd-global.cern.ch//store/mc/Phys14DR/DYJetsToLL_M-50_13TeV-madgraph-pythia8/MINIAODSIM/PU20bx25_PHYS14_25_V1-v1/10000/94F31760-5D6C-E411-A9BF-0025907DCA0C.root (nil)
+
+# --------------------------------------------------------------
+# Running EPILOG for Analysis_MC13TeV_DYJetsToLL_50toInf0048_ on Sun Oct  4 12:12:29 WEST 2015 
+#
+# --------------------------------------------------------------

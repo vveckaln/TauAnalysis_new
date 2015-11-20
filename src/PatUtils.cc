@@ -2,23 +2,25 @@
 
 namespace patUtils
 {
-  bool passId(pat::Electron * el,  reco::Vertex * vtx, cost unsigned char IdLevel)
-{
+  /*  bool passId(pat::Electron * el,  reco::Vertex * vtx, const unsigned char IdLevel)
+  {
     
     //for electron Id look here: https://twiki.cern.ch/twiki/bin/viewauth/CMS/CutBasedElectronIdentificationRun2
     //for the meaning of the different cuts here: https://twiki.cern.ch/twiki/bin/viewauth/CMS/EgammaCutBasedIdentification
+    const float sigmaletaleta  = el -> sigmaIetaIeta();
     const float dEtaln         = fabs(el -> deltaEtaSuperClusterTrackAtVtx());
     const float dPhiln         = fabs(el -> deltaPhiSuperClusterTrackAtVtx());
-    const float sigmaletaleta  = el -> sigmaIetaIeta();
     const float hem            = el -> hadronicOverEm();
     const double resol         = fabs(1/el -> ecalEnergy() - 1/el -> trackMomentumAtVtx().p());
     const double dxy           = fabs(el -> gsfTrack() -> dxy(vtx -> position()));
     const double dz            = fabs(el -> gsfTrack() -> dz(vtx -> position())); 
-    const double mHits         = el -> gsfTrack() -> hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS);
+    const double mHits         = el -> gsfTrack() -> trackerExpectedHitsInner().numberOfHits();//hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS);
     
     const bool barrel = (fabs(el -> superCluster() -> eta()) <= 1.479);
     const bool endcap = (!barrel && fabs(el -> superCluster() -> eta()) < 2.5);
-
+    const unsigned char region = 0;
+    if (endcap) 
+      region = 1;
     //Veto Loose Medium Tight
     static const float full5x5_sigmaIetaIeta_ref[2][2][4] = 
       {
@@ -43,113 +45,125 @@ namespace patUtils
 	  {0.0113, 0.00814, 0.00733, 0.00724}
 	}
       };
-     	static const float abs_dPhiIn_ref[2][2][4] =
+    static const float abs_dPhiIn_ref[2][2][4] =
+      {
 	{
-	  {
-	    {0.107, 0.0929, 0.0296, 0.0286},
-	      {0.219, 0.181, 0.148, 0.0439 }
-	  },
-	    {
-	      {0.216, 0.115, 0.0336, 0.0336 },
-		{0.237, 0.182, 0.114, 0.0918}
-	    }
-	};
+	  {0.107, 0.0929, 0.0296, 0.0286},
+	  {0.219, 0.181, 0.148, 0.0439 }
+	},
+	{
+	  {0.216, 0.115, 0.0336, 0.0336 },
+	  {0.237, 0.182, 0.114, 0.0918}
+	}
+      };
 	
-	static const float hOverE_ref[2][2][4] =
-	  {
-	    {
-	      {0.186, 0.0765, 0.0372, 0.0342 },
-	      {0.0962, 0.0824, 0.0546, 0.0544}
-	    },
-	    {
-	      {0.181, 0.104, 0.0876, 0.0597  },
-	      {0.116, 0.0897, 0.0678, 0.0615 }
-	    }
-	  };
-	static const float relIsoWithEA_ref[2][2][4] =
-	  {
-	    {
-	      {0.161, 0.118, 0.0987, 0.0591 },
-	      {0.193, 0.118, 0.0902, 0.0759  }
-	    },
-	    {
-	      {0.126, 0.0893, 0.0766, 0.0354  },
-	      {0.144, 0.121, 0.0678, 0.0646  }
-	    }
-	  };
+    static const float hOverE_ref[2][2][4] =
+      {
+	{
+	  {0.186, 0.0765, 0.0372, 0.0342 },
+	  {0.0962, 0.0824, 0.0546, 0.0544}
+	},
+	{
+	  {0.181, 0.104, 0.0876, 0.0597  },
+	  {0.116, 0.0897, 0.0678, 0.0615 }
+	}
+      };
+    static const float relIsoWithEA_ref[2][2][4] =
+      {
+	{
+	  {0.161, 0.118, 0.0987, 0.0591 },
+	  {0.193, 0.118, 0.0902, 0.0759  }
+	},
+	{
+	  {0.126, 0.0893, 0.0766, 0.0354  },
+	  {0.144, 0.121, 0.0678, 0.0646  }
+	}
+      };
   
-	static const float ooEmooP_ref[2][2][4] =
-	  {
-	    {
-	      {0.239, 0.184, 0.118, 0.0116 },
-	      {0.141, 0.125, 0.104, 0.01  }
-	    },
-	    {
-	      {0.207, 0.102, 0.0174, 0.012  },
-	      {0.174, 0.126, 0.0898, 0.00999  }
-	    }
-	  };
+    static const float ooEmooP_ref[2][2][4] =
+      {
+	{
+	  {0.239, 0.184, 0.118, 0.0116 },
+	  {0.141, 0.125, 0.104, 0.01  }
+	},
+	{
+	  {0.207, 0.102, 0.0174, 0.012  },
+	  {0.174, 0.126, 0.0898, 0.00999  }
+	}
+      };
   
-      static const float abs_d0_ref[][2][4] =
-	  {
-	    {
-	      {0.0621, 0.0227, 0.0151, 0.0103 },
-	      {0.279, 0.242, 0.0535, 0.0377  }
-	    },
-	    {
-	      {0.279, 0.242, 0.0535, 0.0377  },
-	      {0.222, 0.118, 0.0739, 0.0351 }
-	    }
-	  };
+    static const float abs_d0_ref[][2][4] =
+      {
+	{
+	  {0.0621, 0.0227, 0.0151, 0.0103 },
+	  {0.279, 0.242, 0.0535, 0.0377  }
+	},
+	{
+	  {0.279, 0.242, 0.0535, 0.0377  },
+	  {0.222, 0.118, 0.0739, 0.0351 }
+	}
+      };
 
-            static const float abs_dz_ref[2][2][4] =
-	  {
-	    {
-	      {0.613, 0.379, 0.238, 0.170 },
-	      {0.947, 0.921, 0.572, 0.571 }
-	    },
-	    {
-	      {0.472, 0.41, 0.373, 0.0466  },
-	      {0.921, 0.822, 0.602, 0.417 }
-	    }
-	  };
+    static const float abs_dz_ref[2][2][4] =
+      {
+	{
+	  {0.613, 0.379, 0.238, 0.170 },
+	  {0.947, 0.921, 0.572, 0.571 }
+	},
+	{
+	  {0.472, 0.41, 0.373, 0.0466  },
+	  {0.921, 0.822, 0.602, 0.417 }
+	}
+      };
 
-	    static const unsigned char expectedMissingInngerHits[2][2][4] =
-	  {
-	    {
-	      {2, 2, 2, 2  },
-	      {3, 1, 1, 1  }
-	    },
-	    {
-	      {2, 2, 2, 2  },
-	      {3, 1, 1, 1 }
-	    }
-	  };
+    static const unsigned char expectedMissingInngerHits[2][2][4] =
+      {
+	{
+	  {2, 2, 2, 2  },
+	  {3, 1, 1, 1  }
+	},
+	{
+	  {2, 2, 2, 2  },
+	  {3, 1, 1, 1 }
+	}
+      };
 
-static const unsigned char expectedMissingInngerHits[2][2][4] =
-	  {
-	    {
-	      {2, 2, 2, 2  },
-	      {3, 1, 1, 1  }
-	    },
-	    {
-	      {2, 2, 2, 2  },
-	      {3, 1, 1, 1 }
-	    }
-	  };
+    static const unsigned char expectedMissingInngerHits[2][2][4] =
+      {
+	{
+	  {2, 2, 2, 2  },
+	  {3, 1, 1, 1  }
+	},
+	{
+	  {2, 2, 2, 2  },
+	  {3, 1, 1, 1 }
+	}
+      };
 
-static const bool pass_conv_veto_ref[2][2][4] = 
-{
-	    {
-	      {true, true, true, true},
-	      {true, true, true, true}
-	    },
-	    {
-	      {true, true, true, true},
-	      {true, true, true, true}
-	    }
-	  };
+    static const bool pass_conv_veto_ref[2][2][4] = 
+      {
+	{
+	  {true, true, true, true},
+	  {true, true, true, true}
+	},
+	{
+	  {true, true, true, true},
+	  {true, true, true, true}
+	}
+      };
   
+
+    if (
+	sigmaletaleta < full5x5_sigmaIetaIeta_ref[grun][region][IdLevel] and
+	dEtaln < abs_dEtaIn_ref[grun][region][IdLevel] and
+	dPhiln < abs_dPhiIn_ref[grun][region][IdLevel] and
+	hem < hOverE_ref[grun][region][IdLevel] and 
+	resol < relIsoWithEA_ref[grun][region][IdLevel] and
+	dxy < abs_d0_ref[grun][region][IdLevel] and
+	dz < abs_dz_ref[grun][region][IdLevel] and
+	mHits < expectedMissingInngerHits[grun][region][IdLevel])
+	return true;
+	return false;
     // PHYS14 selection 
     switch(IdLevel){
     case llvvElecId::Veto :
@@ -167,7 +181,7 @@ static const bool pass_conv_veto_ref[2][2][4] =
          dEtaln        < 0.011932 &&
          dPhiln        < 0.255450 &&
          sigmaletaleta < 0.031849 &&
-		     hem           < 0.223870 &&
+	 hem           < 0.223870 &&
          dxy           < 0.342293 &&
          dz            < 0.953461 &&
          resol         < 0.155501 &&
@@ -195,7 +209,7 @@ static const bool pass_conv_veto_ref[2][2][4] =
          dz            < 0.197897 &&
          resol         < 0.140662 &&
          mHits         <= 1      )
-		    return true; 
+	return true; 
       break;
       
     case llvvElecId::Medium :
@@ -241,7 +255,7 @@ static const bool pass_conv_veto_ref[2][2][4] =
          dz              < 0.133431 &&
          resol           < 0.098919 &&
          mHits           <= 1      )
-		    return true; 
+	return true; 
       break;
       
     case llvvElecId::LooseMVA :
@@ -249,7 +263,7 @@ static const bool pass_conv_veto_ref[2][2][4] =
     case llvvElecId::TightMVA :
       printf("FIXME: MVA ID not yet implemented for the electron\n");
       return false;
-                  break;
+      break;
                   
     default:
       printf("FIXME ElectronId llvvElecId::%i is unkown\n", IdLevel);
@@ -257,7 +271,7 @@ static const bool pass_conv_veto_ref[2][2][4] =
       break;
     }
     return false;
-  }
+    }*/
   
   bool passId(pat::Muon& mu,  reco::Vertex& vtx, int IdLevel){
     //for muon Id look here: https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideMuonId#LooseMuon

@@ -4,11 +4,11 @@
 #include "LIP/TauAnalysis/interface/Register.hh"
 #include "LIP/TauAnalysis/interface/Utilities.hh"
 
-#include "LIP/TauAnalysis/interface/llvvObjects.h"
 #include "LIP/TauAnalysis/interface/Table.h"
 #include "DataFormats/Math/interface/deltaR.h"
 #include "LIP/TauAnalysis/interface/GlobalVariables.hh"
 #include "LIP/TauAnalysis/interface/PatUtils.h"
+#include "LIP/TauAnalysis/interface/LeptonSelectionDefinitions.hh"
 
 #include <math.h>
 #include "TCanvas.h"
@@ -19,65 +19,41 @@ using namespace gVariables;
 Preselector_Leptons::Preselector_Leptons(EventSink<event_type> *next_processor_stage):EventProcessor<event_type, event_type>(next_processor_stage)
 {
   selected = 0;
-  electrons_ptr = new vector<pat::Electron*>;
-  muons_ptr = new vector<pat::Muon*>;
-}
+ }
 
 void Preselector_Leptons::Run()
 {
   output_event = input_event;
-     
-  muons_ptr -> clear();
-  electrons_ptr -> clear();
-
-
-  //printf("size %lu \n", electrons_ptr -> size());
-      //  electrons_ptr -> clear();
+  vtx = &input_event -> vertices[0];   
+  muons_ptr.clear();
+  electrons_ptr.clear();
   for (size_t ind = 0; ind < input_event -> electrons.size(); ind ++) 
     {
-      electrons_ptr -> push_back(&input_event -> electrons[ind]);
+      electrons_ptr.push_back(&input_event -> electrons[ind]);
     }
   for (size_t ind = 0; ind < input_event -> muons.size(); ind ++) 
-    muons_ptr -> push_back(&input_event -> muons[ind]);
+    muons_ptr.push_back(&input_event -> muons[ind]);
   unsigned int nselected_electrons;
-  try
-    {
-      nselected_electrons = PreselectElectrons();
-    } catch (const char* e)
-    {
-      printf("caught %s\n", e);
-      return;
-    }
+  nselected_electrons = PreselectElectrons();
   unsigned int nselected_muons     = PreselectMuons();
-  //printf("after lepton preselection %lu %lu\n", electrons_ptr -> size(), muons_ptr -> size());
   if (nselected_electrons + nselected_muons != 1) 
     {
-      //input_buffer -> erase(it);
       return;
     }
   TH1D *h = utilities::GetSelectorHistogram();
   
   h -> Fill("1 lepton", input_event -> weight);
-  unsigned int nVeto_electrons;
-  try
-    {
-      nVeto_electrons = VetoLooseElectrons();
-    } catch (const char* e)
-    {
-      printf("caught %s\n", e);
-      return;
-    }
+  unsigned int nVeto_electrons = VetoLooseElectrons();
   unsigned int nVeto_muons     = VetoLooseMuons();
   if (nVeto_electrons + nVeto_muons > 0) 
     {
-      //input_buffer -> erase(it);
       return;
     }
   h -> Fill("no loose leptons", input_event -> weight);
   if (nselected_electrons == 1)
     {
       vector<pat::Electron> vect;
-      vect.push_back(*electrons_ptr -> at(0));
+      vect.push_back(*electrons_ptr.at(0));
       input_event -> electrons = vect;
       input_event -> muons.clear();
     }
@@ -85,17 +61,11 @@ void Preselector_Leptons::Run()
   if (nselected_muons == 1)
     {
       vector<pat::Muon> vect;
-      vect.push_back(*muons_ptr -> at(0));
+      vect.push_back(*muons_ptr.at(0));
       input_event -> muons = vect;
       input_event -> electrons.clear();
     }
   print_mode = false;
-  //Run 190688, lumi 99, evId 22420320
-
-
-
-  //if (processed_event -> Run == 190688 and processed_event -> Lumi == 99 and processed_event -> Event == 22420320) print_mode = true;
-  //if (not print_mode) continue;
        
   if (print_mode)
     {
@@ -103,15 +73,7 @@ void Preselector_Leptons::Run()
 	  
     }
       
-  // if (output_buffer -> IsFull())
-  selected ++;
-  //printf("electrons size %lu, muons size %lu\n", input_event -> electrons.size(), input_event -> muons.size());
   ProceedToNextStage();
-	  
-	  //  }
-  //if (!output_buffer -> IsEmpty())
-    
-  //ProceedToNextStage();*/
      
 }
 
@@ -120,15 +82,11 @@ void Preselector_Leptons::Run()
 unsigned int Preselector_Leptons::PreselectElectrons() 
 {
   
-  vector<pat::Electron*>::iterator el_it = electrons_ptr -> begin();
-  while (el_it != electrons_ptr -> end())
+  vector<pat::Electron*>::iterator el_it = electrons_ptr.begin();
+  while (el_it != electrons_ptr.end())
     {
       bool passKin(true), passId(true), passIso(true);
-      pat::Electron * electron = *el_it;
-      //veto nearby photon (loose electrons are many times photons...)
-      //kinematics
-      if (not electron -> superCluster())
-	throw "no superCluster";
+      electron = *el_it;
       const float leta = fabs(electron -> superCluster() -> eta());
       if(leta > 2.5)                     
 	passKin = false;
@@ -139,25 +97,25 @@ unsigned int Preselector_Leptons::PreselectElectrons()
 	passKin = false;
 
       //Cut based identification
-      passId = patUtils::passId(*electron, input_event -> vertices[0], patUtils::llvvElecId::Tight);
+      passId = passIdElectron(ElecId::Tight);
 
       //isolation
       passIso = patUtils::passIso(*electron,  patUtils::llvvElecIso::Tight);
 
       if(not (passId && passIso && passKin))    
-	electrons_ptr -> erase(el_it);
+	electrons_ptr.erase(el_it);
       else
 	el_it ++;
 
     } ;
-  return electrons_ptr -> size();
+  return electrons_ptr.size();
   
 }
  
 unsigned int Preselector_Leptons::PreselectMuons()  
 {
-  vector<pat::Muon*>::iterator muon_it = muons_ptr -> begin();
-  while (muon_it != muons_ptr -> end())
+  vector<pat::Muon*>::iterator muon_it = muons_ptr.begin();
+  while (muon_it != muons_ptr.end())
     {
       bool passKin(true), passId(true), passIso(true);
       pat::Muon * muon = *muon_it;
@@ -176,12 +134,12 @@ unsigned int Preselector_Leptons::PreselectMuons()
       passIso = patUtils::passIso(*muon,  patUtils::llvvMuonIso::Tight);
      
       if(not (passId && passIso && passKin)) 
-	muons_ptr-> erase(muon_it);
+	muons_ptr.erase(muon_it);
       else
 	muon_it ++;
 
     };
-  return muons_ptr-> size();
+  return muons_ptr.size();
  
 }
 
@@ -193,7 +151,7 @@ unsigned int Preselector_Leptons::VetoLooseElectrons()
   const double ETA_EXCLUSION_REGION_MIN = 1.4442;
   const double ETA_EXCLUSION_REGION_MAX = 1.5660;
   unsigned char nVeto_electrons(0);
-  void * lepton = muons_ptr -> size() == 1 ? (void*)muons_ptr -> at(0) : (void*)electrons_ptr -> at(0);
+  void * lepton = muons_ptr.size() == 1 ? (void*)muons_ptr.at(0) : (void*)electrons_ptr.at(0);
 
   for (ushort ind = 0; ind < input_event -> electrons.size(); ind ++)
     {
@@ -213,7 +171,7 @@ unsigned int Preselector_Leptons::VetoLooseElectrons()
 	passKin = false;
       if (AbsEta > ETA_EXCLUSION_REGION_MIN and AbsEta < ETA_EXCLUSION_REGION_MAX) 
 	passKin = false;
-      passId = patUtils::passId(*electron, input_event -> vertices[0], patUtils::llvvElecId::Loose);
+      passId = passIdElectron(ElecId::Loose);
       passIso = patUtils::passIso(*electron, patUtils::llvvElecIso::Loose);
       
       if (passId and passIso and passKin)
@@ -230,7 +188,7 @@ unsigned int Preselector_Leptons::VetoLooseMuons()
   double const ref_eta               = 2.5;
   
   unsigned char nVeto_muons(0);
-  void * lepton = muons_ptr -> size() == 1 ? (void*)muons_ptr -> at(0) : (void*)electrons_ptr -> at(0);
+  void * lepton = muons_ptr.size() == 1 ? (void*)muons_ptr.at(0) : (void*)electrons_ptr.at(0);
 
   for (ushort ind = 0; ind < input_event -> muons.size(); ind ++)
     {
@@ -257,6 +215,50 @@ unsigned int Preselector_Leptons::VetoLooseMuons()
 	}
     }
   return nVeto_muons;
+}
+
+bool Preselector_Leptons::passIdElectron(const unsigned char IdLevel) const
+{
+    
+  //for electron Id look here: https://twiki.cern.ch/twiki/bin/viewauth/CMS/CutBasedElectronIdentificationRun2
+  //for the meaning of the different cuts here: https://twiki.cern.ch/twiki/bin/viewauth/CMS/EgammaCutBasedIdentification
+  const float sigmaletaleta  = electron -> full5x5_sigmaIetaIphi();
+  const float dEtaln         = fabs(electron -> deltaEtaSuperClusterTrackAtVtx());
+  const float dPhiln         = fabs(electron -> deltaPhiSuperClusterTrackAtVtx());
+  const float hem            = electron -> hadronicOverEm();
+  float ooEmooP = 0;
+  if( electron -> ecalEnergy() == 0 ){
+     ooEmooP = 1e30;
+  }else if( !std::isfinite(electron -> ecalEnergy())){
+    printf("Electron energy is not finite!\n");
+    ooEmooP = 1e30 ;
+  }else{
+    ooEmooP = fabs(1.0/electron->ecalEnergy() - electron->eSuperClusterOverP()/electron->ecalEnergy() ) ;
+  }
+  const double resol         = fabs(1/electron -> ecalEnergy() - 1/electron -> trackMomentumAtVtx().pt());
+  const double dxy           = fabs(electron -> gsfTrack() -> dxy(vtx -> position()));
+  const double dz            = fabs(electron -> gsfTrack() -> dz(vtx -> position())); 
+  const double mHits         = electron -> gsfTrack() -> trackerExpectedHitsInner().numberOfHits();//hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS);
+    
+  const bool barrel = (fabs(electron -> superCluster() -> eta()) <= 1.479);
+  const bool endcap = (!barrel && fabs(electron -> superCluster() -> eta()) < 2.5);
+  unsigned char region = 0;
+  if (endcap) 
+    region = 1;
+  //Veto Loose Medium Tight
+  
+
+  if (
+      sigmaletaleta < full5x5_sigmaIetaIeta_ref[grun][region][IdLevel] and
+      dEtaln < abs_dEtaIn_ref[grun][region][IdLevel] and
+      dPhiln < abs_dPhiIn_ref[grun][region][IdLevel] and
+      hem < hOverE_ref[grun][region][IdLevel] and 
+      resol < relIsoWithEA_ref[grun][region][IdLevel] and
+      dxy < abs_d0_ref[grun][region][IdLevel] and
+      dz < abs_dz_ref[grun][region][IdLevel] and
+      mHits < expectedMissingInngerHits[grun][region][IdLevel])
+    return true;
+  return false;
 }
 
 void Preselector_Leptons::Report()

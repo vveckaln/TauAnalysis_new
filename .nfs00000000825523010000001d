@@ -1,0 +1,6 @@
+xrdcp -f -d 1 root://cms-xrd-global.cern.ch//store/mc/RunIISpring15DR74/WW_TuneCUETP8M1_13TeV-pythia8/MINIAODSIM/Asympt50ns_MCRUN2_74_V9A-v1/10000/A89CCB89-4106-E511-BB7C-00259073E4A0.root /dev/null
+
+Mon Oct 5 20:26:15 WEST 2015 dataset: WW
+
+
+[16MB/40.52MB][ 39%][===================>                              ][1.231MB/s]  [32MB/40.52MB][ 78%][=======================================>          ][2.133MB/s]  [40.52MB/40.52MB][100%][==================================================][1.228MB/s]  [40.52MB/40.52MB][100%][==================================================][1.192MB/s]  

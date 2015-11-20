@@ -29,6 +29,8 @@ public:
   bool muTrigger;
   bool eTrigger;
   bool emuTrigger;
+  reco::BeamSpot              beamspot;
+  reco::ConversionCollection  ConversionCollection;
   reco::VertexCollection      vertices;
   reco::GenParticleCollection gen;
   pat::MuonCollection         muons;

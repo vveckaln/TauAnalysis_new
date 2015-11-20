@@ -1,0 +1,167 @@
+# --------------------------------------------------------------
+# Running PROLOG for Analysis_MC13TeV_DYJetsToLL_50toInf0029_ on Sun Oct  4 12:07:05 WEST 2015 
+# JOB_ID=6111907 from user viesturs on host wn099.ncg.ingrid.pt 
+#
+# --------------------------------------------------------------
+
+/home/cmst3/viesturs/dir_job6111907
+Contacting voms2.cern.ch:15002 [/DC=ch/DC=cern/OU=computers/CN=voms2.cern.ch] "cms"...
+Remote VOMS server contacted succesfully.
+
+
+Created proxy in /lustre/ncg.ingrid.pt/cmslocal/viesturs/RunII/FARM/inputs/x509_proxy.
+
+Your proxy is valid until Sun Oct 04 23:59:36 WEST 2015
+running Analysis
+[?1034hConfiguration succesfully completed
+file 0 root://cms-xrd-global.cern.ch//store/mc/Phys14DR/DYJetsToLL_M-50_13TeV-madgraph-pythia8/MINIAODSIM/PU20bx25_PHYS14_25_V1-v1/10000/127D008D-5E6C-E411-9B0E-002590DB927A.root
+LISTING WORKER
+continuing executing
+Debug mode false
+running utils::getTotalNumberOfEvents
+voms-proxy-info --all > /afs/cern.ch/work/v/vveckaln/private/RunII/FARM/outputs/MC13TeV_DYJetsToLL_50toInf_29.txt
+File root://cms-xrd-global.cern.ch//store/mc/Phys14DR/DYJetsToLL_M-50_13TeV-madgraph-pythia8/MINIAODSIM/PU20bx25_PHYS14_25_V1-v1/10000/127D008D-5E6C-E411-9B0E-002590DB927A.root
+File opened 0x49656d0 
+event got
+Getting size
+toReturn 49805
+Going to delete file 
+File deleted
+MergeableCounterValue 49805.000000
+running getMCPileupDistributionFromMiniAOD
+opened file root://cms-xrd-global.cern.ch//store/mc/Phys14DR/DYJetsToLL_M-50_13TeV-madgraph-pythia8/MINIAODSIM/PU20bx25_PHYS14_25_V1-v1/10000/127D008D-5E6C-E411-9B0E-002590DB927A.root 0x49656d0
+ Lumi/Pileup Reweighting: Computed Weights per In-Time Nint 
+   0 0
+   1 0
+   2 0
+   3 54.1923
+   4 0
+   5 137.39
+   6 47.5946
+   7 36.8698
+   8 20.0905
+   9 14.0836
+   10 8.68588
+   11 6.72751
+   12 4.50456
+   13 3.19284
+   14 2.27525
+   15 1.71172
+   16 1.25294
+   17 0.955605
+   18 0.763472
+   19 0.621737
+   20 0.500033
+   21 0.396549
+   22 0.323418
+   23 0.26666
+   24 0.232524
+   25 0.203415
+   26 0.181334
+   27 0.160775
+   28 0.141714
+   29 0.116323
+   30 0.125132
+   31 0.112759
+   32 0.113749
+   33 0.13675
+   34 0.101812
+   35 0.122983
+   36 0.0983013
+   37 0.334224
+   38 0.190985
+   39 0.0341046
+   40 0.238732
+   41 0
+   42 0
+   43 0
+   44 0
+   45 0
+   46 0
+   47 0
+   48 0
+   49 0
+   50 0
+   51 0
+   52 0
+   53 0
+   54 0
+   55 0
+   56 0
+   57 0
+   58 0
+   59 0
+   60 0
+   61 0
+   62 0
+   63 0
+   64 0
+   65 0
+   66 0
+   67 0
+   68 0
+   69 0
+   70 0
+   71 0
+   72 0
+   73 0
+   74 0
+   75 0
+   76 0
+   77 0
+   78 0
+   79 0
+   80 0
+   81 0
+   82 0
+   83 0
+   84 0
+   85 0
+   86 0
+   87 0
+   88 0
+   89 0
+   90 0
+   91 0
+   92 0
+   93 0
+   94 0
+   95 0
+   96 0
+   97 0
+   98 0
+getPUshifts will shift average PU by 0.789339 / -0.71474
+Opening file root://cms-xrd-global.cern.ch//store/mc/Phys14DR/DYJetsToLL_M-50_13TeV-madgraph-pythia8/MINIAODSIM/PU20bx25_PHYS14_25_V1-v1/10000/127D008D-5E6C-E411-9B0E-002590DB927A.root
+Reading file root://cms-xrd-global.cern.ch//store/mc/Phys14DR/DYJetsToLL_M-50_13TeV-madgraph-pythia8/MINIAODSIM/PU20bx25_PHYS14_25_V1-v1/10000/127D008D-5E6C-E411-9B0E-002590DB927A.root
+Read 10000 events
+Read 20000 events
+Read 30000 events
+Read 40000 events
+Read 49805 events
+Selected leptons 9726.000000
+Selected jets 17.000000
+Channel received 17.000000 passed 0.000000
+Fork subsample received 0.000000 passed 0.000000
+REPORT sample lepton_lepton_jets
+Number   Entry   Count   
+  1    1 lept, #geq 3 jets   0  
+  2           E^{miss}_{T}   0  
+  3             #geq 1btag   0  
+  4                  1#tau   0  
+  5                     OS   0  
+---- end -----
+REPORT sample tau_tau_jets
+Number   Entry   Count   
+  1    1 lept, #geq 3 jets   0  
+  2           E^{miss}_{T}   0  
+  3             #geq 1btag   0  
+  4                  1#tau   0  
+  5                     OS   0  
+---- end -----
+Going to write
+Deconstructing CetralProcessor
+
+# --------------------------------------------------------------
+# Running EPILOG for Analysis_MC13TeV_DYJetsToLL_50toInf0029_ on Sun Oct  4 12:18:56 WEST 2015 
+#
+# --------------------------------------------------------------

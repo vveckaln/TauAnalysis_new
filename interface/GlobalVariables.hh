@@ -35,6 +35,8 @@ namespace gVariables
   extern TString        gdtag;
   extern TString        site;
   extern unsigned char  grun;
+  enum runs{Run2015B, Run2015C};
+
   extern vector<edm::LuminosityBlockRange> luminosityBlockRange;
 }
 #endif
