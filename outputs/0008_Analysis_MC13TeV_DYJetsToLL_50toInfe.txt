@@ -1,7 +1,0 @@
-Picked up JAVA_TOOL_OPTIONS: -Xmx512m
-WARNING: proxy lifetime limited to issuing credential lifetime.
-Error in <TGClient::TGClient>: can't open display "localhost:11.0", switching to batch mode...
- In case you run from a remote ssh session, reconnect with ssh -Y
-sh: /afs/cern.ch/work/v/vveckaln/private/RunII/FARM/outputs/MC13TeV_DYJetsToLL_50toInf_8.txt: No such file or directory
-Warning in <TClass::Init>: no dictionary for class edm::AtomicPtrCache<vector<edm::Ptr<CaloTower> > > is available
-sh: /afs/cern.ch/work/v/vveckaln/private/RunII/FARM/outputs/MC13TeV_DYJetsToLL_50toInf_8_PU.txt: No such file or directory
