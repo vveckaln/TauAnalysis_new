@@ -1,10 +1,10 @@
 #ifndef _EventProcessor_hh
 #define _EventProcessor_hh
 
-#include "TauAnalysis/interface/EventSink.hh"
-#include "TauAnalysis/interface/EventSource.hh"
-#include "TauAnalysis/interface/Register.hh"
-#include "TauAnalysis/interface/HistogramDescriptor.hh"
+#include "CERN_RTU/TauAnalysis/interface/EventSink.hh"
+#include "CERN_RTU/TauAnalysis/interface/EventSource.hh"
+#include "CERN_RTU/TauAnalysis/interface/Register.hh"
+#include "CERN_RTU/TauAnalysis/interface/HistogramDescriptor.hh"
 
 template<class TEventInput, class TEventOutput>
 class EventProcessor:
@@ -19,5 +19,5 @@ public:
   virtual ~EventProcessor();
   
 };
-#include "TauAnalysis/interface/templates/EventProcessor.cpp"
+#include "CERN_RTU/TauAnalysis/interface/templates/EventProcessor.cpp"
 #endif

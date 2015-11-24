@@ -1,11 +1,11 @@
 #ifndef _PileUpCorrector_hh
 #define _PileUpCorrector_hh
 #include "TF1.h"
-#include "TauAnalysis/interface/ReadEvent_llvv.hh"
-#include "TauAnalysis/interface/EventProcessor.hh"
-#include "TauAnalysis/interface/Register.hh"
+#include "CERN_RTU/TauAnalysis/interface/ReadEvent_llvv.hh"
+#include "CERN_RTU/TauAnalysis/interface/EventProcessor.hh"
+#include "CERN_RTU/TauAnalysis/interface/Register.hh"
 
-#include "TauAnalysis/interface/LeptonEfficiencySF.h"
+#include "CERN_RTU/TauAnalysis/interface/LeptonEfficiencySF.h"
 
 #include "DataFormats/FWLite/interface/ChainEvent.h"
 #include "PhysicsTools/Utilities/interface/LumiReWeighting.h"

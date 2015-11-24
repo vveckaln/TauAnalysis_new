@@ -3,10 +3,10 @@
 
 #include <vector>
 #include <map>
-#include "TauAnalysis/interface/HistogramDescriptor.hh"
-#include "TauAnalysis/interface/DataSampleDescriptor.hh"
-#include "TauAnalysis/interface/ParserHashes.hh"
-#include "TauAnalysis/interface/HStructure.hh"
+#include "CERN_RTU/TauAnalysis/interface/HistogramDescriptor.hh"
+#include "CERN_RTU/TauAnalysis/interface/DataSampleDescriptor.hh"
+#include "CERN_RTU/TauAnalysis/interface/ParserHashes.hh"
+#include "CERN_RTU/TauAnalysis/interface/HStructure.hh"
 
 #include <TString.h>
 #include "TXMLEngine.h" // needs '<flags LDFLAGS="-lXMLIO">' in the BuildFile

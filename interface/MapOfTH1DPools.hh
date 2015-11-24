@@ -1,8 +1,8 @@
 #ifndef _MapOfTH1DPools_hh
 #define _MapOfTH1DPools_hh
-#include "TauAnalysis/interface/MapOfObjectPools.hh"
-#include "TauAnalysis/interface/HistogramDescriptor.hh"
-#include "TauAnalysis/interface/TFilePool.hh"
+#include "CERN_RTU/TauAnalysis/interface/MapOfObjectPools.hh"
+#include "CERN_RTU/TauAnalysis/interface/HistogramDescriptor.hh"
+#include "CERN_RTU/TauAnalysis/interface/TFilePool.hh"
 #include <vector>
 #include <map>
 #include "TString.h"

@@ -1,8 +1,8 @@
-#include "TauAnalysis/interface/HStructure_THStack.hh"
-#include "TauAnalysis/interface/HStructure_TH1D.hh"
+#include "CERN_RTU/TauAnalysis/interface/HStructure_THStack.hh"
+#include "CERN_RTU/TauAnalysis/interface/HStructure_TH1D.hh"
 #include "TList.h"
 
-#include "TauAnalysis/interface/Table.h"
+#include "CERN_RTU/TauAnalysis/interface/Table.h"
 
 HStructure_THStack::HStructure_THStack()
 {

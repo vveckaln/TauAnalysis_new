@@ -1,7 +1,7 @@
 #ifndef _HStructure_TH1D_hh
 #define _HStructure_TH1D_hh
 #include "TH1D.h"
-#include "TauAnalysis/interface/HStructure_worker.hh"
+#include "CERN_RTU/TauAnalysis/interface/HStructure_worker.hh"
 
 using namespace std;
 

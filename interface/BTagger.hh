@@ -1,7 +1,7 @@
 #ifndef _BTagger_hh
 #define _BTagger_hh
-#include "TauAnalysis/interface/ReadEvent_llvv.hh"
-#include "TauAnalysis/interface/EventProcessor.hh"
+#include "CERN_RTU/TauAnalysis/interface/ReadEvent_llvv.hh"
+#include "CERN_RTU/TauAnalysis/interface/EventProcessor.hh"
 #include "TFile.h"
 #include "TGraphErrors.h"
 #include "TString.h"

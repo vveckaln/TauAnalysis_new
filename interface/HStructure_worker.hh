@@ -1,6 +1,6 @@
 #ifndef _HStructure_worker_hh
 #define _HStructure_worker_hh
-#include "TauAnalysis/interface/HStructure.hh"
+#include "CERN_RTU/TauAnalysis/interface/HStructure.hh"
 #include "TObject.h"
 using namespace std;
 

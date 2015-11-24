@@ -4,7 +4,7 @@
 #include "FWCore/PythonParameterSet/interface/MakeParameterSets.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 
-#include "TauAnalysis/interface/gConfiguration.hh"
+#include "CERN_RTU/TauAnalysis/interface/gConfiguration.hh"
 class A
 {
 public:

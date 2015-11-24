@@ -5,7 +5,7 @@
 <use name="FWCore/ParameterSet"/>
 <use name="DataFormats/FWLite"/>
 <use name="boost"/>
-<use name="TauAnalysis"/>
+<use name="CERN_RTU/TauAnalysis"/>
 <environment>
 <bin name="Analysis" file="Analysis.cc"></bin>
 <bin name="test_test" file="test_test.cc"></bin>

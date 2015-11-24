@@ -1,5 +1,5 @@
-#include "TauAnalysis/interface/FileReader.hh"
-#include "TauAnalysis/interface/EventBuffer.hh"
+#include "CERN_RTU/TauAnalysis/interface/FileReader.hh"
+#include "CERN_RTU/TauAnalysis/interface/EventBuffer.hh"
 
 #include "DataFormats/FWLite/interface/ChainEvent.h"
 #include "DataFormats/FWLite/interface/Handle.h"
@@ -15,9 +15,9 @@
 #include "DataFormats/PatCandidates/interface/MET.h"
 #include "DataFormats/PatCandidates/interface/Tau.h"
 #include "DataFormats/PatCandidates/interface/GenericParticle.h"
-#include "TauAnalysis/interface/GlobalVariables.hh"
-#include "TauAnalysis/interface/PatUtils.h"
-#include "TauAnalysis/interface/Utilities.hh"
+#include "CERN_RTU/TauAnalysis/interface/GlobalVariables.hh"
+#include "CERN_RTU/TauAnalysis/interface/PatUtils.h"
+#include "CERN_RTU/TauAnalysis/interface/Utilities.hh"
 #include "RecoEgamma/EgammaTools/interface/ConversionTools.h"
 #include <iostream>
 using namespace cpregister;

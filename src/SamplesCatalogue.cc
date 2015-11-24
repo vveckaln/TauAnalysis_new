@@ -1,4 +1,4 @@
-#include "TauAnalysis/interface/SamplesCatalogue.hh"
+#include "CERN_RTU/TauAnalysis/interface/SamplesCatalogue.hh"
 
 const unsigned short generic_samples_count = 1;
 

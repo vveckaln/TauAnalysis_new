@@ -1,6 +1,6 @@
-#include "TauAnalysis/interface/GlobalVariables.hh"
-#include "TauAnalysis/interface/GlobalConfiguration.hh"
-#include "TauAnalysis/interface/Register.hh"
+#include "CERN_RTU/TauAnalysis/interface/GlobalVariables.hh"
+#include "CERN_RTU/TauAnalysis/interface/GlobalConfiguration.hh"
+#include "CERN_RTU/TauAnalysis/interface/Register.hh"
 
 #include "FWCore/FWLite/interface/AutoLibraryLoader.h"
 #include "FWCore/PythonParameterSet/interface/MakeParameterSets.h"

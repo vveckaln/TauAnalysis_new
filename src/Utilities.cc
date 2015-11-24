@@ -1,5 +1,5 @@
-#include "TauAnalysis/interface/Utilities.hh"
-#include "TauAnalysis/interface/HStructure_worker.hh"
+#include "CERN_RTU/TauAnalysis/interface/Utilities.hh"
+#include "CERN_RTU/TauAnalysis/interface/HStructure_worker.hh"
 
 #include "TF1.h"
 #include "TH1F.h"

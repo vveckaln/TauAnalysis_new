@@ -1,6 +1,6 @@
-#include "TauAnalysis/interface/MuScleFitCorrectorApplicator.hh"
-#include "TauAnalysis/interface/Register.hh"
-#include "TauAnalysis/interface/GlobalVariables.hh"
+#include "CERN_RTU/TauAnalysis/interface/MuScleFitCorrectorApplicator.hh"
+#include "CERN_RTU/TauAnalysis/interface/Register.hh"
+#include "CERN_RTU/TauAnalysis/interface/GlobalVariables.hh"
 
 
 #include <math.h>

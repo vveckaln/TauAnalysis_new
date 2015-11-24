@@ -1,14 +1,14 @@
-#include "TauAnalysis/interface/Preselector_Leptons.hh"
-#include "TauAnalysis/interface/GlobalVariables.hh"
-#include "TauAnalysis/interface/HStructure_worker.hh"
-#include "TauAnalysis/interface/Register.hh"
-#include "TauAnalysis/interface/Utilities.hh"
+#include "CERN_RTU/TauAnalysis/interface/Preselector_Leptons.hh"
+#include "CERN_RTU/TauAnalysis/interface/GlobalVariables.hh"
+#include "CERN_RTU/TauAnalysis/interface/HStructure_worker.hh"
+#include "CERN_RTU/TauAnalysis/interface/Register.hh"
+#include "CERN_RTU/TauAnalysis/interface/Utilities.hh"
 
-#include "TauAnalysis/interface/Table.h"
+#include "CERN_RTU/TauAnalysis/interface/Table.h"
 #include "DataFormats/Math/interface/deltaR.h"
-#include "TauAnalysis/interface/GlobalVariables.hh"
-#include "TauAnalysis/interface/PatUtils.h"
-#include "TauAnalysis/interface/LeptonSelectionDefinitions.hh"
+#include "CERN_RTU/TauAnalysis/interface/GlobalVariables.hh"
+#include "CERN_RTU/TauAnalysis/interface/PatUtils.h"
+#include "CERN_RTU/TauAnalysis/interface/LeptonSelectionDefinitions.hh"
 
 #include <math.h>
 #include "TCanvas.h"
@@ -235,10 +235,9 @@ bool Preselector_Leptons::passIdElectron(const unsigned char IdLevel) const
   }else{
     ooEmooP = fabs(1.0/electron->ecalEnergy() - electron->eSuperClusterOverP()/electron->ecalEnergy() ) ;
   }
-  const double resol         = fabs(1/electron -> ecalEnergy() - 1/electron -> trackMomentumAtVtx().pt());
   const double dxy           = fabs(electron -> gsfTrack() -> dxy(vtx -> position()));
   const double dz            = fabs(electron -> gsfTrack() -> dz(vtx -> position())); 
-  const double mHits         = electron -> gsfTrack() -> trackerExpectedHitsInner().numberOfHits();//hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS);
+  const double mHits         = electron -> gsfTrack() -> hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS);
     
   const bool barrel = (fabs(electron -> superCluster() -> eta()) <= 1.479);
   const bool endcap = (!barrel && fabs(electron -> superCluster() -> eta()) < 2.5);
@@ -253,7 +252,7 @@ bool Preselector_Leptons::passIdElectron(const unsigned char IdLevel) const
       dEtaln < abs_dEtaIn_ref[grun][region][IdLevel] and
       dPhiln < abs_dPhiIn_ref[grun][region][IdLevel] and
       hem < hOverE_ref[grun][region][IdLevel] and 
-      resol < relIsoWithEA_ref[grun][region][IdLevel] and
+      ooEmooP < relIsoWithEA_ref[grun][region][IdLevel] and
       dxy < abs_d0_ref[grun][region][IdLevel] and
       dz < abs_dz_ref[grun][region][IdLevel] and
       mHits < expectedMissingInngerHits[grun][region][IdLevel])

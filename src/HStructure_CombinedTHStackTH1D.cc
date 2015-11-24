@@ -1,6 +1,6 @@
-#include "TauAnalysis/interface/HStructure_CombinedTHStackTH1D.hh"
-#include "TauAnalysis/interface/HStructure_TH1D.hh"
-#include "TauAnalysis/interface/HStructure_THStack.hh"
+#include "CERN_RTU/TauAnalysis/interface/HStructure_CombinedTHStackTH1D.hh"
+#include "CERN_RTU/TauAnalysis/interface/HStructure_TH1D.hh"
+#include "CERN_RTU/TauAnalysis/interface/HStructure_THStack.hh"
 
 HStructure_CombinedTHStackTH1D::HStructure_CombinedTHStackTH1D()
 {

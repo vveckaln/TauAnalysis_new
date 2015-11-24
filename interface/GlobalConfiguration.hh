@@ -4,7 +4,7 @@
 #include <vector>
 #include <map>
 
-#include "TauAnalysis/interface/GlobalVariables.hh"
+#include "CERN_RTU/TauAnalysis/interface/GlobalVariables.hh"
 
 using namespace std;
 using namespace gVariables;

@@ -1,4 +1,4 @@
-#include "TauAnalysis/interface/GlobalVariables.hh"
+#include "CERN_RTU/TauAnalysis/interface/GlobalVariables.hh"
 
 namespace gVariables
 {

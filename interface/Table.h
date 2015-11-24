@@ -92,5 +92,5 @@ public:
   ~Table();
   ClassDef(Table, 1);
 };
-//#include "TauAnalysis/interface/templates/Table.cpp"
+//#include "CERN_RTU/TauAnalysis/interface/templates/Table.cpp"
 #endif

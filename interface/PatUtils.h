@@ -28,8 +28,8 @@
 #include "CondFormats/JetMETObjects/interface/JetCorrectionUncertainty.h"
 #include "CondFormats/JetMETObjects/interface/JetCorrectorParameters.h"
 
-#include "TauAnalysis/interface/MacroUtils.h"
-#include "TauAnalysis/interface/LumiUtils.h"
+#include "CERN_RTU/TauAnalysis/interface/MacroUtils.h"
+#include "CERN_RTU/TauAnalysis/interface/LumiUtils.h"
 
 #include <vector>
 #include "TVector3.h"

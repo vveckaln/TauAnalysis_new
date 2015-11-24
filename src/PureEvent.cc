@@ -1,5 +1,5 @@
-#include "TauAnalysis/interface/PureEvent.hh"
-#include "TauAnalysis/interface/Register.hh"
+#include "CERN_RTU/TauAnalysis/interface/PureEvent.hh"
+#include "CERN_RTU/TauAnalysis/interface/Register.hh"
 using namespace cpregister;
 
 PureEvent::PureEvent()

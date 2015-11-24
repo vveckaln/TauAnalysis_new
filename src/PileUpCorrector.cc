@@ -1,11 +1,11 @@
-#include "TauAnalysis/interface/PileUpCorrector.hh"
-#include "TauAnalysis/interface/GlobalVariables.hh"
-#include "TauAnalysis/interface/HStructure_TFile.hh"
+#include "CERN_RTU/TauAnalysis/interface/PileUpCorrector.hh"
+#include "CERN_RTU/TauAnalysis/interface/GlobalVariables.hh"
+#include "CERN_RTU/TauAnalysis/interface/HStructure_TFile.hh"
 #include "DataFormats/FWLite/interface/Handle.h"
 #include "DataFormats/Common/interface/MergeableCounter.h"
-#include "TauAnalysis/interface/rootdouble.h"
-#include "TauAnalysis/interface/MacroUtils.h"
-#include "TauAnalysis/interface/Utilities.hh"
+#include "CERN_RTU/TauAnalysis/interface/rootdouble.h"
+#include "CERN_RTU/TauAnalysis/interface/MacroUtils.h"
+#include "CERN_RTU/TauAnalysis/interface/Utilities.hh"
 
 #include "TROOT.h"
 #include <math.h>

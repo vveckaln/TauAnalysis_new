@@ -1,4 +1,4 @@
-#include "TauAnalysis/interface/CombinedTHStackTH1D.hh"
+#include "CERN_RTU/TauAnalysis/interface/CombinedTHStackTH1D.hh"
 #include "TList.h"
 
 CombinedTHStackTH1D::CombinedTHStackTH1D()

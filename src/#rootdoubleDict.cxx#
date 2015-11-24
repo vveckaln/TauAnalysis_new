@@ -38,7 +38,7 @@
 namespace std {} using namespace std;
 
 // Header files passed as explicit arguments
-#include "TauAnalysis/interface/rootdouble.h"
+#include "CERN_RTU/TauAnalysis/interface/rootdouble.h"
 
 // Header files passed via #pragma extra_include
 
@@ -55,7 +55,7 @@ namespace ROOT {
       ::rootdouble *ptr = 0;
       static ::TVirtualIsAProxy* isa_proxy = new ::TInstrumentedIsAProxy< ::rootdouble >(0);
       static ::ROOT::TGenericClassInfo 
-         instance("rootdouble", ::rootdouble::Class_Version(), "TauAnalysis/interface/rootdouble.h", 5,
+         instance("rootdouble", ::rootdouble::Class_Version(), "CERN_RTU/TauAnalysis/interface/rootdouble.h", 5,
                   typeid(::rootdouble), DefineBehavior(ptr, ptr),
                   &::rootdouble::Dictionary, isa_proxy, 4,
                   sizeof(::rootdouble) );

@@ -1,13 +1,13 @@
 #ifndef _ChannelGate_hh
 #define _ChannelGate_hh
-#include "TauAnalysis/interface/DigestedEvent.hh"
-#include "TauAnalysis/interface/PureEvent.hh"
-#include "TauAnalysis/interface/EventProcessor.hh"
-#include "TauAnalysis/interface/Register.hh"
-#include "TauAnalysis/interface/ReadEvent_llvv.hh"
+#include "CERN_RTU/TauAnalysis/interface/DigestedEvent.hh"
+#include "CERN_RTU/TauAnalysis/interface/PureEvent.hh"
+#include "CERN_RTU/TauAnalysis/interface/EventProcessor.hh"
+#include "CERN_RTU/TauAnalysis/interface/Register.hh"
+#include "CERN_RTU/TauAnalysis/interface/ReadEvent_llvv.hh"
 
-#include "TauAnalysis/interface/SamplesCatalogue.hh"
-#include "TauAnalysis/interface/LeptonEfficiencySF.h"
+#include "CERN_RTU/TauAnalysis/interface/SamplesCatalogue.hh"
+#include "CERN_RTU/TauAnalysis/interface/LeptonEfficiencySF.h"
 #include "TH1F.h"
 #ifdef event_type
 #undef event_type

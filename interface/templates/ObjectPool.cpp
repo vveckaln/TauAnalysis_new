@@ -1,8 +1,8 @@
-#include "TauAnalysis/interface/Parser.hh"
-#include "TauAnalysis/interface/GlobalVariables.hh"
+#include "CERN_RTU/TauAnalysis/interface/Parser.hh"
+#include "CERN_RTU/TauAnalysis/interface/GlobalVariables.hh"
 
 #include "TAxis.h"
-#include "TauAnalysis/interface/CPFileRegister.hh"
+#include "CERN_RTU/TauAnalysis/interface/CPFileRegister.hh"
 #include "TH1D.h"
 #include "TDirectory.h"
 

@@ -1,8 +1,8 @@
 #ifndef _EventConverter_hh
 #define _EventConverter_hh
-#include "TauAnalysis/interface/ReadEvent.hh"
-#include "TauAnalysis/interface/DigestedEvent.hh"
-#include "TauAnalysis/interface/EventProcessor.hh"
+#include "CERN_RTU/TauAnalysis/interface/ReadEvent.hh"
+#include "CERN_RTU/TauAnalysis/interface/DigestedEvent.hh"
+#include "CERN_RTU/TauAnalysis/interface/EventProcessor.hh"
 
 template<class InputEvent>
 class EventConverter 
@@ -21,5 +21,5 @@ public:
 template<>
 DigestedEvent* EventConverter<ReadEvent_llvv>::ConvertEvent(const ReadEvent_llvv * const );
 
-//#include "TauAnalysis/interface/templates/EventConverter_ReadEvent_llvv.cpp"
+//#include "CERN_RTU/TauAnalysis/interface/templates/EventConverter_ReadEvent_llvv.cpp"
 #endif

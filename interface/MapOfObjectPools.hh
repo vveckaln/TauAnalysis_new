@@ -1,7 +1,7 @@
 #ifndef _MapOfObjectPools_hh
 #define _MapOfObjectPools_hh
-#include "TauAnalysis/interface/ObjectPool.hh"
-#include "TauAnalysis/interface/HistogramDescriptor.hh"
+#include "CERN_RTU/TauAnalysis/interface/ObjectPool.hh"
+#include "CERN_RTU/TauAnalysis/interface/HistogramDescriptor.hh"
 #include <vector>
 #include <map>
 #include "TString.h"
@@ -40,5 +40,5 @@ public:
   ~ MapOfObjectPools();
 };
 
-#include "TauAnalysis/interface/templates/MapOfObjectPools.cpp"
+#include "CERN_RTU/TauAnalysis/interface/templates/MapOfObjectPools.cpp"
 #endif

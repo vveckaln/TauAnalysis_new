@@ -9,7 +9,7 @@
 #include "DataFormats/PatCandidates/interface/Tau.h"
 #include <FWCore/Common/interface/TriggerResultsByName.h>
 #include "SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h"
-#include "TauAnalysis/interface/Event.hh"
+#include "CERN_RTU/TauAnalysis/interface/Event.hh"
 #include "SimDataFormats/GeneratorProducts/interface/GenEventInfoProduct.h"
 #include "Rtypes.h"
 #include <vector>

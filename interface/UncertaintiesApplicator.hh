@@ -1,9 +1,9 @@
 #ifndef _UncertaintiesApplicator_hh
 #define _UncertaintiesApplicator_hh
-#include "TauAnalysis/interface/DigestedEvent.hh"
-#include "TauAnalysis/interface/EventProcessor.hh"
-#include "TauAnalysis/interface/MuScleFitCorrector.h"
-#include "TauAnalysis/interface/MacroUtils.h"
+#include "CERN_RTU/TauAnalysis/interface/DigestedEvent.hh"
+#include "CERN_RTU/TauAnalysis/interface/EventProcessor.hh"
+#include "CERN_RTU/TauAnalysis/interface/MuScleFitCorrector.h"
+#include "CERN_RTU/TauAnalysis/interface/MacroUtils.h"
 
 class UncertaintiesApplicator
   :public EventProcessor<DigestedEvent*, DigestedEvent *> 

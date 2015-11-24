@@ -1,6 +1,6 @@
-#include "TauAnalysis/interface/PhysicsObject.hh"
-#include "TauAnalysis/interface/spy_data_format.hh"
-#include "TauAnalysis/interface/Register.hh"
+#include "CERN_RTU/TauAnalysis/interface/PhysicsObject.hh"
+#include "CERN_RTU/TauAnalysis/interface/spy_data_format.hh"
+#include "CERN_RTU/TauAnalysis/interface/Register.hh"
 using namespace spydataformat;
 
 Object::Object()

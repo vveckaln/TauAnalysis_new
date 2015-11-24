@@ -1,4 +1,4 @@
-#include "TauAnalysis/interface/ParserHashes.hh"
+#include "CERN_RTU/TauAnalysis/interface/ParserHashes.hh"
 
 namespace parserHashes
 {

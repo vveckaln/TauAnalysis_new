@@ -1,10 +1,10 @@
-#include "TauAnalysis/interface/HStructure_TFile.hh"
+#include "CERN_RTU/TauAnalysis/interface/HStructure_TFile.hh"
 
-#include "TauAnalysis/interface/HStructure_THStack.hh"
-#include "TauAnalysis/interface/HStructure_TH1D.hh"
-#include "TauAnalysis/interface/HStructure_CombinedTHStackTH1D.hh"
-#include "TauAnalysis/interface/HStructure_worker.hh"
-#include "TauAnalysis/interface/Register.hh"
+#include "CERN_RTU/TauAnalysis/interface/HStructure_THStack.hh"
+#include "CERN_RTU/TauAnalysis/interface/HStructure_TH1D.hh"
+#include "CERN_RTU/TauAnalysis/interface/HStructure_CombinedTHStackTH1D.hh"
+#include "CERN_RTU/TauAnalysis/interface/HStructure_worker.hh"
+#include "CERN_RTU/TauAnalysis/interface/Register.hh"
 
 HStructure_TFile::HStructure_TFile()
 {

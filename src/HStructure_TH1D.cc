@@ -1,7 +1,7 @@
-#include "TauAnalysis/interface/HStructure_TH1D.hh"
-//#include "TauAnalysis/interface/Table.h"
+#include "CERN_RTU/TauAnalysis/interface/HStructure_TH1D.hh"
+//#include "CERN_RTU/TauAnalysis/interface/Table.h"
 
-#include "TauAnalysis/interface/Register.hh"
+#include "CERN_RTU/TauAnalysis/interface/Register.hh"
 
 unsigned int HStructure_TH1D::TH1D_inst = 0;
 

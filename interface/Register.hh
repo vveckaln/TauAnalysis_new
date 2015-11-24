@@ -2,8 +2,8 @@
 #define _Register_hh
 
 #include "TApplication.h"
-#include "TauAnalysis/interface/HistogramDescriptor.hh"
-#include "TauAnalysis/interface/DataSampleDescriptor.hh"
+#include "CERN_RTU/TauAnalysis/interface/HistogramDescriptor.hh"
+#include "CERN_RTU/TauAnalysis/interface/DataSampleDescriptor.hh"
 
 #include "CondFormats/JetMETObjects/interface/JetResolution.h"
 #include "CondFormats/JetMETObjects/interface/JetCorrectionUncertainty.h"

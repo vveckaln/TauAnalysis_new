@@ -1,7 +1,7 @@
 #ifndef _Utilities_hh
 #define _Utilities_hh
-#include "TauAnalysis/interface/Register.hh"
-#include "TauAnalysis/interface/HStructure_worker.hh"
+#include "CERN_RTU/TauAnalysis/interface/Register.hh"
+#include "CERN_RTU/TauAnalysis/interface/HStructure_worker.hh"
 
 #include "TF1.h"
 #include "TH1F.h"

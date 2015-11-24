@@ -1,4 +1,4 @@
-#include "TauAnalysis/interface/Register.hh"
+#include "CERN_RTU/TauAnalysis/interface/Register.hh"
 
 namespace cpregister
 {

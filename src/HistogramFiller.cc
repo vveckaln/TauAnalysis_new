@@ -1,6 +1,6 @@
-#include "TauAnalysis/interface/HistogramFiller.hh"
-#include "TauAnalysis/interface/Register.hh"
-#include "TauAnalysis/interface/HStructure_worker.hh"
+#include "CERN_RTU/TauAnalysis/interface/HistogramFiller.hh"
+#include "CERN_RTU/TauAnalysis/interface/Register.hh"
+#include "CERN_RTU/TauAnalysis/interface/HStructure_worker.hh"
 
 #include <math.h>
 using namespace cpregister;

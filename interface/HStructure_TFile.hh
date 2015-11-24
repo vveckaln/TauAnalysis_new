@@ -1,6 +1,6 @@
 #ifndef _HStructure_TFile_hh
 #define _HStructure_TFile_hh
-#include "TauAnalysis/interface/HStructure.hh"
+#include "CERN_RTU/TauAnalysis/interface/HStructure.hh"
 #include "TFile.h"
 class HStructure_work;
 class HStructure_TFile: public HStructure
