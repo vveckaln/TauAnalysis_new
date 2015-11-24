@@ -1,6 +1,6 @@
 #ifndef _EventSink_hh
 #define _EventSink_hh
-#include "LIP/TauAnalysis/interface/EventBuffer.hh"
+#include "TauAnalysis/interface/EventBuffer.hh"
 template<class TEventInput>
 class EventSink
 {

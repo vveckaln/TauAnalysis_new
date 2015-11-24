@@ -1,10 +1,10 @@
 
-#include "LIP/TauAnalysis/interface/BTagger.hh"
-#include "LIP/TauAnalysis/interface/Register.hh"
-#include "LIP/TauAnalysis/interface/GlobalVariables.hh"
-#include "LIP/TauAnalysis/interface/Utilities.hh"
+#include "TauAnalysis/interface/BTagger.hh"
+#include "TauAnalysis/interface/Register.hh"
+#include "TauAnalysis/interface/GlobalVariables.hh"
+#include "TauAnalysis/interface/Utilities.hh"
 
-#include "LIP/TauAnalysis/interface/BtagUncertaintyComputer.h"
+#include "TauAnalysis/interface/BtagUncertaintyComputer.h"
 #include <math.h>
 #include "TList.h"
 #include "TMath.h"

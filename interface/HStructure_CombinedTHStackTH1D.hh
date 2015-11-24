@@ -1,7 +1,7 @@
 #ifndef _HStructure_CombinedTHStackTH1D_hh
 #define _HStructure_CombinedTHStackTH1D_hh
-#include "LIP/TauAnalysis/interface/HStructure_worker.hh"
-#include "LIP/TauAnalysis/interface/CombinedTHStackTH1D.hh"
+#include "TauAnalysis/interface/HStructure_worker.hh"
+#include "TauAnalysis/interface/CombinedTHStackTH1D.hh"
 class TLegend;
 class HStructure_TH1D; 
 class HStructure_THStack;

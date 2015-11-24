@@ -1,8 +1,8 @@
-#include "LIP/TauAnalysis/interface/Parser.hh"
-#include "LIP/TauAnalysis/interface/GlobalVariables.hh"
+#include "TauAnalysis/interface/Parser.hh"
+#include "TauAnalysis/interface/GlobalVariables.hh"
 
 #include "TAxis.h"
-#include "LIP/TauAnalysis/interface/CPFileRegister.hh"
+#include "TauAnalysis/interface/CPFileRegister.hh"
 #include "TH1D.h"
 
 #include <iostream>

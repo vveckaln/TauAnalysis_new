@@ -1,11 +1,11 @@
-#include "LIP/TauAnalysis/interface/PileUpCorrector.hh"
-#include "LIP/TauAnalysis/interface/GlobalVariables.hh"
-#include "LIP/TauAnalysis/interface/HStructure_TFile.hh"
+#include "TauAnalysis/interface/PileUpCorrector.hh"
+#include "TauAnalysis/interface/GlobalVariables.hh"
+#include "TauAnalysis/interface/HStructure_TFile.hh"
 #include "DataFormats/FWLite/interface/Handle.h"
 #include "DataFormats/Common/interface/MergeableCounter.h"
-#include "LIP/TauAnalysis/interface/rootdouble.h"
-#include "LIP/TauAnalysis/interface/MacroUtils.h"
-#include "LIP/TauAnalysis/interface/Utilities.hh"
+#include "TauAnalysis/interface/rootdouble.h"
+#include "TauAnalysis/interface/MacroUtils.h"
+#include "TauAnalysis/interface/Utilities.hh"
 
 #include "TROOT.h"
 #include <math.h>

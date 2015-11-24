@@ -1,5 +1,5 @@
-#include "LIP/TauAnalysis/interface/MacroUtils.h"
-#include "LIP/TauAnalysis/interface/GlobalVariables.hh"
+#include "TauAnalysis/interface/MacroUtils.h"
+#include "TauAnalysis/interface/GlobalVariables.hh"
 #include "TH1F.h"
 #include "TSystem.h"
 #include "stdlib.h"

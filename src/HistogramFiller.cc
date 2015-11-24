@@ -1,6 +1,6 @@
-#include "LIP/TauAnalysis/interface/HistogramFiller.hh"
-#include "LIP/TauAnalysis/interface/Register.hh"
-#include "LIP/TauAnalysis/interface/HStructure_worker.hh"
+#include "TauAnalysis/interface/HistogramFiller.hh"
+#include "TauAnalysis/interface/Register.hh"
+#include "TauAnalysis/interface/HStructure_worker.hh"
 
 #include <math.h>
 using namespace cpregister;

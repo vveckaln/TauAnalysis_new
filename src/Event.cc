@@ -1,4 +1,4 @@
-#include"LIP/TauAnalysis/interface/Event.hh"
+#include"TauAnalysis/interface/Event.hh"
 
 Event::Event()
 {

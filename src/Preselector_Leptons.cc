@@ -1,14 +1,14 @@
-#include "LIP/TauAnalysis/interface/Preselector_Leptons.hh"
-#include "LIP/TauAnalysis/interface/GlobalVariables.hh"
-#include "LIP/TauAnalysis/interface/HStructure_worker.hh"
-#include "LIP/TauAnalysis/interface/Register.hh"
-#include "LIP/TauAnalysis/interface/Utilities.hh"
+#include "TauAnalysis/interface/Preselector_Leptons.hh"
+#include "TauAnalysis/interface/GlobalVariables.hh"
+#include "TauAnalysis/interface/HStructure_worker.hh"
+#include "TauAnalysis/interface/Register.hh"
+#include "TauAnalysis/interface/Utilities.hh"
 
-#include "LIP/TauAnalysis/interface/Table.h"
+#include "TauAnalysis/interface/Table.h"
 #include "DataFormats/Math/interface/deltaR.h"
-#include "LIP/TauAnalysis/interface/GlobalVariables.hh"
-#include "LIP/TauAnalysis/interface/PatUtils.h"
-#include "LIP/TauAnalysis/interface/LeptonSelectionDefinitions.hh"
+#include "TauAnalysis/interface/GlobalVariables.hh"
+#include "TauAnalysis/interface/PatUtils.h"
+#include "TauAnalysis/interface/LeptonSelectionDefinitions.hh"
 
 #include <math.h>
 #include "TCanvas.h"

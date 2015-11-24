@@ -1,6 +1,6 @@
 #ifndef _HStructure_THStack_hh
 #define _HStructure_THStack_hh
-#include "LIP/TauAnalysis/interface/HStructure_worker.hh"
+#include "TauAnalysis/interface/HStructure_worker.hh"
 #include "THStack.h"
 #include "TLegend.h"
 

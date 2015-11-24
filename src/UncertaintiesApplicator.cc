@@ -1,6 +1,6 @@
-#include "LIP/TauAnalysis/interface/UncertaintiesApplicator.hh"
-#include "LIP/TauAnalysis/interface/Register.hh"
-#include "LIP/TauAnalysis/interface/GlobalVariables.hh"
+#include "TauAnalysis/interface/UncertaintiesApplicator.hh"
+#include "TauAnalysis/interface/Register.hh"
+#include "TauAnalysis/interface/GlobalVariables.hh"
 
 
 #include <math.h>

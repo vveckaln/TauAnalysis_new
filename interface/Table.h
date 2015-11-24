@@ -92,5 +92,5 @@ public:
   ~Table();
   ClassDef(Table, 1);
 };
-//#include "LIP/TauAnalysis/interface/templates/Table.cpp"
+//#include "TauAnalysis/interface/templates/Table.cpp"
 #endif

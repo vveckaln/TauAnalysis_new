@@ -1,5 +1,5 @@
-#include "LIP/TauAnalysis/interface/Utilities.hh"
-#include "LIP/TauAnalysis/interface/HStructure_worker.hh"
+#include "TauAnalysis/interface/Utilities.hh"
+#include "TauAnalysis/interface/HStructure_worker.hh"
 
 #include "TF1.h"
 #include "TH1F.h"

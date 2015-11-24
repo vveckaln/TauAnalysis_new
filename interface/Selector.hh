@@ -1,12 +1,12 @@
 #ifndef _Selector_hh
 #define _Selector_hh
-#include "LIP/TauAnalysis/interface/DigestedEvent.hh"
-#include "LIP/TauAnalysis/interface/PureEvent.hh"
-#include "LIP/TauAnalysis/interface/EventProcessor.hh"
-#include "LIP/TauAnalysis/interface/Register.hh"
-#include "LIP/TauAnalysis/interface/SamplesCatalogue.hh"
+#include "TauAnalysis/interface/DigestedEvent.hh"
+#include "TauAnalysis/interface/PureEvent.hh"
+#include "TauAnalysis/interface/EventProcessor.hh"
+#include "TauAnalysis/interface/Register.hh"
+#include "TauAnalysis/interface/SamplesCatalogue.hh"
 
-#include "LIP/TauAnalysis/interface/test_utilities.hh"
+#include "TauAnalysis/interface/test_utilities.hh"
 
 #include "TH1F.h"
 using namespace cpregister;

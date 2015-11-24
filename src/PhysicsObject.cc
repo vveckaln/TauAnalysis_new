@@ -1,6 +1,6 @@
-#include "LIP/TauAnalysis/interface/PhysicsObject.hh"
-#include "LIP/TauAnalysis/interface/spy_data_format.hh"
-#include "LIP/TauAnalysis/interface/Register.hh"
+#include "TauAnalysis/interface/PhysicsObject.hh"
+#include "TauAnalysis/interface/spy_data_format.hh"
+#include "TauAnalysis/interface/Register.hh"
 using namespace spydataformat;
 
 Object::Object()

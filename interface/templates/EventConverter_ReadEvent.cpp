@@ -1,5 +1,5 @@
-#include "LIP/TauAnalysis/interface/ReadEvent.hh"
-#include "LIP/TauAnalysis/interface/EventConverter.hh"
+#include "TauAnalysis/interface/ReadEvent.hh"
+#include "TauAnalysis/interface/EventConverter.hh"
 
 #include <math.h>
 #include "TVectorD.h"

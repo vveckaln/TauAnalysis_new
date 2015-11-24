@@ -1,9 +1,9 @@
 #ifndef _UncertaintiesApplicator_hh
 #define _UncertaintiesApplicator_hh
-#include "LIP/TauAnalysis/interface/DigestedEvent.hh"
-#include "LIP/TauAnalysis/interface/EventProcessor.hh"
-#include "LIP/TauAnalysis/interface/MuScleFitCorrector.h"
-#include "LIP/TauAnalysis/interface/MacroUtils.h"
+#include "TauAnalysis/interface/DigestedEvent.hh"
+#include "TauAnalysis/interface/EventProcessor.hh"
+#include "TauAnalysis/interface/MuScleFitCorrector.h"
+#include "TauAnalysis/interface/MacroUtils.h"
 
 class UncertaintiesApplicator
   :public EventProcessor<DigestedEvent*, DigestedEvent *> 

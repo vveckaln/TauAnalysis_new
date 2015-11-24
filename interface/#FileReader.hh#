@@ -1,8 +1,8 @@
 #ifndef _FileReader_hh
 #define _FileReader_hh
-#include "LIP/TauAnalysis/interface/ReadEvent_llvv.hh"
-#include "LIP/TauAnalysis/interface/EventProcessor.hh"
-#include "LIP/TauAnalysis/interface/LumiUtils.h"
+#include "TauAnalysis/interface/ReadEvent_llvv.hh"
+#include "TauAnalysis/interface/EventProcessor.hh"
+#include "TauAnalysis/interface/LumiUtils.h"
 #ifdef event_type
 #undef event_type
 #endif

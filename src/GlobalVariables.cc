@@ -1,4 +1,4 @@
-#include "LIP/TauAnalysis/interface/GlobalVariables.hh"
+#include "TauAnalysis/interface/GlobalVariables.hh"
 
 namespace gVariables
 {

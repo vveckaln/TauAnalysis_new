@@ -31,7 +31,7 @@ extern void G__set_cpp_environmentTableDict();
 
 #include "TObject.h"
 #include "TMemberInspector.h"
-#include "LIP/TauAnalysis/interface/Table.h"
+#include "TauAnalysis/interface/Table.h"
 #include <algorithm>
 namespace std { }
 using namespace std;

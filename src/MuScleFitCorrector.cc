@@ -1,4 +1,4 @@
-#include "LIP/TauAnalysis/interface/MuScleFitCorrector.h"
+#include "TauAnalysis/interface/MuScleFitCorrector.h"
 
 //cf. https://twiki.cern.ch/twiki/bin/view/CMSPublic/MuScleFitCorrections2012  
 MuScleFitCorrector *getMuonCorrector(TString baseDir,TString url)

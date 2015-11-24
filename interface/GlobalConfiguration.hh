@@ -4,7 +4,7 @@
 #include <vector>
 #include <map>
 
-#include "LIP/TauAnalysis/interface/GlobalVariables.hh"
+#include "TauAnalysis/interface/GlobalVariables.hh"
 
 using namespace std;
 using namespace gVariables;

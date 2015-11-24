@@ -38,7 +38,7 @@
 namespace std {} using namespace std;
 
 // Header files passed as explicit arguments
-#include "LIP/TauAnalysis/interface/rootdouble.h"
+#include "TauAnalysis/interface/rootdouble.h"
 
 // Header files passed via #pragma extra_include
 
@@ -55,7 +55,7 @@ namespace ROOT {
       ::rootdouble *ptr = 0;
       static ::TVirtualIsAProxy* isa_proxy = new ::TInstrumentedIsAProxy< ::rootdouble >(0);
       static ::ROOT::TGenericClassInfo 
-         instance("rootdouble", ::rootdouble::Class_Version(), "LIP/TauAnalysis/interface/rootdouble.h", 5,
+         instance("rootdouble", ::rootdouble::Class_Version(), "TauAnalysis/interface/rootdouble.h", 5,
                   typeid(::rootdouble), DefineBehavior(ptr, ptr),
                   &::rootdouble::Dictionary, isa_proxy, 4,
                   sizeof(::rootdouble) );
@@ -145,7 +145,7 @@ namespace ROOT {
 namespace {
   void TriggerDictionaryInitialization_rootdoubleDict_Impl() {
     static const char* headers[] = {
-"LIP/TauAnalysis/interface/rootdouble.h",
+"TauAnalysis/interface/rootdouble.h",
 0
     };
     static const char* includePaths[] = {
@@ -168,7 +168,7 @@ class __attribute__((annotate("$clingAutoload$interface/rootdouble.h")))  rootdo
 #endif
 
 #define _BACKWARD_BACKWARD_WARNING_H
-#include "LIP/TauAnalysis/interface/rootdouble.h"
+#include "TauAnalysis/interface/rootdouble.h"
 
 #undef  _BACKWARD_BACKWARD_WARNING_H
 )DICTPAYLOAD";

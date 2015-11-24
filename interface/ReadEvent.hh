@@ -1,7 +1,7 @@
 #ifndef _ReadEvent_hh
 #define _ReadEvent_hh
 
-#include "LIP/TauAnalysis/interface/Event.hh"
+#include "TauAnalysis/interface/Event.hh"
 #include "TTree.h"
 #include "TClonesArray.h"
 

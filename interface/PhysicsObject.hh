@@ -1,7 +1,7 @@
 #ifndef _PhysicsObject_hh
 #define _PhysicsObject_hh
 
-#include "LIP/TauAnalysis/interface/llvvObjects.h"
+#include "TauAnalysis/interface/llvvObjects.h"
 #include "TLorentzVector.h"
 #include "TVectorD.h"
 #include <vector>

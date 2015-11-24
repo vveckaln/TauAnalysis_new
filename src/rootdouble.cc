@@ -1,4 +1,4 @@
-#include "LIP/TauAnalysis/interface/rootdouble.h"
+#include "TauAnalysis/interface/rootdouble.h"
 ClassImp(rootdouble);
 
 rootdouble::rootdouble()

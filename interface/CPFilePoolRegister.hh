@@ -1,6 +1,6 @@
 #define _CPFIlePoolRegister_hh
 
-#include "LIP/TauAnalysis/interface/TFilePool.hh"
+#include "TauAnalysis/interface/TFilePool.hh"
 
 {
   //********************* CENTRAL PROCESSOR FILE REGISTER ******

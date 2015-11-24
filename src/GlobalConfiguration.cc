@@ -1,6 +1,6 @@
-#include "LIP/TauAnalysis/interface/GlobalVariables.hh"
-#include "LIP/TauAnalysis/interface/GlobalConfiguration.hh"
-#include "LIP/TauAnalysis/interface/Register.hh"
+#include "TauAnalysis/interface/GlobalVariables.hh"
+#include "TauAnalysis/interface/GlobalConfiguration.hh"
+#include "TauAnalysis/interface/Register.hh"
 
 #include "FWCore/FWLite/interface/AutoLibraryLoader.h"
 #include "FWCore/PythonParameterSet/interface/MakeParameterSets.h"

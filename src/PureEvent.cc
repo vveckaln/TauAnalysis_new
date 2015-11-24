@@ -1,5 +1,5 @@
-#include "LIP/TauAnalysis/interface/PureEvent.hh"
-#include "LIP/TauAnalysis/interface/Register.hh"
+#include "TauAnalysis/interface/PureEvent.hh"
+#include "TauAnalysis/interface/Register.hh"
 using namespace cpregister;
 
 PureEvent::PureEvent()

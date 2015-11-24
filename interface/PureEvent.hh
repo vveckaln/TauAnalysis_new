@@ -1,8 +1,8 @@
 #ifndef _PureEvent_hh
 #define _PureEvent_hh
 
-#include "LIP/TauAnalysis/interface/PhysicsObject.hh"
-#include "LIP/TauAnalysis/interface/Event.hh"
+#include "TauAnalysis/interface/PhysicsObject.hh"
+#include "TauAnalysis/interface/Event.hh"
 #include <vector>
 using namespace std;
 class PureEvent: public Event

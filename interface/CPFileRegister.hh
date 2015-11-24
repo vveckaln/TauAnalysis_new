@@ -2,7 +2,7 @@
 
 #include "TString.h"
 #include "TFile.h"
-#include "LIP/TauAnalysis/interface/TFilePool.hh"
+#include "TauAnalysis/interface/TFilePool.hh"
 #include <vector>
 using namespace std;
 {

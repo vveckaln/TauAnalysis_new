@@ -1,8 +1,8 @@
 #ifndef _Fork_hh
 #define _Fork_hh
-#include "LIP/TauAnalysis/interface/DigestedEvent.hh"
-#include "LIP/TauAnalysis/interface/EventProcessor.hh"
-#include "LIP/TauAnalysis/interface/Register.hh"
+#include "TauAnalysis/interface/DigestedEvent.hh"
+#include "TauAnalysis/interface/EventProcessor.hh"
+#include "TauAnalysis/interface/Register.hh"
 using namespace cpregister;
 
 class Fork : public EventProcessor<DigestedEvent*, DigestedEvent*> 

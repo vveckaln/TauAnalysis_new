@@ -1,6 +1,6 @@
-#include "LIP/TauAnalysis/interface/HStructure_CombinedTHStackTH1D.hh"
-#include "LIP/TauAnalysis/interface/HStructure_TH1D.hh"
-#include "LIP/TauAnalysis/interface/HStructure_THStack.hh"
+#include "TauAnalysis/interface/HStructure_CombinedTHStackTH1D.hh"
+#include "TauAnalysis/interface/HStructure_TH1D.hh"
+#include "TauAnalysis/interface/HStructure_THStack.hh"
 
 HStructure_CombinedTHStackTH1D::HStructure_CombinedTHStackTH1D()
 {

@@ -1,4 +1,4 @@
-#include "LIP/TauAnalysis/interface/HistogramDescriptor.hh"
+#include "TauAnalysis/interface/HistogramDescriptor.hh"
 
 void HistogramDescriptor::ls() const
 {

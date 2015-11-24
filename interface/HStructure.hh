@@ -1,6 +1,6 @@
 #ifndef _HStructure_hh
 #define _HStructure_hh
-#include "LIP/TauAnalysis/interface/HistogramDescriptor.hh"
+#include "TauAnalysis/interface/HistogramDescriptor.hh"
 
 #include <cstddef>
 #include <vector>

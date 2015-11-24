@@ -1,8 +1,8 @@
 #ifndef _DigestedEvent_hh
 #define _DigestedEvent_hh
-#include "LIP/TauAnalysis/interface/llvvObjects.h"
-#include "LIP/TauAnalysis/interface/PhysicsObject.hh"
-#include "LIP/TauAnalysis/interface/Event.hh"
+#include "TauAnalysis/interface/llvvObjects.h"
+#include "TauAnalysis/interface/PhysicsObject.hh"
+#include "TauAnalysis/interface/Event.hh"
 #include <vector>
 using namespace std;
 class DigestedEvent: public Event

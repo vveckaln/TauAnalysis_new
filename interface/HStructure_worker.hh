@@ -1,6 +1,6 @@
 #ifndef _HStructure_worker_hh
 #define _HStructure_worker_hh
-#include "LIP/TauAnalysis/interface/HStructure.hh"
+#include "TauAnalysis/interface/HStructure.hh"
 #include "TObject.h"
 using namespace std;
 

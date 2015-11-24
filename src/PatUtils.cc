@@ -1,4 +1,4 @@
-#include "LIP/TauAnalysis/interface/PatUtils.h"
+#include "TauAnalysis/interface/PatUtils.h"
 
 namespace patUtils
 {

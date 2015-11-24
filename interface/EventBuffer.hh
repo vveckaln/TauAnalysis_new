@@ -97,9 +97,9 @@ public:
   TEvent *& operator[] (const unsigned long index) const;
 
   };
-#include "LIP/TauAnalysis/interface/templates/EventBuffer.cpp"
-#include "LIP/TauAnalysis/interface/templates/EventBuffer_ptr.cpp"
+#include "TauAnalysis/interface/templates/EventBuffer.cpp"
+#include "TauAnalysis/interface/templates/EventBuffer_ptr.cpp"
 
-#include "LIP/TauAnalysis/interface/templates/EventBuffer_iterator.cpp"
+#include "TauAnalysis/interface/templates/EventBuffer_iterator.cpp"
 
 #endif

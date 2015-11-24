@@ -1,7 +1,7 @@
 #ifndef _EventSource_hh
 #define _EventSource_hh
-#include "LIP/TauAnalysis/interface/EventBuffer.hh"
-#include "LIP/TauAnalysis/interface/EventSink.hh"
+#include "TauAnalysis/interface/EventBuffer.hh"
+#include "TauAnalysis/interface/EventSink.hh"
 #include <iostream>
 using namespace std;
 template<class TEventOutput>

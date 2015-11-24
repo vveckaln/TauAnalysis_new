@@ -1,4 +1,4 @@
-#include "LIP/TauAnalysis/interface/CombinedTHStackTH1D.hh"
+#include "TauAnalysis/interface/CombinedTHStackTH1D.hh"
 #include "TList.h"
 
 CombinedTHStackTH1D::CombinedTHStackTH1D()

@@ -1,45 +1,45 @@
 
-#include "LIP/TauAnalysis/interface/CentralProcessor.hh"
-#include "LIP/TauAnalysis/interface/GlobalVariables.hh"
+#include "TauAnalysis/interface/CentralProcessor.hh"
+#include "TauAnalysis/interface/GlobalVariables.hh"
 
-#include "LIP/TauAnalysis/interface/HistogramPlotter.hh"
-#include "LIP/TauAnalysis/interface/ReadEvent.hh"
-#include "LIP/TauAnalysis/interface/FileReader.hh"
-#include "LIP/TauAnalysis/interface/SamplesCatalogue.hh"
+#include "TauAnalysis/interface/HistogramPlotter.hh"
+#include "TauAnalysis/interface/ReadEvent.hh"
+#include "TauAnalysis/interface/FileReader.hh"
+#include "TauAnalysis/interface/SamplesCatalogue.hh"
 
-#include "LIP/TauAnalysis/interface/Preselector_Leptons.hh"
-#include "LIP/TauAnalysis/interface/Preselector_Jets.hh"
-#include "LIP/TauAnalysis/interface/Preselector_MET.hh"
-#include "LIP/TauAnalysis/interface/Preselector_Taus.hh"
-#include "LIP/TauAnalysis/interface/Preselector_OS.hh"
-#include "LIP/TauAnalysis/interface/Fork_Subsample.hh"
+#include "TauAnalysis/interface/Preselector_Leptons.hh"
+#include "TauAnalysis/interface/Preselector_Jets.hh"
+#include "TauAnalysis/interface/Preselector_MET.hh"
+#include "TauAnalysis/interface/Preselector_Taus.hh"
+#include "TauAnalysis/interface/Preselector_OS.hh"
+#include "TauAnalysis/interface/Fork_Subsample.hh"
 
-/*#include "LIP/TauAnalysis/interface/ReadEvent_llvv.hh"*/
-#include "LIP/TauAnalysis/interface/BTagger.hh"
-//#include "LIP/TauAnalysis/interface/Selector.hh"*/
-#include "LIP/TauAnalysis/interface/ChannelGate.hh"
+/*#include "TauAnalysis/interface/ReadEvent_llvv.hh"*/
+#include "TauAnalysis/interface/BTagger.hh"
+//#include "TauAnalysis/interface/Selector.hh"*/
+#include "TauAnalysis/interface/ChannelGate.hh"
 
-/*#include "LIP/TauAnalysis/interface/KINbHandler.hh"*/
-#include "LIP/TauAnalysis/interface/Fork.hh"
-/*#include "LIP/TauAnalysis/interface/Purge.hh"*/
+/*#include "TauAnalysis/interface/KINbHandler.hh"*/
+#include "TauAnalysis/interface/Fork.hh"
+/*#include "TauAnalysis/interface/Purge.hh"*/
 
-//#include "LIP/TauAnalysis/interface/HistogramFiller.hh"
-/*  #include "LIP/TauAnalysis/interface/UncertaintiesNode.hh"*/
-#include "LIP/TauAnalysis/interface/PileUpCorrector.hh"
-#include "LIP/TauAnalysis/interface/HStructure.hh"
-#include "LIP/TauAnalysis/interface/HStructure_THStack.hh"
-#include "LIP/TauAnalysis/interface/HStructure_TH1D.hh"
-#include "LIP/TauAnalysis/interface/HStructure_CombinedTHStackTH1D.hh"
-#include "LIP/TauAnalysis/interface/HStructure_TFile.hh"
+//#include "TauAnalysis/interface/HistogramFiller.hh"
+/*  #include "TauAnalysis/interface/UncertaintiesNode.hh"*/
+#include "TauAnalysis/interface/PileUpCorrector.hh"
+#include "TauAnalysis/interface/HStructure.hh"
+#include "TauAnalysis/interface/HStructure_THStack.hh"
+#include "TauAnalysis/interface/HStructure_TH1D.hh"
+#include "TauAnalysis/interface/HStructure_CombinedTHStackTH1D.hh"
+#include "TauAnalysis/interface/HStructure_TFile.hh"
 
-#include "LIP/TauAnalysis/interface/CombinedTHStackTH1D.hh"
+#include "TauAnalysis/interface/CombinedTHStackTH1D.hh"
 
-//#include "LIP/TauAnalysis/interface/UncertaintiesApplicator.hh"
-#include "LIP/TauAnalysis/interface/MuScleFitCorrectorApplicator.hh"
+//#include "TauAnalysis/interface/UncertaintiesApplicator.hh"
+#include "TauAnalysis/interface/MuScleFitCorrectorApplicator.hh"
 
-#include "LIP/TauAnalysis/interface/Register.hh"
-#include "LIP/TauAnalysis/interface/Parser.hh"
-#include "LIP/TauAnalysis/interface/Utilities.hh"
+#include "TauAnalysis/interface/Register.hh"
+#include "TauAnalysis/interface/Parser.hh"
+#include "TauAnalysis/interface/Utilities.hh"
 #include "TLegend.h"
 #include "TROOT.h"
 #include "TCanvas.h"

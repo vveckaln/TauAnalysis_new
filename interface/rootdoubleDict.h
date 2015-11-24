@@ -31,7 +31,7 @@ extern void G__set_cpp_environmentrootdoubleDict();
 
 #include "TObject.h"
 #include "TMemberInspector.h"
-#include "LIP/TauAnalysis/interface/rootdouble.h"
+#include "TauAnalysis/interface/rootdouble.h"
 #include <algorithm>
 namespace std { }
 using namespace std;

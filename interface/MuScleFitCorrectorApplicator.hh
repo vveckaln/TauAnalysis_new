@@ -1,8 +1,8 @@
 #ifndef _MuScleFitCorrectorApplicator_hh
 #define _MuScleFiteCorrectorApplicator_hh
-#include "LIP/TauAnalysis/interface/ReadEvent_llvv.hh"
-#include "LIP/TauAnalysis/interface/EventProcessor.hh"
-#include "LIP/TauAnalysis/interface/MuScleFitCorrector.h"
+#include "TauAnalysis/interface/ReadEvent_llvv.hh"
+#include "TauAnalysis/interface/EventProcessor.hh"
+#include "TauAnalysis/interface/MuScleFitCorrector.h"
 #ifdef event_type
 #undef event_type
 #endif

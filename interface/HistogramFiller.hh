@@ -1,7 +1,7 @@
 #ifndef _HistogramFiller_hh
 #define _HistogramFiller_hh
-#include "LIP/TauAnalysis/interface/PureEvent.hh"
-#include "LIP/TauAnalysis/interface/EventProcessor.hh"
+#include "TauAnalysis/interface/PureEvent.hh"
+#include "TauAnalysis/interface/EventProcessor.hh"
 
 class HistogramFiller 
   :public EventProcessor<PureEvent*, PureEvent *> 

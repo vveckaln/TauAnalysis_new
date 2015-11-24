@@ -1,7 +1,7 @@
 //#include <boost/shared_ptr.hpp>
 
-#include "LIP/TauAnalysis/interface/gConfiguration.hh"
-#include "LIP/TauAnalysis/interface/CentralProcessor.hh"
+#include "TauAnalysis/interface/gConfiguration.hh"
+#include "TauAnalysis/interface/CentralProcessor.hh"
 #include "TSystem.h"
 
 using namespace std;

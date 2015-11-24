@@ -1,4 +1,4 @@
-#include "LIP/TauAnalysis/interface/Parser.hh"
+#include "TauAnalysis/interface/Parser.hh"
 
 
 template<class TEventInput, class TEventOutput>

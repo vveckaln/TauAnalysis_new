@@ -11,7 +11,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include "LIP/TauAnalysis/interface/Functions.h"
+#include "TauAnalysis/interface/Functions.h"
 #include "TLorentzVector.h"
 #include "TRandom3.h"
 #include "TString.h"

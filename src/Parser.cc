@@ -1,4 +1,4 @@
-#include "LIP/TauAnalysis/interface/Parser.hh"
+#include "TauAnalysis/interface/Parser.hh"
 
 using namespace std;
 using namespace parserHashes;

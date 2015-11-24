@@ -1,8 +1,8 @@
 #ifndef _FactorisedJetCorrectorApplicator_hh
 #define _FactorisedJetCorrectorApplicator_hh
-#include "LIP/TauAnalysis/interface/ReadEvent_llvv.hh"
-#include "LIP/TauAnalysis/interface/EventProcessor.hh"
-#include "LIP/TauAnalysis/interface/MacroUtils.h"
+#include "TauAnalysis/interface/ReadEvent_llvv.hh"
+#include "TauAnalysis/interface/EventProcessor.hh"
+#include "TauAnalysis/interface/MacroUtils.h"
 
 typedef ReadEvent_llvv event_type;
 

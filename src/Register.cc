@@ -1,4 +1,4 @@
-#include "LIP/TauAnalysis/interface/Register.hh"
+#include "TauAnalysis/interface/Register.hh"
 
 namespace cpregister
 {

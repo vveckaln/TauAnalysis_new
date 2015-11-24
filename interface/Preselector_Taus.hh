@@ -1,11 +1,11 @@
 #ifndef _Preselector_Taus_hh
 #define _Preselector_Taus_hh
-#include "LIP/TauAnalysis/interface/ReadEvent_llvv.hh"
-#include "LIP/TauAnalysis/interface/EventProcessor.hh"
-#include "LIP/TauAnalysis/interface/Register.hh"
-#include "LIP/TauAnalysis/interface/SamplesCatalogue.hh"
+#include "TauAnalysis/interface/ReadEvent_llvv.hh"
+#include "TauAnalysis/interface/EventProcessor.hh"
+#include "TauAnalysis/interface/Register.hh"
+#include "TauAnalysis/interface/SamplesCatalogue.hh"
 
-#include "LIP/TauAnalysis/interface/test_utilities.hh"
+#include "TauAnalysis/interface/test_utilities.hh"
 
 #include "TH1F.h"
 using namespace cpregister;

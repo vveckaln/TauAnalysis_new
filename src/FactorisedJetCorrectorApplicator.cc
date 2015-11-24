@@ -1,6 +1,6 @@
-#include "LIP/TauAnalysis/interface/FactorisedJetCorrectorApplicator.hh"
-#include "LIP/TauAnalysis/interface/Register.hh"
-#include "LIP/TauAnalysis/interface/GlobalVariables.hh"
+#include "TauAnalysis/interface/FactorisedJetCorrectorApplicator.hh"
+#include "TauAnalysis/interface/Register.hh"
+#include "TauAnalysis/interface/GlobalVariables.hh"
 
 
 #include <math.h>
