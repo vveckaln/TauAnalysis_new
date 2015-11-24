@@ -9,5 +9,6 @@
 <environment>
 <bin name="Analysis" file="Analysis.cc"></bin>
 <bin name="test_test" file="test_test.cc"></bin>
+<bin name="VID_test" file="VID_test.cc"></bin>
 </environment>
 <Flags CXXFLAGS="-g"/>
