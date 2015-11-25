@@ -13,7 +13,7 @@ void GlobalConfiguration::SetConfiguration(const char* configuration_file)
 {
   
   gSystem->Load( "libFWCoreFWLite.so" );
-  gSystem->Load( "libLIPTauAnalysis.so" );
+  gSystem->Load( "libCERN_RTUTauAnalysis.so" );
   AutoLibraryLoader::enable();
   const edm::ParameterSet &runProcess = edm::readPSetsFrom(configuration_file) 
 -> getParameter<edm::ParameterSet>("PhysicsAnalysisParSet");

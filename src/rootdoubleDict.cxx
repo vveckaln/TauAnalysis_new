@@ -149,8 +149,8 @@ namespace {
 0
     };
     static const char* includePaths[] = {
-"/cvmfs/cms.cern.ch/slc6_amd64_gcc491/lcg/root/6.02.00-odfocd2/include",
-"/exper-sw/cmst3/cmssw/users/vveckaln/CMSSW_7_4_2/src/LIP/TauAnalysis/",
+"/cvmfs/cms.cern.ch/slc6_amd64_gcc491/lcg/root/6.02.00-odfocd5/include",
+"/exper-sw/cmst3/cmssw/users/vveckaln/CMSSW_7_4_12/src/CERN_RTU/TauAnalysis/",
 0
     };
     static const char* fwdDeclCode = 

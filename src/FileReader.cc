@@ -2,7 +2,6 @@
 #include "CERN_RTU/TauAnalysis/interface/EventBuffer.hh"
 
 #include "DataFormats/FWLite/interface/ChainEvent.h"
-#include "DataFormats/FWLite/interface/Handle.h"
 
 #include "DataFormats/FWLite/interface/Handle.h"
 #include "DataFormats/FWLite/interface/Event.h"
